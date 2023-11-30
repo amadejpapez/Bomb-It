@@ -2,27 +2,28 @@
 
 <br>
 
-<p align="center">A well known game, in a new coat.</p>
+<p align="center">Igra z novo preobleko.</p>
 
 <p align="center">🎮 🎲</p>
 
 <br>
 
-<p align="center"><b>Made by Amadej Papež</b></p>
-<p align="center">Student at FERI, 2023/24</p>
+<p align="center"><b>Ustvaril Amadej Papež</b></p>
+<p align="center">Študent na FERI, 2023/24</p>
 
 <br>
 
-## ✨ Features
+## Dinamika
 
-- there is grid of boxes with numbers
-- a user can move this boxes around
-- if the number on the two boxes is the same they will be merged into a bigger number box
-- do this until the number on the box is 2048!
+- združi toliko celic, da dobiš 2048!
+- igra ustvarjena za enega igralca
 
-<br>
+## Mehanika
 
-## 💻 Technical details
+Igralec pred sabo tabelo z celicami. Vsaka celica ima svojo številko. Celice lahko premika po prostih mestih. Če imata dve celici isto številki, se lahko združita. Pri tem nastane nova celica, ki je večja celica.
 
-- Desktop only
-- written in libGDX
+Cilj igre je dobiti celico z 2048.
+
+## Elementi
+
+- Ozadje
