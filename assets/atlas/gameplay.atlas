@@ -1,0 +1,145 @@
+
+gameplay.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+basket_orange
+  rotate: false
+  xy: 807, 692
+  size: 128, 130
+  orig: 128, 130
+  offset: 0, 0
+  index: -1
+bomb
+  rotate: false
+  xy: 905, 418
+  size: 110, 148
+  orig: 110, 148
+  offset: 0, 0
+  index: -1
+bonus_bomb
+  rotate: false
+  xy: 807, 568
+  size: 121, 122
+  orig: 121, 122
+  offset: 0, 0
+  index: -1
+bonus_hand
+  rotate: false
+  xy: 781, 260
+  size: 120, 121
+  orig: 120, 121
+  offset: 0, 0
+  index: -1
+bonus_pistol
+  rotate: false
+  xy: 781, 138
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+cone_blue
+  rotate: false
+  xy: 781, 383
+  size: 122, 161
+  orig: 122, 161
+  offset: 0, 0
+  index: -1
+cone_red
+  rotate: false
+  xy: 807, 824
+  size: 122, 156
+  orig: 122, 156
+  offset: 0, 0
+  index: -1
+player_green
+  rotate: false
+  xy: 2, 478
+  size: 441, 502
+  orig: 441, 502
+  offset: 0, 0
+  index: -1
+player_orange
+  rotate: false
+  xy: 445, 546
+  size: 360, 434
+  orig: 360, 434
+  offset: 0, 0
+  index: -1
+player_pink
+  rotate: false
+  xy: 408, 12
+  size: 371, 464
+  orig: 371, 464
+  offset: 0, 0
+  index: -1
+player_purple
+  rotate: false
+  xy: 2, 2
+  size: 404, 474
+  orig: 404, 474
+  offset: 0, 0
+  index: -1
+pom_pink
+  rotate: false
+  xy: 903, 179
+  size: 108, 117
+  orig: 108, 117
+  offset: 0, 0
+  index: -1
+pom_yellow
+  rotate: false
+  xy: 903, 64
+  size: 107, 113
+  orig: 107, 113
+  offset: 0, 0
+  index: -1
+speed_up
+  rotate: false
+  xy: 905, 298
+  size: 117, 118
+  orig: 117, 118
+  offset: 0, 0
+  index: -1
+whistle
+  rotate: false
+  xy: 781, 28
+  size: 120, 108
+  orig: 120, 108
+  offset: 0, 0
+  index: -1
+
+gameplay2.png
+size: 1024, 512
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+basket_ball
+  rotate: false
+  xy: 649, 2
+  size: 123, 92
+  orig: 123, 92
+  offset: 0, 0
+  index: -1
+middle
+  rotate: false
+  xy: 649, 96
+  size: 339, 373
+  orig: 339, 373
+  offset: 0, 0
+  index: -1
+player_black
+  rotate: false
+  xy: 2, 16
+  size: 314, 453
+  orig: 314, 453
+  offset: 0, 0
+  index: -1
+player_blue
+  rotate: false
+  xy: 318, 41
+  size: 329, 428
+  orig: 329, 428
+  offset: 0, 0
+  index: -1
