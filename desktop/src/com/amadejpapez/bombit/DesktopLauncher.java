@@ -1,15 +1,14 @@
-package com.amadejpapez.2048;
+package com.amadejpapez.bombit;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.amadejpapez.2048.My2048;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("My2048");
-		new Lwjgl3Application(new My2048(), config);
+		config.setTitle("Bomb It 4");
+		new Lwjgl3Application(new BombIt(), config);
 	}
 }

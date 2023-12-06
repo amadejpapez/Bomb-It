@@ -1,11 +1,11 @@
-package com.amadejpapez.2048;
+package com.amadejpapez.bombit;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-public class My2048 extends ApplicationAdapter {
+public class BombIt extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	
