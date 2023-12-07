@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.amadejpapez.bombit.assets.AssetDescriptors;
 import com.amadejpapez.bombit.config.GameConfig;
 
@@ -44,7 +46,14 @@ public class IntroScreen extends ScreenAdapter {
         gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
         stage.addActor(createBackground());
-        stage.addActor(createAnimation());
+        stage.addActor(createAnimationTitle());
+
+        stage.addActor(createAnimationPlayerBlack());
+        stage.addActor(createAnimationPlayerGreen());
+        stage.addActor(createAnimationPlayerOrange());
+        stage.addActor(createAnimationPlayerPink());
+        stage.addActor(createAnimationPlayerBlue());
+        stage.addActor(createAnimationPlayerPurple());
     }
 
     @Override
@@ -54,7 +63,7 @@ public class IntroScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(65 / 255f, 159 / 255f, 221 / 255f, 0f);
+        ScreenUtils.clear(0f, 0f, 0f, 0f);
 
         duration += delta;
 
@@ -83,7 +92,7 @@ public class IntroScreen extends ScreenAdapter {
         return bg;
     }
 
-    private Actor createAnimation() {
+    private Actor createAnimationTitle() {
         Image title = new Image(gameplayAtlas.findRegion(AssetRegionNames.TITLE));
 
         // set positions x, y to center the image to the center of the window
@@ -106,5 +115,137 @@ public class IntroScreen extends ScreenAdapter {
         );
 
         return title;
+    }
+
+    private Actor createAnimationPlayerBlack() {
+        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK));
+
+        float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
+        float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
+
+        player.setOrigin(Align.center);
+        player.addAction(
+                Actions.sequence(
+                        Actions.moveTo(posX, posY, 0f),
+                        Actions.scaleTo(0.1f, 0.1f, 0f),
+                        Actions.parallel(
+                                Actions.rotateBy(360, 3f),
+                                Actions.moveTo(posX + 300f, posY + 100f, 3f)
+                        ),
+                        Actions.removeActor()
+                )
+        );
+
+        return player;
+    }
+
+    private Actor createAnimationPlayerGreen() {
+        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN));
+
+        float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
+        float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
+
+        player.setOrigin(Align.center);
+        player.addAction(
+                Actions.sequence(
+                        Actions.moveTo(posX, posY, 0f),
+                        Actions.scaleTo(0.1f, 0.1f, 0f),
+                        Actions.parallel(
+                                Actions.rotateBy(-360, 3f),
+                                Actions.moveTo(posX - 100f, posY - 100f, 3f)
+                        ),
+                        Actions.removeActor()
+                )
+        );
+
+        return player;
+    }
+
+    private Actor createAnimationPlayerOrange() {
+        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE));
+
+        float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
+        float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
+
+        player.setOrigin(Align.center);
+        player.addAction(
+                Actions.sequence(
+                        Actions.moveTo(posX, posY, 0f),
+                        Actions.scaleTo(0.1f, 0.1f, 0f),
+                        Actions.parallel(
+                                Actions.rotateBy(360, 3f),
+                                Actions.moveTo(posX + 200f, posY - 100f, 3f)
+                        ),
+                        Actions.removeActor()
+                )
+        );
+
+        return player;
+    }
+
+    private Actor createAnimationPlayerPink() {
+        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PINK));
+
+        float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
+        float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
+
+        player.setOrigin(Align.center);
+        player.addAction(
+                Actions.sequence(
+                        Actions.moveTo(posX, posY, 0f),
+                        Actions.scaleTo(0.1f, 0.1f, 0f),
+                        Actions.parallel(
+                                Actions.rotateBy(-360, 3f),
+                                Actions.moveTo(posX - 150f, posY + 50f, 3f)
+                        ),
+                        Actions.removeActor()
+                )
+        );
+
+        return player;
+    }
+
+    private Actor createAnimationPlayerBlue() {
+        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE));
+
+        float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
+        float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
+
+        player.setOrigin(Align.center);
+        player.addAction(
+                Actions.sequence(
+                        Actions.moveTo(posX, posY, 0f),
+                        Actions.scaleTo(0.1f, 0.1f, 0f),
+                        Actions.parallel(
+                                Actions.rotateBy(360, 3f),
+                                Actions.moveTo(posX + 150f, posY - 100f, 3f)
+                        ),
+                        Actions.removeActor()
+                )
+        );
+
+        return player;
+    }
+
+    private Actor createAnimationPlayerPurple() {
+        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE));
+
+        float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
+        float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
+
+        player.setOrigin(Align.center);
+        player.addAction(
+                Actions.sequence(
+                        Actions.moveTo(posX, posY, 0f),
+                        Actions.scaleTo(0.1f, 0.1f, 0f),
+                        Actions.parallel(
+                                Actions.rotateBy(-360, 3f),
+                                Actions.moveTo(posX - 100f, posY + 100f, 3f)
+                        ),
+                        Actions.removeActor()
+                )
+        );
+
+        return player;
     }
 }
