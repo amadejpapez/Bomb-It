@@ -1,0 +1,110 @@
+package com.amadejpapez.bombit.screen;
+
+import com.amadejpapez.bombit.BombIt;
+import com.amadejpapez.bombit.assets.AssetRegionNames;
+import com.amadejpapez.bombit.assets.Assets;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+
+import com.amadejpapez.bombit.assets.AssetDescriptors;
+import com.amadejpapez.bombit.config.GameConfig;
+
+public class IntroScreen extends ScreenAdapter {
+    private final BombIt game;
+
+    private Viewport viewport;
+    private TextureAtlas gameplayAtlas;
+    private Stage stage;
+
+    public static final float INTRO_DURATION_IN_SEC = 3f;   // duration of the (intro) animation
+    private float duration = 0f;
+
+    public IntroScreen(BombIt game) {
+        this.game = game;
+    }
+
+    @Override
+    public void show() {
+        viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
+        stage = new Stage(viewport, game.getBatch());
+
+        Assets.assetManager.load(AssetDescriptors.FONT);
+        Assets.assetManager.load(AssetDescriptors.SKIN);
+        Assets.assetManager.load(AssetDescriptors.GAMEPLAY);
+        Assets.assetManager.finishLoading();
+
+        gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
+
+        stage.addActor(createBackground());
+        stage.addActor(createAnimation());
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+    }
+
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(65 / 255f, 159 / 255f, 221 / 255f, 0f);
+
+        duration += delta;
+
+        // go to the MenuScreen after INTRO_DURATION_IN_SEC seconds
+        if (duration > INTRO_DURATION_IN_SEC) {
+            game.setScreen(new MenuScreen(game));
+        }
+
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void hide() {
+        dispose();
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
+
+    private Actor createBackground() {
+        Image bg = new Image(gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND));
+        bg.setPosition(0, 0);
+        return bg;
+    }
+
+    private Actor createAnimation() {
+        Image title = new Image(gameplayAtlas.findRegion(AssetRegionNames.TITLE));
+
+        // set positions x, y to center the image to the center of the window
+        float posX = (viewport.getWorldWidth() / 2f) - title.getWidth() / 2f;
+        float posY = (viewport.getWorldHeight() / 2f) - title.getHeight() / 2f;
+
+        title.setOrigin(Align.center);
+        title.addAction(
+                /* animationDuration = Actions.sequence + Actions.rotateBy + Actions.scaleTo
+                                      = 0 + 0 + + 1.5 + 1.5 = 3 sec */
+                Actions.sequence(
+                        Actions.moveTo(posX, 0, 0f),   // // move image to the center of the window
+                        Actions.scaleTo(0.1f, 0.1f, 0f),    // "minimize"/"hide" image
+                        Actions.sequence(
+                                Actions.moveTo(posX, posY, 1.5f),   // // move image to the center of the window
+                                Actions.scaleTo(1.3f, 1.3f, 1.5f)    // "minimize"/"hide" image
+                        ),
+                        Actions.removeActor()   // // remove image
+                )
+        );
+
+        return title;
+    }
+}
