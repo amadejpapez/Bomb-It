@@ -9,12 +9,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.assets.AssetDescriptors;
 import com.amadejpapez.bombit.assets.AssetRegionNames;
@@ -59,6 +64,7 @@ public class GameScreen extends ScreenAdapter {
 
         gameplayStage.addActor(createGridBackground());
         gameplayStage.addActor(createGrid());
+        gameplayStage.addActor(createGridMiddle());
 
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
     }
@@ -94,10 +100,18 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Actor createGridBackground() {
-        Image title = new Image(gameplayAtlas.findRegion(AssetRegionNames.GRID));
-        title.setPosition(6,0);
-        title.setSize(68f,60);
-        return title;
+        Image bg = new Image(gameplayAtlas.findRegion(AssetRegionNames.GRID));
+        bg.setPosition(6, 0);
+        bg.setSize(68f, 60);
+        return bg;
+    }
+
+    private Actor createGridMiddle() {
+        Image mid = new Image(gameplayAtlas.findRegion(AssetRegionNames.MIDDLE));
+        mid.setPosition(viewport.getWorldWidth() / 2f - 6f,
+                viewport.getWorldHeight() / 2f - 6f);
+        mid.setScale(0.035f);
+        return mid;
     }
 
     private Actor createGrid() {
@@ -108,19 +122,123 @@ public class GameScreen extends ScreenAdapter {
         grid.defaults().size(CELL_SIZE);   // all cells will be the same size
         grid.setDebug(false);
 
-        final TextureRegion emptyRegion = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
+        final ButtonStyle bStyle = new ButtonStyle();
+        final Button invisibleCell = new Button(bStyle);
+
         final TextureRegion coneRed = gameplayAtlas.findRegion(AssetRegionNames.CONE_RED);
 
+        final TextureRegion playerBlue = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE);
+
+        final TextureRegion basketBlue = gameplayAtlas.findRegion(AssetRegionNames.BASKET_BLUE);
+        final TextureRegion basketOrange = gameplayAtlas.findRegion(AssetRegionNames.BASKET_ORANGE);
+
+        TextureRegion[] obstacles = {
+                gameplayAtlas.findRegion(AssetRegionNames.POM_PINK),
+                gameplayAtlas.findRegion(AssetRegionNames.POM_YELLOW),
+                gameplayAtlas.findRegion(AssetRegionNames.WHISTLE),
+        };
+
+        TextureRegion[] fixedObstacles = {
+                gameplayAtlas.findRegion(AssetRegionNames.CONE_BLUE),
+                coneRed
+        };
+        List<List<Integer>> drawFixedObstaclesIn = List.of(
+                List.of(1, 11),
+                List.of(10, 15),
+                List.of(10, 7),
+                List.of(10, 8),
+                List.of(10, 9),
+                List.of(11, 11),
+                List.of(11, 13),
+                List.of(11, 3),
+                List.of(11, 5),
+                List.of(12, 10),
+                List.of(12, 11),
+                List.of(12, 13),
+                List.of(12, 14),
+                List.of(12, 2),
+                List.of(12, 3),
+                List.of(12, 5),
+                List.of(12, 6),
+                List.of(12, 8),
+                List.of(13, 5),
+                List.of(2, 10),
+                List.of(2, 11),
+                List.of(2, 13),
+                List.of(2, 14),
+                List.of(2, 2),
+                List.of(2, 3),
+                List.of(2, 5),
+                List.of(2, 6),
+                List.of(2, 8),
+                List.of(3, 11),
+                List.of(3, 13),
+                List.of(3, 3),
+                List.of(3, 5),
+                List.of(4, 1),
+                List.of(4, 7),
+                List.of(4, 8),
+                List.of(4, 9),
+                List.of(5, 11),
+                List.of(5, 13),
+                List.of(5, 3),
+                List.of(5, 5),
+                List.of(6, 11),
+                List.of(6, 13),
+                List.of(6, 14),
+                List.of(6, 2),
+                List.of(6, 3),
+                List.of(6, 5),
+                List.of(8, 11),
+                List.of(8, 13),
+                List.of(8, 14),
+                List.of(8, 2),
+                List.of(8, 3),
+                List.of(8, 5),
+                List.of(9, 11),
+                List.of(9, 13),
+                List.of(9, 3),
+                List.of(9, 5)
+        );
+
         CellActor cell;
+        List<Integer> location;
 
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int column = 0; column < NUM_COLUMNS; column++) {
+                location = List.of(row, column);
+
+                // draw broder
                 if (row == 0 || row == NUM_ROWS - 1 || column == 0 || column == NUM_COLUMNS - 1) {
-                    cell = new CellActor(coneRed);
-                } else {
-                    cell = new CellActor(emptyRegion);
+                    grid.add(new CellActor(coneRed));
+                    continue;
                 }
-                grid.add(cell);
+
+                // draw player
+                if (row == 1 && column == 1) {
+                    cell = new CellActor(playerBlue);
+                    cell.setScale(1.4f);
+                    grid.add(cell);
+                    continue;
+                }
+
+                // draw center
+                if (row == 5 && column == 8) {
+                    grid.add(new CellActor(basketBlue));
+                    continue;
+                }
+                if (row == 7 && column == 6) {
+                    grid.add(new CellActor(basketOrange));
+                    continue;
+                }
+
+                // draw obstacles
+                if (drawFixedObstaclesIn.contains(location)) {
+                    grid.add(new CellActor(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]));
+                    continue;
+                }
+
+                grid.add(invisibleCell);
             }
             grid.row();
         }
