@@ -9,6 +9,7 @@ public class Assets {
         assetManager = new AssetManager();
         assetManager.load(AssetDescriptors.GAMEPLAY);
         assetManager.load(AssetDescriptors.FONT);
+        assetManager.load(AssetDescriptors.SKIN);
         assetManager.load(AssetDescriptors.BOMB_HIT);
         assetManager.load(AssetDescriptors.EXPLOSION_EFFECT);
         assetManager.finishLoading();

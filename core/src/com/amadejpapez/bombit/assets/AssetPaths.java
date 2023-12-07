@@ -5,6 +5,8 @@ public class AssetPaths {
 
     public static final String FONT = "assets/fonts/arial-32.fnt";
 
+    public static final String SKIN = "skin/neon-ui.json";
+
     public static final String BOMB_HIT = "sounds/bomb-hit.wav";
 
     public static final String EXPLOSION_EFFECT = "particles/explosion.pe";
