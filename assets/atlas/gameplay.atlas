@@ -142,6 +142,13 @@ size: 1024, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+floor
+  rotate: false
+  xy: 761, 825
+  size: 113, 115
+  orig: 113, 115
+  offset: 0, 0
+  index: -1
 player_black
   rotate: false
   xy: 445, 487
@@ -172,14 +179,14 @@ player_orange
   index: -1
 pom_pink
   rotate: false
-  xy: 761, 823
+  xy: 761, 706
   size: 108, 117
   orig: 108, 117
   offset: 0, 0
   index: -1
 pom_yellow
   rotate: false
-  xy: 761, 708
+  xy: 876, 827
   size: 107, 113
   orig: 107, 113
   offset: 0, 0
