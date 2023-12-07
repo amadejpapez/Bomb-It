@@ -232,12 +232,17 @@ public class GameScreen extends ScreenAdapter {
                     continue;
                 }
 
-                // draw obstacles
+                // draw fixed obstacles
                 if (drawFixedObstaclesIn.contains(location)) {
                     grid.add(new CellActor(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]));
                     continue;
                 }
 
+                if (ThreadLocalRandom.current().nextBoolean()) {
+                    grid.add(new CellActor(obstacles[ThreadLocalRandom.current().nextInt(obstacles.length)]));
+                    continue;
+                }
+                
                 grid.add(invisibleCell);
             }
             grid.row();
