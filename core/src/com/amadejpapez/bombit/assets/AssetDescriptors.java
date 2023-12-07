@@ -20,14 +20,5 @@ public class AssetDescriptors {
     public static final AssetDescriptor<ParticleEffect> EXPLOSION_EFFECT =
             new AssetDescriptor<>(AssetPaths.EXPLOSION_EFFECT, ParticleEffect.class);
 
-    public static final AssetDescriptor<Texture> TITLE =
-            new AssetDescriptor<>(AssetPaths.TITLE, Texture.class);
-
-    public static final AssetDescriptor<Texture> YOU_LOSE =
-            new AssetDescriptor<>(AssetPaths.YOU_LOSE, Texture.class);
-
-    public static final AssetDescriptor<Texture> YOU_WIN =
-            new AssetDescriptor<>(AssetPaths.YOU_WIN, Texture.class);
-
     private AssetDescriptors() { }
 }

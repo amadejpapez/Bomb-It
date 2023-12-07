@@ -9,9 +9,5 @@ public class AssetPaths {
 
     public static final String EXPLOSION_EFFECT = "particles/explosion.pe";
 
-    public static final String TITLE = "images/title.png";
-    public static final String YOU_WIN = "images/you_win.png";
-    public static final String YOU_LOSE = "images/you_lose.png";
-
     private AssetPaths() { }
 }

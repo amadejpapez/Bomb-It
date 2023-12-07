@@ -11,9 +11,6 @@ public class Assets {
         assetManager.load(AssetDescriptors.FONT);
         assetManager.load(AssetDescriptors.BOMB_HIT);
         assetManager.load(AssetDescriptors.EXPLOSION_EFFECT);
-        assetManager.load(AssetDescriptors.TITLE);
-        assetManager.load(AssetDescriptors.YOU_WIN);
-        assetManager.load(AssetDescriptors.YOU_LOSE);
         assetManager.finishLoading();
     }
 
