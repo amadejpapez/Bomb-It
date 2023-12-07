@@ -16,6 +16,7 @@ public class AssetRegionNames {
     public static final String POM_YELLOW = "pom_yellow";
     public static final String CONE_RED = "cone_red";
     public static final String CONE_BLUE = "cone_blue";
+    public static final String BACKGROUND = "background";
 
     public static final String MIDDLE = "middle";
     public static final String BASKET_BLUE = "basket_blue";
