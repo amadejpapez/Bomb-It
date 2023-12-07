@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter {
 
     private final Integer NUM_COLUMNS = 17;
     private final Integer NUM_ROWS = 15;
-    private final Integer CELL_SIZE = 5;
+    private final Integer CELL_SIZE = 4;
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -57,6 +57,7 @@ public class GameScreen extends ScreenAdapter {
         skin = Assets.assetManager.get(AssetDescriptors.SKIN);
         gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
+        gameplayStage.addActor(createGridBackground());
         gameplayStage.addActor(createGrid());
 
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
@@ -92,6 +93,13 @@ public class GameScreen extends ScreenAdapter {
         hudStage.dispose();
     }
 
+    private Actor createGridBackground() {
+        Image title = new Image(gameplayAtlas.findRegion(AssetRegionNames.GRID));
+        title.setPosition(6,0);
+        title.setSize(68f,60);
+        return title;
+    }
+
     private Actor createGrid() {
         final Table table = new Table();
         table.setDebug(false);   // turn on all debug lines (table, cell, and widget)
@@ -102,9 +110,11 @@ public class GameScreen extends ScreenAdapter {
 
         final TextureRegion emptyRegion = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
 
+        CellActor cell;
+
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int column = 0; column < NUM_COLUMNS; column++) {
-                final CellActor cell = new CellActor(emptyRegion);
+                cell = new CellActor(emptyRegion);
                 grid.add(cell);
             }
             grid.row();
