@@ -87,93 +87,100 @@ size: 1024, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-player_green
+background_leaderboard
   rotate: false
-  xy: 2, 331
-  size: 441, 502
-  orig: 441, 502
+  xy: 2, 358
+  size: 600, 600
+  orig: 600, 600
   offset: 0, 0
   index: -1
 player_pink
   rotate: false
-  xy: 445, 19
+  xy: 604, 18
   size: 371, 464
   orig: 371, 464
   offset: 0, 0
   index: -1
 player_purple
   rotate: false
-  xy: 604, 485
+  xy: 604, 484
   size: 404, 474
   orig: 404, 474
   offset: 0, 0
   index: -1
-pom_pink
-  rotate: false
-  xy: 445, 486
-  size: 108, 117
-  orig: 108, 117
-  offset: 0, 0
-  index: -1
-pom_yellow
-  rotate: false
-  xy: 2, 2
-  size: 107, 113
-  orig: 107, 113
-  offset: 0, 0
-  index: -1
 speed_up
   rotate: false
-  xy: 445, 605
+  xy: 436, 112
   size: 117, 118
   orig: 117, 118
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 835
+  xy: 2, 232
   size: 600, 124
   orig: 600, 124
   offset: 0, 0
   index: -1
 whistle
   rotate: false
-  xy: 445, 725
+  xy: 436, 2
   size: 120, 108
   orig: 120, 108
   offset: 0, 0
   index: -1
 you_lose
   rotate: false
-  xy: 2, 117
+  xy: 2, 18
   size: 432, 212
   orig: 432, 212
   offset: 0, 0
   index: -1
 
 gameplay3.png
-size: 1024, 512
+size: 1024, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 player_black
   rotate: false
-  xy: 695, 2
+  xy: 445, 487
   size: 314, 453
   orig: 314, 453
   offset: 0, 0
   index: -1
 player_blue
   rotate: false
-  xy: 364, 27
+  xy: 364, 8
   size: 329, 428
   orig: 329, 428
   offset: 0, 0
   index: -1
+player_green
+  rotate: false
+  xy: 2, 438
+  size: 441, 502
+  orig: 441, 502
+  offset: 0, 0
+  index: -1
 player_orange
   rotate: false
-  xy: 2, 21
+  xy: 2, 2
   size: 360, 434
   orig: 360, 434
+  offset: 0, 0
+  index: -1
+pom_pink
+  rotate: false
+  xy: 761, 823
+  size: 108, 117
+  orig: 108, 117
+  offset: 0, 0
+  index: -1
+pom_yellow
+  rotate: false
+  xy: 761, 708
+  size: 107, 113
+  orig: 107, 113
   offset: 0, 0
   index: -1

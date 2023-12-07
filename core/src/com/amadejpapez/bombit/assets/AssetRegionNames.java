@@ -18,6 +18,7 @@ public class AssetRegionNames {
     public static final String CONE_BLUE = "cone_blue";
 
     public static final String BACKGROUND = "background";
+    public static final String BACKGROUND_LB = "background_leaderboard";
 
     public static final String TITLE = "title";
     public static final String YOU_WIN = "you_win";
