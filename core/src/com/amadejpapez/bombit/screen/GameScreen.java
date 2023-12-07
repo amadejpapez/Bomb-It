@@ -109,12 +109,17 @@ public class GameScreen extends ScreenAdapter {
         grid.setDebug(false);
 
         final TextureRegion emptyRegion = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
+        final TextureRegion coneRed = gameplayAtlas.findRegion(AssetRegionNames.CONE_RED);
 
         CellActor cell;
 
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int column = 0; column < NUM_COLUMNS; column++) {
-                cell = new CellActor(emptyRegion);
+                if (row == 0 || row == NUM_ROWS - 1 || column == 0 || column == NUM_COLUMNS - 1) {
+                    cell = new CellActor(coneRed);
+                } else {
+                    cell = new CellActor(emptyRegion);
+                }
                 grid.add(cell);
             }
             grid.row();
