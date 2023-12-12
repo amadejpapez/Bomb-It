@@ -107,10 +107,22 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Actor createGridBackground() {
-        Image bg = new Image(gameplayAtlas.findRegion(AssetRegionNames.GRID));
-        bg.setPosition(6, 0);
-        bg.setSize(68f, 60);
-        return bg;
+        Table bgTable = new Table();
+        Table bgGrid = new Table();
+        bgGrid.defaults().size(CELL_SIZE);
+
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLUMNS; j++)
+                bgGrid.add(new CellActor(floor));
+            bgGrid.row();
+        }
+
+        bgTable.add(bgGrid).row();
+        bgTable.center();
+        bgTable.setFillParent(true);
+        bgTable.pack();
+
+        return bgTable;
     }
 
     private Actor createGridMiddle() {
