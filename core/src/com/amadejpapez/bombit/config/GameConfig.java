@@ -30,6 +30,11 @@ public class GameConfig {
 
     public static final List<Integer> PLAYER1_START = List.of(1, 1);
 
+    public static final List<List<Integer>> LOC_SKIP_OBSTACLES = List.of(
+            List.of(1, 2),
+            List.of(2, 1)
+    );
+
     public static final List<List<Integer>> LOC_FIXED_OBSTACLES = List.<List<Integer>>of(
             List.of(1, 11),
             List.of(10, 15),
