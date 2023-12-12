@@ -67,6 +67,13 @@ cone_red
   orig: 122, 156
   offset: 0, 0
   index: -1
+empty
+  rotate: false
+  xy: 916, 465
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 middle
   rotate: false
   xy: 558, 42
@@ -87,65 +94,51 @@ size: 1024, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-floor
+background_leaderboard
   rotate: false
-  xy: 436, 117
-  size: 113, 115
-  orig: 113, 115
+  xy: 2, 358
+  size: 600, 600
+  orig: 600, 600
   offset: 0, 0
   index: -1
-grid
+player_pink
   rotate: false
-  xy: 2, 360
-  size: 700, 618
-  orig: 700, 618
+  xy: 604, 18
+  size: 371, 464
+  orig: 371, 464
   offset: 0, 0
   index: -1
-player_black
+player_purple
   rotate: false
-  xy: 704, 525
-  size: 314, 453
-  orig: 314, 453
-  offset: 0, 0
-  index: -1
-pom_pink
-  rotate: false
-  xy: 604, 241
-  size: 108, 117
-  orig: 108, 117
-  offset: 0, 0
-  index: -1
-pom_yellow
-  rotate: false
-  xy: 436, 2
-  size: 107, 113
-  orig: 107, 113
+  xy: 604, 484
+  size: 404, 474
+  orig: 404, 474
   offset: 0, 0
   index: -1
 speed_up
   rotate: false
-  xy: 704, 405
+  xy: 436, 112
   size: 117, 118
   orig: 117, 118
   offset: 0, 0
   index: -1
 title
   rotate: false
-  xy: 2, 234
+  xy: 2, 232
   size: 600, 124
   orig: 600, 124
   offset: 0, 0
   index: -1
 whistle
   rotate: false
-  xy: 823, 415
+  xy: 436, 2
   size: 120, 108
   orig: 120, 108
   offset: 0, 0
   index: -1
 you_lose
   rotate: false
-  xy: 2, 20
+  xy: 2, 18
   size: 432, 212
   orig: 432, 212
   offset: 0, 0
@@ -156,51 +149,59 @@ size: 1024, 1024
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-background_leaderboard
+floor
   rotate: false
-  xy: 2, 342
-  size: 600, 600
-  orig: 600, 600
+  xy: 680, 4
+  size: 113, 115
+  orig: 113, 115
   offset: 0, 0
   index: -1
-player_pink
+grid
   rotate: false
-  xy: 604, 2
-  size: 371, 464
-  orig: 371, 464
+  xy: 445, 551
+  size: 500, 441
+  orig: 500, 441
   offset: 0, 0
   index: -1
-player_purple
+player_black
   rotate: false
-  xy: 604, 468
-  size: 404, 474
-  orig: 404, 474
+  xy: 364, 35
+  size: 314, 453
+  orig: 314, 453
   offset: 0, 0
   index: -1
-
-gameplay4.png
-size: 1024, 1024
-format: RGBA8888
-filter: Nearest, Nearest
-repeat: none
 player_blue
   rotate: false
-  xy: 445, 512
+  xy: 680, 121
   size: 329, 428
   orig: 329, 428
   offset: 0, 0
   index: -1
 player_green
   rotate: false
-  xy: 2, 438
+  xy: 2, 490
   size: 441, 502
   orig: 441, 502
   offset: 0, 0
   index: -1
 player_orange
   rotate: false
-  xy: 2, 2
+  xy: 2, 54
   size: 360, 434
   orig: 360, 434
+  offset: 0, 0
+  index: -1
+pom_pink
+  rotate: false
+  xy: 795, 2
+  size: 108, 117
+  orig: 108, 117
+  offset: 0, 0
+  index: -1
+pom_yellow
+  rotate: false
+  xy: 905, 6
+  size: 107, 113
+  orig: 107, 113
   offset: 0, 0
   index: -1

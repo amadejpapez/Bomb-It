@@ -131,6 +131,7 @@ public class GameScreen extends ScreenAdapter {
 
         final TextureRegion basketBlue = gameplayAtlas.findRegion(AssetRegionNames.BASKET_BLUE);
         final TextureRegion basketOrange = gameplayAtlas.findRegion(AssetRegionNames.BASKET_ORANGE);
+        final TextureRegion empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
 
         TextureRegion[] obstacles = {
                 gameplayAtlas.findRegion(AssetRegionNames.POM_PINK),

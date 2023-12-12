@@ -26,6 +26,7 @@ public class AssetRegionNames {
 
     public static final String FLOOR = "floor";
     public static final String GRID = "grid";
+    public static final String EMPTY = "empty";
 
     public static final String MIDDLE = "middle";
     public static final String BASKET_BLUE = "basket_blue";
