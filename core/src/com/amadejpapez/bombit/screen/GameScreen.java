@@ -1,5 +1,6 @@
 package com.amadejpapez.bombit.screen;
 
+import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -243,6 +244,10 @@ public class GameScreen extends ScreenAdapter {
                     return true;
                 }
                 else if (keycode == Input.Keys.SPACE) {
+                    if (GameManager.activeBombs >= GameConfig.MAX_NUMBER_BOMBS)
+                        return false;
+
+                    GameManager.activeBombs++;
                     bombGrid.getCell(bombCells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(bomb);
                 }
 

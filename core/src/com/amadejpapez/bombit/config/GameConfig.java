@@ -24,6 +24,8 @@ public class GameConfig {
     public static final Integer NUM_ROWS = 15;
     public static final Integer CELL_SIZE = 4;
 
+    public static Integer MAX_NUMBER_BOMBS = 1;
+
     public static final List<Integer> PLAYER1_START = List.of(1, 1);
 
     public static final List<List<Integer>> LOC_FIXED_OBSTACLES = List.<List<Integer>>of(
