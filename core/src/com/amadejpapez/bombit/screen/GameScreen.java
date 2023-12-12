@@ -45,8 +45,12 @@ public class GameScreen extends ScreenAdapter {
     final TextureRegion basketOrange = gameplayAtlas.findRegion(AssetRegionNames.BASKET_ORANGE);
     final TextureRegion empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
+    final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
 
     private final List<List<CellActor>> cells = new ArrayList<>();
+
+    private final List<List<CellActor>> bombCells = new ArrayList<>();
+    private final Table bombGrid = new Table();
 
     private final List<Integer> playerPosition = new ArrayList<>(GameConfig.PLAYER1_START);
 
@@ -63,6 +67,7 @@ public class GameScreen extends ScreenAdapter {
         hudStage = new Stage(hudViewport, game.getBatch());
 
         gameplayStage.addActor(createGridBackground());
+        gameplayStage.addActor(createGridBombs());
         gameplayStage.addActor(createGridMain());
         gameplayStage.addActor(createMiddle());
 
@@ -100,22 +105,43 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Actor createGridBackground() {
-        Table bgTable = new Table();
-        Table bgGrid = new Table();
-        bgGrid.defaults().size(GameConfig.CELL_SIZE);
+        Table table = new Table();
+        Table grid = new Table();
+        grid.defaults().size(GameConfig.CELL_SIZE);
 
         for (int i = 0; i < GameConfig.NUM_ROWS; i++) {
             for (int j = 0; j < GameConfig.NUM_COLUMNS; j++)
-                bgGrid.add(new CellActor(floor));
-            bgGrid.row();
+                grid.add(new CellActor(floor));
+            grid.row();
         }
 
-        bgTable.add(bgGrid).row();
-        bgTable.center();
-        bgTable.setFillParent(true);
-        bgTable.pack();
+        table.add(grid).row();
+        table.center();
+        table.setFillParent(true);
+        table.pack();
 
-        return bgTable;
+        return table;
+    }
+
+    private Actor createGridBombs() {
+        Table table = new Table();
+        bombGrid.defaults().size(GameConfig.CELL_SIZE);
+
+        for (int i = 0; i < GameConfig.NUM_ROWS; i++) {
+            bombCells.add(new ArrayList<>());
+            for (int j = 0; j < GameConfig.NUM_COLUMNS; j++) {
+                bombCells.get(i).add(new CellActor(empty));
+                bombGrid.add(bombCells.get(i).get(j));
+            }
+            bombGrid.row();
+        }
+
+        table.add(bombGrid).row();
+        table.center();
+        table.setFillParent(true);
+        table.pack();
+
+        return table;
     }
 
     private Actor createMiddle() {
@@ -181,14 +207,14 @@ public class GameScreen extends ScreenAdapter {
         gameplayStage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
+                Integer rowPlayer = playerPosition.get(0);
+                Integer colPlayer = playerPosition.get(1);
+
                 if (keycode == Input.Keys.UP
                         || keycode == Input.Keys.DOWN
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
-                    Integer rowPlayer = playerPosition.get(0);
-                    Integer colPlayer = playerPosition.get(1);
-
                     Integer rowFuture = playerPosition.get(0);
                     Integer colFuture = playerPosition.get(1);
 
@@ -215,6 +241,9 @@ public class GameScreen extends ScreenAdapter {
                         playerPosition.set(0, rowFuture);
 
                     return true;
+                }
+                else if (keycode == Input.Keys.SPACE) {
+                    bombGrid.getCell(bombCells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(bomb);
                 }
 
                 return false;
