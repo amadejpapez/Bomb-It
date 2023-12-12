@@ -1,11 +1,14 @@
 package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.GameManager;
+import com.amadejpapez.bombit.ParticleEffectActor;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,11 +19,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.assets.AssetDescriptors;
@@ -48,12 +55,18 @@ public class GameScreen extends ScreenAdapter {
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
     final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
 
+    final ParticleEffect explosionEffect = Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT);
+
+    final Sound explosionSound = Assets.assetManager.get(AssetDescriptors.BOMB_HIT);
+
     private final List<List<CellActor>> cells = new ArrayList<>();
 
     private final List<List<CellActor>> bombCells = new ArrayList<>();
     private final Table bombGrid = new Table();
 
     private final List<Integer> playerPosition = new ArrayList<>(GameConfig.PLAYER1_START);
+
+    private final Map<List<Integer>, Float> activeBombs= new HashMap<>();
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -71,6 +84,7 @@ public class GameScreen extends ScreenAdapter {
         gameplayStage.addActor(createGridBombs());
         gameplayStage.addActor(createGridMain());
         gameplayStage.addActor(createMiddle());
+        gameplayStage.addActor(new ParticleEffectActor(explosionEffect));
 
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
     }
@@ -86,6 +100,7 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(195 / 255f, 195 / 255f, 195 / 255f, 0f);
 
         // update
+        checkBombs();
         gameplayStage.act(delta);
         hudStage.act(delta);
 
@@ -103,6 +118,26 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         gameplayStage.dispose();
         hudStage.dispose();
+    }
+
+    private void checkBombs() {
+        float elapsedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+
+        for (Iterator<Map.Entry<List<Integer>, Float>> it = activeBombs.entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<List<Integer>, Float> entry = it.next();
+
+            if (elapsedTime - entry.getValue() > GameConfig.TIME_BOMB_ACTIVE) {
+                CellActor cell = bombGrid.getCell(bombCells.get(entry.getKey().get(0)).get(entry.getKey().get(1))).getActor();
+                explosionSound.play();
+
+                explosionEffect.setPosition(cell.getX(), cell.getY());
+                explosionEffect.start();
+
+                cell.setDrawable(empty);
+                GameManager.numActiveBombs--;
+                it.remove();
+            }
+        }
     }
 
     private Actor createGridBackground() {
@@ -244,11 +279,12 @@ public class GameScreen extends ScreenAdapter {
                     return true;
                 }
                 else if (keycode == Input.Keys.SPACE) {
-                    if (GameManager.activeBombs >= GameConfig.MAX_NUMBER_BOMBS)
+                    if (GameManager.numActiveBombs >= GameConfig.MAX_NUMBER_BOMBS)
                         return false;
 
-                    GameManager.activeBombs++;
+                    GameManager.numActiveBombs++;
                     bombGrid.getCell(bombCells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(bomb);
+                    activeBombs.put(List.of(rowPlayer, colPlayer), TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f);
                 }
 
                 return false;

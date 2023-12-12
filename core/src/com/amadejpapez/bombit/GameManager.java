@@ -9,7 +9,7 @@ public class GameManager {
     // ~/.prefs/BombIt
     private final Preferences PREFS;
 
-    public static Integer activeBombs = 0;
+    public static Integer numActiveBombs = 0;
 
     private static final String INIT_MOVE_KEY = "initMove";
     private CellState initMove = CellState.FLOOR;
