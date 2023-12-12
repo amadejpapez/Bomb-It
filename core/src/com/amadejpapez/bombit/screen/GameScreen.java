@@ -3,14 +3,15 @@ package com.amadejpapez.bombit.screen;
 import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -207,9 +209,9 @@ public class GameScreen extends ScreenAdapter {
         List<Integer> location;
 
         // init all cells as empty
-        for (int i = 0; i < NUM_ROWS; i++)  {
+        for (int i = 0; i < NUM_ROWS; i++) {
             cells.add(new ArrayList<>());
-            for (int j = 0; j < NUM_COLUMNS; j++)  {
+            for (int j = 0; j < NUM_COLUMNS; j++) {
                 cells.get(i).add(new CellActor(empty));
             }
         }
@@ -231,8 +233,7 @@ public class GameScreen extends ScreenAdapter {
                 // draw center
                 else if (row == 5 && column == 8) {
                     cells.get(row).get(column).setDrawable(basketBlue);
-                }
-                else if (row == 7 && column == 6) {
+                } else if (row == 7 && column == 6) {
                     cells.get(row).get(column).setDrawable(basketOrange);
                 }
                 // draw fixed obstacles
@@ -254,6 +255,33 @@ public class GameScreen extends ScreenAdapter {
         table.center();
         table.setFillParent(true);
         table.pack();
+
+        gameplayStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                Integer rowPlayer = playerPosition.get(0);
+                Integer colPlayer = playerPosition.get(1);
+
+                if (keycode == Input.Keys.RIGHT) {
+                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
+                    grid.getCell(cells.get(rowPlayer).get(colPlayer + 1)).getActor().setDrawable(playerBlue);
+                    playerPosition.set(1, colPlayer + 1);
+                } else if (keycode == Input.Keys.LEFT) {
+                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
+                    grid.getCell(cells.get(rowPlayer).get(colPlayer - 1)).getActor().setDrawable(playerBlue);
+                    playerPosition.set(1, colPlayer - 1);
+                } else if (keycode == Input.Keys.UP) {
+                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
+                    grid.getCell(cells.get(rowPlayer - 1).get(colPlayer)).getActor().setDrawable(playerBlue);
+                    playerPosition.set(0, rowPlayer - 1);
+                } else if (keycode == Input.Keys.DOWN) {
+                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
+                    grid.getCell(cells.get(rowPlayer + 1).get(colPlayer)).getActor().setDrawable(playerBlue);
+                    playerPosition.set(0, rowPlayer + 1);
+                }
+                return true;
+            }
+        });
 
         return table;
     }
