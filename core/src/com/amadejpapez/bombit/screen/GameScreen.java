@@ -47,6 +47,10 @@ public class GameScreen extends ScreenAdapter {
     private final Integer NUM_ROWS = 15;
     private final Integer CELL_SIZE = 4;
 
+    private final List<List<CellActor>> cells = new ArrayList<>();
+
+    private final List<Integer> playerPosition = new ArrayList<>();
+
     public GameScreen(BombIt game) {
         this.game = game;
     }
@@ -122,15 +126,13 @@ public class GameScreen extends ScreenAdapter {
         grid.defaults().size(CELL_SIZE);   // all cells will be the same size
         grid.setDebug(false);
 
-        final ButtonStyle bStyle = new ButtonStyle();
-        final Button invisibleCell = new Button(bStyle);
-
         final TextureRegion coneRed = gameplayAtlas.findRegion(AssetRegionNames.CONE_RED);
 
         final TextureRegion playerBlue = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE);
 
         final TextureRegion basketBlue = gameplayAtlas.findRegion(AssetRegionNames.BASKET_BLUE);
         final TextureRegion basketOrange = gameplayAtlas.findRegion(AssetRegionNames.BASKET_ORANGE);
+
         final TextureRegion empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
 
         TextureRegion[] obstacles = {
@@ -202,8 +204,15 @@ public class GameScreen extends ScreenAdapter {
                 List.of(9, 5)
         );
 
-        CellActor cell;
         List<Integer> location;
+
+        // init all cells as empty
+        for (int i = 0; i < NUM_ROWS; i++)  {
+            cells.add(new ArrayList<>());
+            for (int j = 0; j < NUM_COLUMNS; j++)  {
+                cells.get(i).add(new CellActor(empty));
+            }
+        }
 
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int column = 0; column < NUM_COLUMNS; column++) {
@@ -211,40 +220,32 @@ public class GameScreen extends ScreenAdapter {
 
                 // draw broder
                 if (row == 0 || row == NUM_ROWS - 1 || column == 0 || column == NUM_COLUMNS - 1) {
-                    grid.add(new CellActor(coneRed));
-                    continue;
+                    cells.get(row).get(column).setDrawable(coneRed);
                 }
-
                 // draw player
-                if (row == 1 && column == 1) {
-                    cell = new CellActor(playerBlue);
-                    cell.setScale(1.4f);
-                    grid.add(cell);
-                    continue;
+                else if (row == 1 && column == 1) {
+                    cells.get(row).get(column).setDrawable(playerBlue);
+                    playerPosition.add(row);
+                    playerPosition.add(column);
                 }
-
                 // draw center
-                if (row == 5 && column == 8) {
-                    grid.add(new CellActor(basketBlue));
-                    continue;
+                else if (row == 5 && column == 8) {
+                    cells.get(row).get(column).setDrawable(basketBlue);
                 }
-                if (row == 7 && column == 6) {
-                    grid.add(new CellActor(basketOrange));
-                    continue;
+                else if (row == 7 && column == 6) {
+                    cells.get(row).get(column).setDrawable(basketOrange);
                 }
-
                 // draw fixed obstacles
-                if (drawFixedObstaclesIn.contains(location)) {
-                    grid.add(new CellActor(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]));
-                    continue;
+                else if (drawFixedObstaclesIn.contains(location)) {
+                    cells.get(row).get(column).setDrawable(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]);
+                }
+                // draw destroyable obstacles
+                else if (ThreadLocalRandom.current().nextBoolean()) {
+                    // TODO: except around player
+                    cells.get(row).get(column).setDrawable(obstacles[ThreadLocalRandom.current().nextInt(obstacles.length)]);
                 }
 
-                if (ThreadLocalRandom.current().nextBoolean()) {
-                    grid.add(new CellActor(obstacles[ThreadLocalRandom.current().nextInt(obstacles.length)]));
-                    continue;
-                }
-                
-                grid.add(invisibleCell);
+                grid.add(cells.get(row).get(column));
             }
             grid.row();
         }
