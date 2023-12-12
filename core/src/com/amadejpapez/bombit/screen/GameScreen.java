@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,11 +56,22 @@ public class GameScreen extends ScreenAdapter {
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
     final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
 
+    final TextureRegion[] obstacles = {
+            gameplayAtlas.findRegion(AssetRegionNames.POM_PINK),
+            gameplayAtlas.findRegion(AssetRegionNames.POM_YELLOW),
+            gameplayAtlas.findRegion(AssetRegionNames.WHISTLE),
+    };
+    final TextureRegion[] fixedObstacles = {
+            gameplayAtlas.findRegion(AssetRegionNames.CONE_BLUE),
+            coneRed
+    };
+
     final ParticleEffect explosionEffect = Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT);
 
     final Sound explosionSound = Assets.assetManager.get(AssetDescriptors.BOMB_HIT);
 
     private final List<List<CellActor>> cells = new ArrayList<>();
+    private final Table cellGrid = new Table();
 
     private final List<List<CellActor>> bombCells = new ArrayList<>();
     private final Table bombGrid = new Table();
@@ -126,14 +138,31 @@ public class GameScreen extends ScreenAdapter {
         for (Iterator<Map.Entry<List<Integer>, Float>> it = activeBombs.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<List<Integer>, Float> entry = it.next();
 
-            if (elapsedTime - entry.getValue() > GameConfig.TIME_BOMB_ACTIVE) {
-                CellActor cell = bombGrid.getCell(bombCells.get(entry.getKey().get(0)).get(entry.getKey().get(1))).getActor();
-                explosionSound.play();
+            Integer row = entry.getKey().get(0);
+            Integer col = entry.getKey().get(1);
+            List<List<Integer>> checkLocations = List.of(
+                    List.of(row, col + 1),
+                    List.of(row, col - 1),
+                    List.of(row + 1, col),
+                    List.of(row - 1, col)
+            );
+            List<TextureRegion> obstaclesTmp = Arrays.asList(obstacles);
 
-                explosionEffect.setPosition(cell.getX(), cell.getY());
+            if (elapsedTime - entry.getValue() > GameConfig.TIME_BOMB_ACTIVE) {
+                for (List<Integer> loc : checkLocations) {
+                    CellActor cellTmp = cellGrid.getCell(cells.get(loc.get(0)).get(loc.get(1))).getActor();
+                    TextureRegion regTmp = ((TextureRegionDrawable) cellTmp.getDrawable()).getRegion();
+                    if (obstaclesTmp.contains(regTmp))
+                        cellTmp.setDrawable(empty);
+                }
+
+                CellActor bomb = bombGrid.getCell(bombCells.get(row).get(col)).getActor();
+
+                explosionSound.play();
+                explosionEffect.setPosition(bomb.getX(), bomb.getY());
                 explosionEffect.start();
 
-                cell.setDrawable(empty);
+                bomb.setDrawable(empty);
                 GameManager.numActiveBombs--;
                 it.remove();
             }
@@ -191,18 +220,7 @@ public class GameScreen extends ScreenAdapter {
     private Actor createGridMain() {
         final Table table = new Table();
 
-        final Table grid = new Table();
-        grid.defaults().size(GameConfig.CELL_SIZE);   // all cells will be the same size
-
-        TextureRegion[] obstacles = {
-                gameplayAtlas.findRegion(AssetRegionNames.POM_PINK),
-                gameplayAtlas.findRegion(AssetRegionNames.POM_YELLOW),
-                gameplayAtlas.findRegion(AssetRegionNames.WHISTLE),
-        };
-        TextureRegion[] fixedObstacles = {
-                gameplayAtlas.findRegion(AssetRegionNames.CONE_BLUE),
-                coneRed
-        };
+        cellGrid.defaults().size(GameConfig.CELL_SIZE);   // all cells will be the same size
 
         // init all cells as empty
         for (int i = 0; i < GameConfig.NUM_ROWS; i++) {
@@ -230,12 +248,12 @@ public class GameScreen extends ScreenAdapter {
                     // TODO: except around player
                     cells.get(row).get(column).setDrawable(obstacles[ThreadLocalRandom.current().nextInt(obstacles.length)]);
 
-                grid.add(cells.get(row).get(column));
+                cellGrid.add(cells.get(row).get(column));
             }
-            grid.row();
+            cellGrid.row();
         }
 
-        table.add(grid).row();
+        table.add(cellGrid).row();
         table.center();
         table.setFillParent(true);
         table.pack();
@@ -263,13 +281,13 @@ public class GameScreen extends ScreenAdapter {
                     else colFuture += 1;
 
                     // only move if the future cell is "empty"
-                    CellActor futureCell = grid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
+                    CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
                     TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
                     if (!futureImg.equals(empty))
                         return false;
 
                     futureCell.setDrawable(playerBlue);
-                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
+                    cellGrid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
 
                     if (rowPlayer.equals(rowFuture))
                         playerPosition.set(1, colFuture);
