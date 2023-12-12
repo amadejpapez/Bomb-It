@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -259,27 +260,44 @@ public class GameScreen extends ScreenAdapter {
         gameplayStage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                Integer rowPlayer = playerPosition.get(0);
-                Integer colPlayer = playerPosition.get(1);
+                if (
+                        keycode == Input.Keys.UP
+                                || keycode == Input.Keys.DOWN
+                                || keycode == Input.Keys.LEFT
+                                || keycode == Input.Keys.RIGHT
+                ) {
+                    Integer rowPlayer = playerPosition.get(0);
+                    Integer colPlayer = playerPosition.get(1);
 
-                if (keycode == Input.Keys.RIGHT) {
+                    Integer rowFuture = playerPosition.get(0);
+                    Integer colFuture = playerPosition.get(1);
+
+                    if (keycode == Input.Keys.UP)
+                        rowFuture -= 1;
+                    else if (keycode == Input.Keys.DOWN)
+                        rowFuture += 1;
+                    else if (keycode == Input.Keys.LEFT)
+                        colFuture -= 1;
+                    else colFuture += 1;
+
+                    // only move if the future cell is "empty"
+                    CellActor futureCell = grid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
+                    TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
+                    if (!futureImg.equals(empty))
+                        return false;
+
+                    futureCell.setDrawable(playerBlue);
                     grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
-                    grid.getCell(cells.get(rowPlayer).get(colPlayer + 1)).getActor().setDrawable(playerBlue);
-                    playerPosition.set(1, colPlayer + 1);
-                } else if (keycode == Input.Keys.LEFT) {
-                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
-                    grid.getCell(cells.get(rowPlayer).get(colPlayer - 1)).getActor().setDrawable(playerBlue);
-                    playerPosition.set(1, colPlayer - 1);
-                } else if (keycode == Input.Keys.UP) {
-                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
-                    grid.getCell(cells.get(rowPlayer - 1).get(colPlayer)).getActor().setDrawable(playerBlue);
-                    playerPosition.set(0, rowPlayer - 1);
-                } else if (keycode == Input.Keys.DOWN) {
-                    grid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
-                    grid.getCell(cells.get(rowPlayer + 1).get(colPlayer)).getActor().setDrawable(playerBlue);
-                    playerPosition.set(0, rowPlayer + 1);
+
+                    if (rowPlayer.equals(rowFuture))
+                        playerPosition.set(1, colFuture);
+                    else
+                        playerPosition.set(0, rowFuture);
+
+                    return true;
                 }
-                return true;
+
+                return false;
             }
         });
 
