@@ -1,6 +1,5 @@
 package com.amadejpapez.bombit.config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,8 +24,12 @@ public class GameConfig {
     public static final Integer CELL_SIZE = 4;
 
     public static Integer MAX_NUMBER_BOMBS = 1;
-
     public static final float TIME_BOMB_ACTIVE = 2f;
+
+    public static final List<String> AVAILABLE_PLAYERS = List.of("blue", "black", "green", "orange", "pink", "purple");
+    public static final Integer MAX_NUMBER_PLAYERS = 4;
+
+    public static final Boolean COMPUTER_PLAYERS_DEFAULT = false;
 
     public static final List<Integer> PLAYER1_START = List.of(1, 1);
 
