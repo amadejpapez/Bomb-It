@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -34,7 +35,9 @@ public class SettingsScreen extends ScreenAdapter {
 
     private TextButton onePhysicalPlayer;
     private TextButton twoPhysicalPlayers;
+
     private CheckBox computerPlayersEnabled;
+    private CheckBoxStyle checkBoxStyle;
 
     public SettingsScreen(BombIt game) {
         this.game = game;
@@ -50,7 +53,11 @@ public class SettingsScreen extends ScreenAdapter {
 
         onePhysicalPlayer = new TextButton("1", skin);
         twoPhysicalPlayers = new TextButton("2", skin);
-        computerPlayersEnabled = new CheckBox("On", skin);
+
+        checkBoxStyle = new CheckBoxStyle();
+        checkBoxStyle.fontColor = Color.BLACK;
+        checkBoxStyle.font = Assets.assetManager.get(AssetDescriptors.FONT);
+        computerPlayersEnabled = new CheckBox("On", checkBoxStyle);
 
         checkDisabledEnabledButtons();
 
@@ -91,7 +98,7 @@ public class SettingsScreen extends ScreenAdapter {
 
         // TITLE
         Label tmpLabel = new Label("Gameplay", skin);
-        tmpLabel.setColor(Color.BLACK);
+        tmpLabel.setColor(Color.BROWN);
         grid.add(tmpLabel).padBottom(50).colspan(3).row();
 
         // PHYSICAL PLAYERS
@@ -126,7 +133,6 @@ public class SettingsScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel);
 
-        computerPlayersEnabled.setColor(Color.BLACK);
         computerPlayersEnabled.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -160,14 +166,14 @@ public class SettingsScreen extends ScreenAdapter {
 
     private void checkDisabledEnabledButtons() {
         if (GameManager.numPhysicalPlayers == 1)
-            onePhysicalPlayer.setColor(Color.WHITE);
+            onePhysicalPlayer.setColor(Color.ORANGE);
         else
-            onePhysicalPlayer.setColor(Color.BLACK);
+            onePhysicalPlayer.setColor(Color.BROWN);
 
         if (GameManager.numPhysicalPlayers == 2)
-            twoPhysicalPlayers.setColor(Color.WHITE);
+            twoPhysicalPlayers.setColor(Color.ORANGE);
         else
-            twoPhysicalPlayers.setColor(Color.BLACK);
+            twoPhysicalPlayers.setColor(Color.BROWN);
 
         if (GameManager.addComputerPlayers)
             computerPlayersEnabled.setText("On");
