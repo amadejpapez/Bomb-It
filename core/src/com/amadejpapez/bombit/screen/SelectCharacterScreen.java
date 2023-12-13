@@ -65,6 +65,10 @@ public class SelectCharacterScreen extends ScreenAdapter {
         characters.put("orange", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE)));
         characters.put("purple", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE)));
 
+        // remove image that was selected for the first player
+        if (player == 1)
+            characters.remove(GameManager.playerCharacters.get(0));
+
         selectedPlayer = new Image();
         selectedPlayer.setDrawable(characters.get(GameManager.playerCharacters.get(player)));
 
@@ -115,9 +119,6 @@ public class SelectCharacterScreen extends ScreenAdapter {
             tmp.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (player == 1 && Objects.equals(GameManager.playerCharacters.get(0), entry.getKey()))
-                        return;
-
                     GameManager.playerCharacters.set(player, entry.getKey());
                     selectedPlayer.setDrawable(characters.get(GameManager.playerCharacters.get(player)));
                 }
