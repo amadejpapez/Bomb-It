@@ -132,7 +132,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         Table tableStatus = new Table();
         tableStatus.defaults();
 
-        tmpLabel = new Label("Player " + (player + 1) + ":", skin);
+        tmpLabel = new Label("Selected:", skin);
         tmpLabel.setColor(Color.BLACK);
         tableStatus.add(tmpLabel).padRight(20);
 
