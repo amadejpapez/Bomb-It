@@ -1,8 +1,10 @@
 package com.amadejpapez.bombit.screen;
 
+import com.amadejpapez.bombit.Result;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -24,11 +27,11 @@ import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.config.GameConfig;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class LeaderboardScreen extends ScreenAdapter {
     private final BombIt game;
@@ -36,27 +39,13 @@ public class LeaderboardScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
 
-    private final HashMap<String, Integer> sortedMap;
+    private List<Result> results;
 
     public LeaderboardScreen(BombIt game) {
         this.game = game;
 
-        HashMap<String, Integer> results = new HashMap<>();
-
-        results.put("BlackHole9", 2);
-        results.put("BlackHole10", 0);
-        results.put("BlackHole", 25);
-        results.put("BlackHole2", 17);
-        results.put("BlackHole1", 18);
-        results.put("BlackHole8", 4);
-
-        sortedMap =
-                results.entrySet().stream()
-                        .sorted(Entry.<String, Integer>comparingByValue().reversed())
-                        .collect(
-                                Collectors.toMap(
-                                        Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new
-                                ));
+        results = new ArrayList<>();
+        loadJson();
     }
 
     @Override
@@ -118,7 +107,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         Label tmpLabel;
 
         tmpLabel = new Label("Leaderboard", uiSkin);
-        tmpLabel.setColor(Color.BLACK);
+        tmpLabel.setColor(Color.BROWN);
         contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
 
         tmpLabel = new Label("Player:", uiSkin);
@@ -129,12 +118,12 @@ public class LeaderboardScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BLACK);
         contentTable.add(tmpLabel).right().row();
 
-        for (Map.Entry<String, Integer> set : sortedMap.entrySet()) {
-            tmpLabel = new Label(set.getKey(), uiSkin);
+        for (int i = 0; i < 7; i++) {
+            tmpLabel = new Label(results.get(i).name, uiSkin);
             tmpLabel.setColor(Color.BLACK);
-            contentTable.add(tmpLabel).left();
+            contentTable.add(tmpLabel).left().padRight(20);
 
-            tmpLabel = new Label(set.getValue().toString(), uiSkin);
+            tmpLabel = new Label(results.get(i).score.toString(), uiSkin);
             tmpLabel.setColor(Color.BLACK);
             contentTable.add(tmpLabel).right().row();
         }
@@ -147,5 +136,37 @@ public class LeaderboardScreen extends ScreenAdapter {
         table.pack();
 
         return table;
+    }
+
+    public void addResult(Integer num) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy_H:m");
+        String name = "game_" + LocalDateTime.now().format(formatter);
+
+        Result tmp = new Result();
+        tmp.name = name;
+        tmp.score = num;
+
+        results.add(tmp);
+        saveJson();
+    }
+
+    public void saveJson() {
+        FileHandle file = Gdx.files.local("leaderboard.json");
+        Json json = new Json();
+
+        results.sort(Comparator.comparing(Result::getScore).reversed());
+        file.writeString(json.toJson(results), false);
+    }
+
+    public void loadJson() {
+        FileHandle file = Gdx.files.local("leaderboard.json");
+
+        if (!file.exists())
+            saveJson();
+
+        Json json = new Json();
+
+        results = json.fromJson(ArrayList.class, file);
+        results.sort(Comparator.comparing(Result::getScore).reversed());
     }
 }
