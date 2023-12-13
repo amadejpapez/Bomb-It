@@ -37,7 +37,6 @@ public class SettingsScreen extends ScreenAdapter {
     private TextButton twoPhysicalPlayers;
 
     private CheckBox computerPlayersEnabled;
-    private CheckBoxStyle checkBoxStyle;
 
     public SettingsScreen(BombIt game) {
         this.game = game;
@@ -54,7 +53,7 @@ public class SettingsScreen extends ScreenAdapter {
         onePhysicalPlayer = new TextButton("1", skin);
         twoPhysicalPlayers = new TextButton("2", skin);
 
-        checkBoxStyle = new CheckBoxStyle();
+        CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
         checkBoxStyle.fontColor = Color.BLACK;
         checkBoxStyle.font = Assets.assetManager.get(AssetDescriptors.FONT);
         computerPlayersEnabled = new CheckBox("On", checkBoxStyle);
@@ -112,14 +111,14 @@ public class SettingsScreen extends ScreenAdapter {
         onePhysicalPlayer.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameManager.numPhysicalPlayers = 1;
+                GameManager.INSTANCE.setNumPhysicalPlayers(1);
                 checkDisabledEnabledButtons();
             }
         });
         twoPhysicalPlayers.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameManager.numPhysicalPlayers = 2;
+                GameManager.INSTANCE.setNumPhysicalPlayers(2);
                 checkDisabledEnabledButtons();
             }
         });
@@ -136,7 +135,7 @@ public class SettingsScreen extends ScreenAdapter {
         computerPlayersEnabled.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                GameManager.addComputerPlayers = !GameManager.addComputerPlayers;
+                GameManager.INSTANCE.setAddComputerPlayers(!GameManager.INSTANCE.getAddComputerPlayers());
                 checkDisabledEnabledButtons();
             }
         });
@@ -165,17 +164,17 @@ public class SettingsScreen extends ScreenAdapter {
     }
 
     private void checkDisabledEnabledButtons() {
-        if (GameManager.numPhysicalPlayers == 1)
+        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 1)
             onePhysicalPlayer.setColor(Color.ORANGE);
         else
             onePhysicalPlayer.setColor(Color.BROWN);
 
-        if (GameManager.numPhysicalPlayers == 2)
+        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2)
             twoPhysicalPlayers.setColor(Color.ORANGE);
         else
             twoPhysicalPlayers.setColor(Color.BROWN);
 
-        if (GameManager.addComputerPlayers)
+        if (GameManager.INSTANCE.getAddComputerPlayers())
             computerPlayersEnabled.setText("On");
         else
             computerPlayersEnabled.setText("Off");

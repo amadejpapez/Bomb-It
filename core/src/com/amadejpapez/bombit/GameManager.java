@@ -14,23 +14,23 @@ public class GameManager {
     // ~/.prefs/BombIt
     private final Preferences PREFS;
 
-    public static Integer numPhysicalPlayers = 1;
-    public static Boolean addComputerPlayers = GameConfig.COMPUTER_PLAYERS_DEFAULT;
+    private static Integer numPhysicalPlayers;
+    private static Boolean addComputerPlayers;
 
     public static List<String> playerCharacters;
 
     public static Integer numActiveBombs = 0;
 
-    private static final String INIT_MOVE_KEY = "initMove";
-    private CellState initMove = CellState.FLOOR;
+    private static final String NUM_PHYSICAL_PLAYERS = "num_physical_players";
+    private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
 
     private GameManager() {
         PREFS = Gdx.app.getPreferences(BombIt.class.getSimpleName());
-        String moveName = PREFS.getString(INIT_MOVE_KEY, CellState.FLOOR.name());
-        initMove = CellState.valueOf(moveName);
+
+        numPhysicalPlayers = PREFS.getInteger(NUM_PHYSICAL_PLAYERS, 1);
+        addComputerPlayers = PREFS.getBoolean(ADD_COMPUTER_PLAYERS, false);
 
         playerCharacters = new ArrayList<>();
-        String tmp;
     }
 
     public static void generatePhysicalPlayers() {
@@ -59,14 +59,23 @@ public class GameManager {
         }
     }
 
-    public CellState getInitMove() {
-        return initMove;
+    public int getNumPhysicalPlayers() {
+        return numPhysicalPlayers;
     }
 
-    public void setInitMove(CellState move) {
-        initMove = move;
+    public boolean getAddComputerPlayers() {
+        return addComputerPlayers;
+    }
 
-        PREFS.putString(INIT_MOVE_KEY, move.name());
+    public void setNumPhysicalPlayers(Integer num) {
+        numPhysicalPlayers = num;
+        PREFS.putInteger(NUM_PHYSICAL_PLAYERS, num);
+        PREFS.flush();
+    }
+
+    public void setAddComputerPlayers(Boolean arg) {
+        addComputerPlayers = arg;
+        PREFS.putBoolean(ADD_COMPUTER_PLAYERS, arg);
         PREFS.flush();
     }
 }

@@ -29,8 +29,6 @@ public class GameConfig {
     public static final List<String> AVAILABLE_PLAYERS = List.of("blue", "black", "green", "orange", "pink", "purple");
     public static final Integer MAX_NUMBER_PLAYERS = 4;
 
-    public static final Boolean COMPUTER_PLAYERS_DEFAULT = false;
-
     public static final List<Integer> PLAYER1_START = List.of(1, 1);
 
     public static final List<List<Integer>> LOC_SKIP_OBSTACLES = List.of(

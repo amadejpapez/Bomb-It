@@ -143,7 +143,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         // BUTTON
         TextButton playButton;
-        if (Objects.equals(player + 1, GameManager.numPhysicalPlayers)) {
+        if (Objects.equals(player + 1, GameManager.INSTANCE.getNumPhysicalPlayers())) {
             playButton = new TextButton("Start game", skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {
