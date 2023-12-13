@@ -142,7 +142,8 @@ public class SettingsScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SelectCharacterScreen(game, 1));
+                GameManager.generatePhysicalPlayers();
+                game.setScreen(new SelectCharacterScreen(game, 0));
             }
         });
         grid.add(playButton).padTop(50).width(250).expandX().fill().colspan(grid.getColumns()).row();

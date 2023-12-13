@@ -41,6 +41,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
     private Map<String, TextureRegionDrawable> characters;
     private Image selectedPlayer;
 
+    // 0 for the first player
     private final Integer player;
 
     public SelectCharacterScreen(BombIt game, Integer player) {
@@ -65,6 +66,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         characters.put("purple", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE)));
 
         selectedPlayer = new Image();
+        selectedPlayer.setDrawable(characters.get(GameManager.playerCharacters.get(player)));
 
         stage.addActor(createUi());
         Gdx.input.setInputProcessor(stage);
@@ -101,7 +103,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         table.setBackground(new TextureRegionDrawable(backgroundRegion));
 
         // SELECT CHARACTER
-        Label tmpLabel = new Label("Select character for player " + player, skin);
+        Label tmpLabel = new Label("Select character for player " + (player + 1), skin);
         tmpLabel.setColor(Color.BLACK);
         table.add(tmpLabel).padRight(20).row();
 
@@ -113,7 +115,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
             tmp.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    if (Objects.equals(GameManager.playerCharacters.get(player), entry.getKey()))
+                    if (player == 1 && Objects.equals(GameManager.playerCharacters.get(0), entry.getKey()))
                         return;
 
                     GameManager.playerCharacters.set(player, entry.getKey());
@@ -130,7 +132,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         Table tableStatus = new Table();
         tableStatus.defaults();
 
-        tmpLabel = new Label("Player " + player + ":", skin);
+        tmpLabel = new Label("Player " + (player + 1) + ":", skin);
         tmpLabel.setColor(Color.BLACK);
         tableStatus.add(tmpLabel).padRight(20);
 
@@ -140,12 +142,13 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         // BUTTON
         TextButton playButton;
-        if (Objects.equals(player, GameManager.numPhysicalPlayers)) {
+        if (Objects.equals(player + 1, GameManager.numPhysicalPlayers)) {
             playButton = new TextButton("Start game", skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    GameManager.generateOtherPlayers();
                     game.setScreen(new GameScreen(game));
                 }
             });
@@ -155,7 +158,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    game.setScreen(new SelectCharacterScreen(game, 2));
+                    game.setScreen(new SelectCharacterScreen(game, 1));
                 }
             });
         }

@@ -30,11 +30,25 @@ public class GameManager {
         initMove = CellState.valueOf(moveName);
 
         playerCharacters = new ArrayList<>();
-        for (int i = 0; i < GameConfig.MAX_NUMBER_PLAYERS; i++)
-            playerCharacters.add("");
+        String tmp;
     }
 
-    public static void generateOtherPLayers() {
+    public static void generatePhysicalPlayers() {
+        // called after first startup screen is complete and before users selects his characters
+        // this acts like a default character if user does not select any
+        String tmp;
+        for (int i = 0; i < GameManager.numPhysicalPlayers; i++) {
+            do {
+                tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
+            } while(playerCharacters.contains(tmp));
+
+            playerCharacters.add(tmp);
+        }
+    }
+
+    public static void generateOtherPlayers() {
+        // called after user selects his physical player characters
+        // this is for players that are computers
         String tmp;
         for (int i = playerCharacters.size(); i < GameConfig.MAX_NUMBER_PLAYERS; i++) {
             do {
