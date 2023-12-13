@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -67,6 +68,7 @@ public class GameScreen extends ScreenAdapter {
     };
 
     final ParticleEffect explosionEffect = Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT);
+    final ParticleEffectActor explosionEffectActor = new ParticleEffectActor(Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT));
 
     final Sound explosionSound = Assets.assetManager.get(AssetDescriptors.BOMB_HIT);
 
@@ -156,13 +158,12 @@ public class GameScreen extends ScreenAdapter {
                         cellTmp.setDrawable(empty);
                 }
 
-                CellActor bomb = bombGrid.getCell(bombCells.get(row).get(col)).getActor();
+                Cell<CellActor> bomb = bombGrid.getCell(bombCells.get(row).get(col));
+                bomb.setActor(explosionEffectActor);
 
                 explosionSound.play();
-                explosionEffect.setPosition(bomb.getX(), bomb.getY());
-                explosionEffect.start();
-
-                bomb.setDrawable(empty);
+//                explosionEffect.setPosition(bomb.getX(), bomb.getY());
+//                explosionEffect.start();
                 GameManager.numActiveBombs--;
                 it.remove();
             }

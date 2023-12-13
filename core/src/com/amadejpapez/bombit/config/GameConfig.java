@@ -26,7 +26,7 @@ public class GameConfig {
 
     public static Integer MAX_NUMBER_BOMBS = 1;
 
-    public static final float TIME_BOMB_ACTIVE = 3f;
+    public static final float TIME_BOMB_ACTIVE = 2f;
 
     public static final List<Integer> PLAYER1_START = List.of(1, 1);
 
