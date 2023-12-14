@@ -2,6 +2,7 @@ package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.GameManager;
+import com.amadejpapez.bombit.Player;
 import com.amadejpapez.bombit.assets.AssetDescriptors;
 import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.assets.Assets;
@@ -42,11 +43,11 @@ public class SelectCharacterScreen extends ScreenAdapter {
     private Image selectedPlayer;
 
     // 0 for the first player
-    private final Integer player;
+    private final Integer numPlayer;
 
-    public SelectCharacterScreen(BombIt game, Integer player) {
+    public SelectCharacterScreen(BombIt game, Integer numPlayer) {
         this.game = game;
-        this.player = player;
+        this.numPlayer = numPlayer;
     }
 
     @Override
@@ -57,20 +58,12 @@ public class SelectCharacterScreen extends ScreenAdapter {
         skin = Assets.assetManager.get(AssetDescriptors.SKIN);
         gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
-        characters = new HashMap<>();
-        characters.put("blue", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE)));
-        characters.put("black", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK)));
-        characters.put("green", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN)));
-        characters.put("pink", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PINK)));
-        characters.put("orange", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE)));
-        characters.put("purple", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE)));
-
         // remove image that was selected for the first player
-        if (player == 1)
-            characters.remove(GameManager.playerCharacters.get(0));
+        characters = new HashMap<>(Player.characterImages);
+        if (numPlayer == 1)
+            characters.remove(GameManager.playerCharacters.get(0).character);
 
-        selectedPlayer = new Image();
-        selectedPlayer.setDrawable(characters.get(GameManager.playerCharacters.get(player)));
+        selectedPlayer = new Image(GameManager.playerCharacters.get(numPlayer).image);
 
         stage.addActor(createUi());
         Gdx.input.setInputProcessor(stage);
@@ -107,7 +100,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         table.setBackground(new TextureRegionDrawable(backgroundRegion));
 
         // SELECT CHARACTER
-        Label tmpLabel = new Label("Select character for player " + (player + 1), skin);
+        Label tmpLabel = new Label("Select character for player " + (numPlayer + 1), skin);
         tmpLabel.setColor(Color.BROWN);
         table.add(tmpLabel).padRight(20).row();
 
@@ -119,8 +112,8 @@ public class SelectCharacterScreen extends ScreenAdapter {
             tmp.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    GameManager.playerCharacters.set(player, entry.getKey());
-                    selectedPlayer.setDrawable(characters.get(GameManager.playerCharacters.get(player)));
+                    GameManager.playerCharacters.get(numPlayer).updateImage(entry.getKey());
+                    selectedPlayer.setDrawable(GameManager.playerCharacters.get(numPlayer).image);
                 }
             });
             tableCharacters.add(tmp).height(60).width(60).padBottom(5);
@@ -143,7 +136,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         // BUTTON
         TextButton playButton;
-        if (Objects.equals(player + 1, GameManager.INSTANCE.getNumPhysicalPlayers())) {
+        if (Objects.equals(numPlayer + 1, GameManager.INSTANCE.getNumPhysicalPlayers())) {
             playButton = new TextButton("Start game", skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {

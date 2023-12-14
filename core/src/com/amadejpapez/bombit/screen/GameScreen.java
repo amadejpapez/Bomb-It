@@ -2,6 +2,7 @@ package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.ParticleEffectActor;
+import com.amadejpapez.bombit.Player;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -53,7 +54,6 @@ public class GameScreen extends ScreenAdapter {
     private final TextureAtlas gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
     final TextureRegion coneRed = gameplayAtlas.findRegion(AssetRegionNames.CONE_RED);
-    final TextureRegion playerBlue = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE);
     final TextureRegion basketBlue = gameplayAtlas.findRegion(AssetRegionNames.BASKET_BLUE);
     final TextureRegion basketOrange = gameplayAtlas.findRegion(AssetRegionNames.BASKET_ORANGE);
     final TextureRegion empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
@@ -83,11 +83,7 @@ public class GameScreen extends ScreenAdapter {
     private final List<List<CellActor>> bombCells = new ArrayList<>();
     private final Table bombGrid = new Table();
 
-    private final List<Integer> playerPosition = new ArrayList<>(GameConfig.PLAYER1_START);
-
     private final Map<List<Integer>, Float> activeBombs= new HashMap<>();
-
-    private Map<String, TextureRegionDrawable> characters;
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -95,14 +91,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        characters = new HashMap<>();
-        characters.put("blue", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE)));
-        characters.put("black", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK)));
-        characters.put("green", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN)));
-        characters.put("pink", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PINK)));
-        characters.put("orange", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE)));
-        characters.put("purple", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE)));
-
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
         hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
 
@@ -235,27 +223,26 @@ public class GameScreen extends ScreenAdapter {
 
     private Actor createMiddle() {
         Image mid = new Image(gameplayAtlas.findRegion(AssetRegionNames.MIDDLE));
-        mid.setPosition(viewport.getWorldWidth() / 2f - 6f,
+        mid.setPosition(viewport.getWorldWidth() / 2f + 7f,
                 viewport.getWorldHeight() / 2f - 6f);
         mid.setScale(0.035f);
         return mid;
     }
 
     private Actor createGridHud() {
-
         final Table table = new Table();
         table.padLeft(20);
 
         Label tmpLabel;
-        for (int i = 0; i < GameManager.INSTANCE.getTotalNumberOfPlayer(); i++) {
-            Image tmpImg = new Image(characters.get(GameManager.playerCharacters.get(i)));
+        for (Player player: GameManager.playerCharacters) {
+            Image tmpImg = new Image(player.image);
             table.add(tmpImg).height(60).width(50).left().row();
 
-            tmpLabel = new Label("Health: 100", skin);
+            tmpLabel = new Label("Health: " + player.getHealth(), skin);
             tmpLabel.setColor(Color.BROWN);
             table.add(tmpLabel).left().row();
 
-            tmpLabel = new Label("Kills: 2", skin);
+            tmpLabel = new Label("Kills: " + player.getKills(), skin);
             tmpLabel.setColor(Color.BROWN);
             table.add(tmpLabel).left().row();
         }
@@ -283,10 +270,13 @@ public class GameScreen extends ScreenAdapter {
             for (int column = 0; column < GameConfig.NUM_COLUMNS; column++) {
                 List<Integer> location = List.of(row, column);
 
+                for (Player player: GameManager.playerCharacters) {
+                    if (row == player.position.get(0) && column == player.position.get(1))
+                        cells.get(row).get(column).setDrawable(player.image);
+                }
+
                 if (row == 0 || row == GameConfig.NUM_ROWS - 1 || column == 0 || column == GameConfig.NUM_COLUMNS - 1)
                     cells.get(row).get(column).setDrawable(coneRed);
-                else if (row == playerPosition.get(0) && column == playerPosition.get(1))
-                    cells.get(row).get(column).setDrawable(playerBlue);
                 else if (row == 5 && column == 8)
                     cells.get(row).get(column).setDrawable(basketBlue);
                 else if (row == 7 && column == 6)
@@ -308,18 +298,20 @@ public class GameScreen extends ScreenAdapter {
         table.pack();
 
         gameplayStage.addListener(new InputListener() {
+            final List<Integer> curPositionPLayer1 = GameManager.playerCharacters.get(0).position;
+            final List<Integer> curPositionPLayer2 = GameManager.playerCharacters.get(1).position;
+
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
-                Integer rowPlayer = playerPosition.get(0);
-                Integer colPlayer = playerPosition.get(1);
-
                 if (keycode == Input.Keys.UP
                         || keycode == Input.Keys.DOWN
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
-                    Integer rowFuture = playerPosition.get(0);
-                    Integer colFuture = playerPosition.get(1);
+                    Player player1 = GameManager.playerCharacters.get(0);
+
+                    Integer rowFuture = curPositionPLayer1.get(0);
+                    Integer colFuture = curPositionPLayer1.get(1);
 
                     if (keycode == Input.Keys.UP)
                         rowFuture -= 1;
@@ -335,23 +327,65 @@ public class GameScreen extends ScreenAdapter {
                     if (!futureImg.equals(empty))
                         return false;
 
-                    futureCell.setDrawable(playerBlue);
-                    cellGrid.getCell(cells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(empty);
+                    futureCell.setDrawable(player1.image);
+                    cellGrid.getCell(cells.get(curPositionPLayer1.get(0)).get(curPositionPLayer1.get(1))).getActor().setDrawable(empty);
 
-                    if (rowPlayer.equals(rowFuture))
-                        playerPosition.set(1, colFuture);
+                    if (curPositionPLayer1.get(0).equals(rowFuture))
+                        GameManager.playerCharacters.get(0).position.set(1, colFuture);
                     else
-                        playerPosition.set(0, rowFuture);
+                        GameManager.playerCharacters.get(0).position.set(0, rowFuture);
 
                     return true;
+                }
+                else if (keycode == Input.Keys.W
+                        || keycode == Input.Keys.S
+                        || keycode == Input.Keys.A
+                        || keycode == Input.Keys.D
+                ) {
+                    Player player2 = GameManager.playerCharacters.get(1);
+
+                    Integer rowFuture = curPositionPLayer2.get(0);
+                    Integer colFuture = curPositionPLayer2.get(1);
+
+                    if (keycode == Input.Keys.W)
+                        rowFuture -= 1;
+                    else if (keycode == Input.Keys.S)
+                        rowFuture += 1;
+                    else if (keycode == Input.Keys.A)
+                        colFuture -= 1;
+                    else colFuture += 1;
+
+                    // only move if the future cell is "empty"
+                    CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
+                    TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
+                    if (!futureImg.equals(empty))
+                        return false;
+
+                    futureCell.setDrawable(player2.image);
+                    cellGrid.getCell(cells.get(curPositionPLayer2.get(0)).get(curPositionPLayer2.get(1))).getActor().setDrawable(empty);
+
+                    if (curPositionPLayer2.get(0).equals(rowFuture))
+                        GameManager.playerCharacters.get(1).position.set(1, colFuture);
+                    else
+                        GameManager.playerCharacters.get(1).position.set(0, rowFuture);
                 }
                 else if (keycode == Input.Keys.SPACE) {
                     if (GameManager.numActiveBombs >= GameConfig.MAX_NUMBER_BOMBS)
                         return false;
 
                     GameManager.numActiveBombs++;
-                    bombGrid.getCell(bombCells.get(rowPlayer).get(colPlayer)).getActor().setDrawable(bomb);
-                    activeBombs.put(List.of(rowPlayer, colPlayer), TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f);
+                    bombGrid.getCell(bombCells.get(curPositionPLayer1.get(0)).get(curPositionPLayer1.get(1))).getActor().setDrawable(bomb);
+                    activeBombs.put(List.of(curPositionPLayer1.get(0), curPositionPLayer1.get(1)),
+                            TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f);
+                }
+                else if (keycode == Input.Keys.ENTER) {
+                    if (GameManager.numActiveBombs >= GameConfig.MAX_NUMBER_BOMBS)
+                        return false;
+
+                    GameManager.numActiveBombs++;
+                    bombGrid.getCell(bombCells.get(curPositionPLayer2.get(0)).get(curPositionPLayer2.get(1))).getActor().setDrawable(bomb);
+                    activeBombs.put(List.of(curPositionPLayer2.get(0), curPositionPLayer2.get(1)),
+                            TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f);
                 }
 
                 return false;

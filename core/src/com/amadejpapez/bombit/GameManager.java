@@ -22,7 +22,7 @@ public class GameManager {
     private static Boolean musicEnabled;
     private static Boolean soundsEnabled;
 
-    public static List<String> playerCharacters;
+    public static List<Player> playerCharacters;
 
     public static Integer numActiveBombs = 0;
 
@@ -52,9 +52,9 @@ public class GameManager {
         for (int i = 0; i < GameManager.numPhysicalPlayers; i++) {
             do {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
-            } while(playerCharacters.contains(tmp));
+            } while(characterAlreadyInUse(tmp));
 
-            playerCharacters.add(tmp);
+            playerCharacters.add(new Player(i, tmp));
         }
     }
 
@@ -65,9 +65,9 @@ public class GameManager {
         for (int i = playerCharacters.size(); i < GameConfig.MAX_NUMBER_PLAYERS; i++) {
             do {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
-            } while(playerCharacters.contains(tmp));
+            } while(characterAlreadyInUse(tmp));
 
-            playerCharacters.add(tmp);
+            playerCharacters.add(new Player(i, tmp));
         }
     }
 
@@ -136,5 +136,13 @@ public class GameManager {
         if (addComputerPlayers)
             num += (GameConfig.MAX_NUMBER_PLAYERS - num);
         return num;
+    }
+
+    public static boolean characterAlreadyInUse(String character) {
+        for (Player player: playerCharacters) {
+            if (player.image == Player.characterImages.get(character))
+                return true;
+        }
+        return false;
     }
 }

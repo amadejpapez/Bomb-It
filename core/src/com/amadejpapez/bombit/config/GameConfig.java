@@ -29,11 +29,22 @@ public class GameConfig {
     public static final List<String> AVAILABLE_PLAYERS = List.of("blue", "black", "green", "orange", "pink", "purple");
     public static final Integer MAX_NUMBER_PLAYERS = 4;
 
-    public static final List<Integer> PLAYER1_START = List.of(1, 1);
-
     public static final List<List<Integer>> LOC_SKIP_OBSTACLES = List.of(
+            List.of(1, 1),
             List.of(1, 2),
-            List.of(2, 1)
+            List.of(2, 1),
+
+            List.of(1, 15),
+            List.of(1, 14),
+            List.of(2, 15),
+
+            List.of(13, 1),
+            List.of(13, 2),
+            List.of(12, 1),
+
+            List.of(13, 15),
+            List.of(13, 14),
+            List.of(12, 15)
     );
 
     public static final List<List<Integer>> LOC_FIXED_OBSTACLES = List.<List<Integer>>of(
