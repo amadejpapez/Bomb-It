@@ -15,6 +15,7 @@ public class Bomb {
 
     public static List<List<Integer>> getPositionToCheck(int row, int col) {
         return List.of(
+                List.of(row, col),
                 List.of(row, col + 1),
                 List.of(row, col - 1),
                 List.of(row + 1, col),
