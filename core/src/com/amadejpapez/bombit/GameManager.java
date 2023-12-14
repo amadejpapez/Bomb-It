@@ -1,8 +1,11 @@
 package com.amadejpapez.bombit;
 
+import com.amadejpapez.bombit.assets.AssetDescriptors;
+import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,9 @@ public class GameManager {
 
     private static final String NUM_PHYSICAL_PLAYERS = "num_physical_players";
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
+
+    public static final Music startMusic = Assets.assetManager.get(AssetDescriptors.START_MUSIC);
+    public static final Music gameMusic = Assets.assetManager.get(AssetDescriptors.GAME_MUSIC);
 
     private GameManager() {
         PREFS = Gdx.app.getPreferences(BombIt.class.getSimpleName());

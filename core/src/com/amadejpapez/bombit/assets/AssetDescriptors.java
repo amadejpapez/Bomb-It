@@ -1,6 +1,7 @@
 package com.amadejpapez.bombit.assets;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -22,6 +23,12 @@ public class AssetDescriptors {
 
     public static final AssetDescriptor<Sound> POWER_UP_SOUND =
             new AssetDescriptor<>(AssetPaths.POWER_UP_SOUND, Sound.class);
+
+    public static final AssetDescriptor<Music> GAME_MUSIC =
+            new AssetDescriptor<>(AssetPaths.GAME_MUSIC, Music.class);
+
+    public static final AssetDescriptor<Music> START_MUSIC =
+            new AssetDescriptor<>(AssetPaths.START_MUSIC, Music.class);
 
     public static final AssetDescriptor<ParticleEffect> EXPLOSION_EFFECT =
             new AssetDescriptor<>(AssetPaths.EXPLOSION_EFFECT, ParticleEffect.class);

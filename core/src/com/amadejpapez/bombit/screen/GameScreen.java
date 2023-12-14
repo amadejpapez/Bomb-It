@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -101,6 +102,10 @@ public class GameScreen extends ScreenAdapter {
         gameplayStage.addActor(new ParticleEffectActor(explosionEffect));
 
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
+
+        GameManager.startMusic.stop();
+        GameManager.gameMusic.setLooping(true);
+        GameManager.gameMusic.play();
     }
 
     @Override

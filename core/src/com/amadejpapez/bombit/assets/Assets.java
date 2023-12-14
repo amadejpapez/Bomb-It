@@ -12,6 +12,8 @@ public class Assets {
         assetManager.load(AssetDescriptors.SKIN);
         assetManager.load(AssetDescriptors.BOMB_SOUND);
         assetManager.load(AssetDescriptors.POWER_UP_SOUND);
+        assetManager.load(AssetDescriptors.GAME_MUSIC);
+        assetManager.load(AssetDescriptors.START_MUSIC);
         assetManager.load(AssetDescriptors.EXPLOSION_EFFECT);
         assetManager.finishLoading();
     }
