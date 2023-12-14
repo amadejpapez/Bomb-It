@@ -63,4 +63,13 @@ public class Player {
     public int getKills() {
         return kills;
     }
+
+    public static void playerHit(TextureRegionDrawable img, Integer hitBy) {
+        for (Player player: GameManager.playerCharacters) {
+            if (player.image == img) {
+                player.health -= 40;
+                GameManager.playerCharacters.get(hitBy).kills++;
+            }
+        }
+    }
 }

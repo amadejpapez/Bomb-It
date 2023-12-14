@@ -33,8 +33,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.assets.AssetDescriptors;
@@ -83,6 +85,8 @@ public class GameScreen extends ScreenAdapter {
 
     private final List<List<CellActor>> bombCells = new ArrayList<>();
     private final Table bombGrid = new Table();
+
+    private final Map<Integer, List<Label>> statusLabels = new HashMap<>();
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -151,9 +155,13 @@ public class GameScreen extends ScreenAdapter {
             if (elapsedTime - bomb.timeCreated > GameConfig.TIME_BOMB_ACTIVE) {
                 for (List<Integer> loc : checkLocations) {
                     CellActor cellTmp = cellGrid.getCell(cells.get(loc.get(0)).get(loc.get(1))).getActor();
-                    TextureRegion regTmp = ((TextureRegionDrawable) cellTmp.getDrawable()).getRegion();
-                    if (Arrays.asList(obstacles).contains(regTmp))
+                    TextureRegionDrawable drawTmp = (TextureRegionDrawable) cellTmp.getDrawable();
+                    if (Arrays.asList(obstacles).contains(drawTmp.getRegion()))
                         cellTmp.setDrawable(empty);
+                    if (Player.characterImages.containsValue(drawTmp)) {
+                        Player.playerHit(drawTmp, bomb.createdByPlayer);
+                        updateStatus();
+                    }
                 }
 
                 bombGrid.getCell(bombCells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(empty);
@@ -228,13 +236,15 @@ public class GameScreen extends ScreenAdapter {
             Image tmpImg = new Image(player.image);
             table.add(tmpImg).height(60).width(50).left().row();
 
-            tmpLabel = new Label("Health: " + player.getHealth(), skin);
-            tmpLabel.setColor(Color.BROWN);
-            table.add(tmpLabel).left().row();
+            Label tmpLabel1 = new Label("Health: " + player.getHealth(), skin);
+            tmpLabel1.setColor(Color.BROWN);
+            table.add(tmpLabel1).left().row();
 
-            tmpLabel = new Label("Kills: " + player.getKills(), skin);
-            tmpLabel.setColor(Color.BROWN);
-            table.add(tmpLabel).left().row();
+            Label tmpLabel2 = new Label("Kills: " + player.getKills(), skin);
+            tmpLabel2.setColor(Color.BROWN);
+            table.add(tmpLabel2).left().row();
+
+            statusLabels.put(player.num, new ArrayList<>(List.of(tmpLabel1, tmpLabel2)));
         }
 
         TextButton quitButton = new TextButton("Exit Game", skin);
@@ -365,5 +375,12 @@ public class GameScreen extends ScreenAdapter {
             player.position.set(1, colFuture);
         else
             player.position.set(0, rowFuture);
+    }
+
+    private void updateStatus() {
+        for (Player player: GameManager.playerCharacters) {
+            statusLabels.get(player.num).get(0).setText("Health: " + player.getHealth());
+            statusLabels.get(player.num).get(1).setText("Kills: " + player.getKills());
+        }
     }
 }
