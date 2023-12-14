@@ -71,9 +71,7 @@ public class IntroScreen extends ScreenAdapter {
         // go to the MenuScreen after INTRO_DURATION_IN_SEC seconds
         if (duration > INTRO_DURATION_IN_SEC) {
             game.setScreen(new MenuScreen(game));
-
-            GameManager.startMusic.setLooping(true);
-            GameManager.startMusic.play();
+            GameManager.INSTANCE.playStartMusic();
         }
 
         stage.act(delta);

@@ -37,6 +37,8 @@ public class SettingsScreen extends ScreenAdapter {
     private TextButton twoPhysicalPlayers;
 
     private CheckBox computerPlayersEnabled;
+    private CheckBox musicEnabled;
+    private CheckBox soundsEnabled;
 
     public SettingsScreen(BombIt game) {
         this.game = game;
@@ -56,7 +58,10 @@ public class SettingsScreen extends ScreenAdapter {
         CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
         checkBoxStyle.fontColor = Color.BLACK;
         checkBoxStyle.font = Assets.assetManager.get(AssetDescriptors.FONT);
+
         computerPlayersEnabled = new CheckBox("On", checkBoxStyle);
+        musicEnabled = new CheckBox("On", checkBoxStyle);
+        soundsEnabled = new CheckBox("On", checkBoxStyle);
 
         checkDisabledEnabledButtons();
 
@@ -103,7 +108,7 @@ public class SettingsScreen extends ScreenAdapter {
         // PHYSICAL PLAYERS
         tmpLabel = new Label("Number of physical players:", skin);
         tmpLabel.setColor(Color.BLACK);
-        grid.add(tmpLabel);
+        grid.add(tmpLabel).left();
 
         Table tablePlayers = new Table();
         tablePlayers.defaults();
@@ -130,7 +135,7 @@ public class SettingsScreen extends ScreenAdapter {
         // COMPUTER PLAYERS
         tmpLabel = new Label("Add computer players:", skin);
         tmpLabel.setColor(Color.BLACK);
-        grid.add(tmpLabel);
+        grid.add(tmpLabel).left();
 
         computerPlayersEnabled.addListener(new ClickListener() {
             @Override
@@ -140,6 +145,35 @@ public class SettingsScreen extends ScreenAdapter {
             }
         });
         grid.add(computerPlayersEnabled).colspan(2).padBottom(5).row();
+
+        // MUSIC
+        tmpLabel = new Label("Music:", skin);
+        tmpLabel.setColor(Color.BLACK);
+        grid.add(tmpLabel).left();
+
+        musicEnabled.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameManager.INSTANCE.setMusicEnabled(!GameManager.INSTANCE.getMusicEnabled());
+                checkDisabledEnabledButtons();
+                GameManager.INSTANCE.playStartMusic();
+            }
+        });
+        grid.add(musicEnabled).colspan(2).padBottom(5).row();
+
+        // SOUNDS
+        tmpLabel = new Label("Sounds:", skin);
+        tmpLabel.setColor(Color.BLACK);
+        grid.add(tmpLabel).left();
+
+        soundsEnabled.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameManager.INSTANCE.setSoundsEnabled(!GameManager.INSTANCE.getSoundsEnabled());
+                checkDisabledEnabledButtons();
+            }
+        });
+        grid.add(soundsEnabled).colspan(2).padBottom(5).row();
 
         // CONTINUE
         TextButton playButton = new TextButton("Continue", skin);
@@ -178,5 +212,15 @@ public class SettingsScreen extends ScreenAdapter {
             computerPlayersEnabled.setText("On");
         else
             computerPlayersEnabled.setText("Off");
+
+        if (GameManager.INSTANCE.getSoundsEnabled())
+            soundsEnabled.setText("On");
+        else
+            soundsEnabled.setText("Off");
+
+        if (GameManager.INSTANCE.getMusicEnabled())
+            musicEnabled.setText("On");
+        else
+            musicEnabled.setText("Off");
     }
 }

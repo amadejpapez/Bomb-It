@@ -103,9 +103,7 @@ public class GameScreen extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
-        GameManager.startMusic.stop();
-        GameManager.gameMusic.setLooping(true);
-        GameManager.gameMusic.play();
+        GameManager.INSTANCE.playGameMusic();
     }
 
     @Override
@@ -166,7 +164,9 @@ public class GameScreen extends ScreenAdapter {
                 Cell<CellActor> bomb = bombGrid.getCell(bombCells.get(row).get(col));
                 bomb.setActor(explosionEffectActor);
 
-                explosionSound.play();
+                if (GameManager.INSTANCE.getSoundsEnabled())
+                    explosionSound.play();
+
 //                explosionEffect.setPosition(bomb.getX(), bomb.getY());
 //                explosionEffect.start();
                 GameManager.numActiveBombs--;

@@ -19,6 +19,8 @@ public class GameManager {
 
     private static Integer numPhysicalPlayers;
     private static Boolean addComputerPlayers;
+    private static Boolean musicEnabled;
+    private static Boolean soundsEnabled;
 
     public static List<String> playerCharacters;
 
@@ -26,6 +28,8 @@ public class GameManager {
 
     private static final String NUM_PHYSICAL_PLAYERS = "num_physical_players";
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
+    private static final String MUSIC_ENABLED = "music_enabled";
+    private static final String SOUNDS_ENABLED = "sounds_enabled";
 
     public static final Music startMusic = Assets.assetManager.get(AssetDescriptors.START_MUSIC);
     public static final Music gameMusic = Assets.assetManager.get(AssetDescriptors.GAME_MUSIC);
@@ -35,6 +39,8 @@ public class GameManager {
 
         numPhysicalPlayers = PREFS.getInteger(NUM_PHYSICAL_PLAYERS, 1);
         addComputerPlayers = PREFS.getBoolean(ADD_COMPUTER_PLAYERS, false);
+        musicEnabled = PREFS.getBoolean(MUSIC_ENABLED, true);
+        soundsEnabled = PREFS.getBoolean(SOUNDS_ENABLED, true);
 
         playerCharacters = new ArrayList<>();
     }
@@ -73,15 +79,55 @@ public class GameManager {
         return addComputerPlayers;
     }
 
+    public boolean getMusicEnabled() {
+        return musicEnabled;
+    }
+
+    public boolean getSoundsEnabled() {
+        return soundsEnabled;
+    }
+
     public void setNumPhysicalPlayers(Integer num) {
         numPhysicalPlayers = num;
         PREFS.putInteger(NUM_PHYSICAL_PLAYERS, num);
         PREFS.flush();
     }
 
-    public void setAddComputerPlayers(Boolean arg) {
-        addComputerPlayers = arg;
-        PREFS.putBoolean(ADD_COMPUTER_PLAYERS, arg);
+    public void setAddComputerPlayers(Boolean val) {
+        addComputerPlayers = val;
+        PREFS.putBoolean(ADD_COMPUTER_PLAYERS, val);
         PREFS.flush();
+    }
+
+    public void setMusicEnabled(Boolean val) {
+        musicEnabled = val;
+        PREFS.putBoolean(MUSIC_ENABLED, val);
+        PREFS.flush();
+    }
+
+    public void setSoundsEnabled(Boolean val) {
+        soundsEnabled = val;
+        PREFS.putBoolean(SOUNDS_ENABLED, val);
+        PREFS.flush();
+    }
+
+    public void playStartMusic() {
+        if (GameManager.INSTANCE.getMusicEnabled()) {
+            GameManager.gameMusic.stop();
+            GameManager.startMusic.setLooping(true);
+            GameManager.startMusic.play();
+        } else {
+            GameManager.startMusic.stop();
+        }
+    }
+
+    public void playGameMusic() {
+        if (GameManager.INSTANCE.getMusicEnabled()) {
+            GameManager.startMusic.stop();
+            GameManager.gameMusic.setLooping(true);
+            GameManager.gameMusic.play();
+        } else {
+            GameManager.gameMusic.stop();
+        }
     }
 }
