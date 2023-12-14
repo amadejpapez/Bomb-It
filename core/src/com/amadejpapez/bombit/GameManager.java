@@ -130,4 +130,11 @@ public class GameManager {
             GameManager.gameMusic.stop();
         }
     }
+
+    public int getTotalNumberOfPlayer() {
+        Integer num = numPhysicalPlayers;
+        if (addComputerPlayers)
+            num += (GameConfig.MAX_NUMBER_PLAYERS - num);
+        return num;
+    }
 }

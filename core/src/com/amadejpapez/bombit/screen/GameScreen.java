@@ -7,8 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -58,6 +60,8 @@ public class GameScreen extends ScreenAdapter {
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
     final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
 
+    final Skin skin = Assets.assetManager.get(AssetDescriptors.SKIN);
+
     final TextureRegion[] obstacles = {
             gameplayAtlas.findRegion(AssetRegionNames.POM_PINK),
             gameplayAtlas.findRegion(AssetRegionNames.POM_YELLOW),
@@ -83,12 +87,22 @@ public class GameScreen extends ScreenAdapter {
 
     private final Map<List<Integer>, Float> activeBombs= new HashMap<>();
 
+    private Map<String, TextureRegionDrawable> characters;
+
     public GameScreen(BombIt game) {
         this.game = game;
     }
 
     @Override
     public void show() {
+        characters = new HashMap<>();
+        characters.put("blue", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE)));
+        characters.put("black", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK)));
+        characters.put("green", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN)));
+        characters.put("pink", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PINK)));
+        characters.put("orange", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE)));
+        characters.put("purple", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE)));
+
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
         hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
 
@@ -100,6 +114,8 @@ public class GameScreen extends ScreenAdapter {
         gameplayStage.addActor(createGridMain());
         gameplayStage.addActor(createMiddle());
         gameplayStage.addActor(new ParticleEffectActor(explosionEffect));
+
+        hudStage.addActor(createGridHud());
 
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
@@ -187,7 +203,8 @@ public class GameScreen extends ScreenAdapter {
         }
 
         table.add(grid).row();
-        table.center();
+        table.right();
+        table.padRight(3);
         table.setFillParent(true);
         table.pack();
 
@@ -208,7 +225,8 @@ public class GameScreen extends ScreenAdapter {
         }
 
         table.add(bombGrid).row();
-        table.center();
+        table.right();
+        table.padRight(3);
         table.setFillParent(true);
         table.pack();
 
@@ -221,6 +239,31 @@ public class GameScreen extends ScreenAdapter {
                 viewport.getWorldHeight() / 2f - 6f);
         mid.setScale(0.035f);
         return mid;
+    }
+
+    private Actor createGridHud() {
+
+        final Table table = new Table();
+        table.padLeft(20);
+
+        Label tmpLabel;
+        for (int i = 0; i < GameManager.INSTANCE.getTotalNumberOfPlayer(); i++) {
+            Image tmpImg = new Image(characters.get(GameManager.playerCharacters.get(i)));
+            table.add(tmpImg).height(60).width(50).left().row();
+
+            tmpLabel = new Label("Health: 100", skin);
+            tmpLabel.setColor(Color.BROWN);
+            table.add(tmpLabel).left().row();
+
+            tmpLabel = new Label("Kills: 2", skin);
+            tmpLabel.setColor(Color.BROWN);
+            table.add(tmpLabel).left().row();
+        }
+
+        table.left();
+        table.pack();
+        table.setPosition(0, GameConfig.HUD_HEIGHT / 2f - (table.getHeight() / 2f));
+        return table;
     }
 
     private Actor createGridMain() {
@@ -259,7 +302,8 @@ public class GameScreen extends ScreenAdapter {
         }
 
         table.add(cellGrid).row();
-        table.center();
+        table.right();
+        table.padRight(3);
         table.setFillParent(true);
         table.pack();
 

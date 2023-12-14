@@ -10,14 +10,14 @@ import java.util.List;
  */
 public class GameConfig {
 
-    public static final float WIDTH = 800f; // pixels
-    public static final float HEIGHT = 600f;    // pixels
+    public static final float WIDTH = 1000f; // pixels
+    public static final float HEIGHT = 700f;    // pixels
 
-    public static final float HUD_WIDTH = 800f; // pixels
-    public static final float HUD_HEIGHT = 600f;    // pixels
+    public static final float HUD_WIDTH = 1000f; // pixels
+    public static final float HUD_HEIGHT = 700f;    // pixels
 
-    public static final float WORLD_WIDTH = 80f;    // world units
-    public static final float WORLD_HEIGHT = 60f;   // world units
+    public static final float WORLD_WIDTH = 100f;    // world units
+    public static final float WORLD_HEIGHT = 70f;   // world units
 
     public static final Integer NUM_COLUMNS = 17;
     public static final Integer NUM_ROWS = 15;
