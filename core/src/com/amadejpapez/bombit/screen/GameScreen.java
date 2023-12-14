@@ -296,8 +296,11 @@ public class GameScreen extends ScreenAdapter {
                     cells.get(row).get(column).setDrawable(basketOrange);
                 else if (GameConfig.LOC_FIXED_OBSTACLES.contains(location))
                     cells.get(row).get(column).setDrawable(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]);
-                else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location) && ThreadLocalRandom.current().nextBoolean())
-                    cells.get(row).get(column).setDrawable(obstacles[ThreadLocalRandom.current().nextInt(obstacles.length)]);
+                else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location) && ThreadLocalRandom.current().nextBoolean()) {
+                    int num = ThreadLocalRandom.current().nextInt(obstacles.length + 3);
+                    if (num < obstacles.length)
+                        cells.get(row).get(column).setDrawable(obstacles[num]);
+                }
 
                 cellGrid.add(cells.get(row).get(column));
             }
