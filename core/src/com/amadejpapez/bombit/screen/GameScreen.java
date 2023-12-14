@@ -286,9 +286,6 @@ public class GameScreen extends ScreenAdapter {
         table.pack();
 
         gameplayStage.addListener(new InputListener() {
-            final Player player1 = GameManager.playerCharacters.get(0);
-            final Player player2 = GameManager.playerCharacters.get(1);
-
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
                 if (keycode == Input.Keys.UP
@@ -296,83 +293,17 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
-                    Integer rowFuture = player1.position.get(0);
-                    Integer colFuture = player1.position.get(1);
-
-                    if (keycode == Input.Keys.UP)
-                        rowFuture -= 1;
-                    else if (keycode == Input.Keys.DOWN)
-                        rowFuture += 1;
-                    else if (keycode == Input.Keys.LEFT)
-                        colFuture -= 1;
-                    else colFuture += 1;
-
-                    // only move if the future cell is "empty"
-                    CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
-                    TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
-                    if (!futureImg.equals(empty))
-                        return false;
-
-                    futureCell.setDrawable(player1.image);
-                    cellGrid.getCell(cells.get(player1.position.get(0)).get(player1.position.get(1))).getActor().setDrawable(empty);
-
-                    if (player1.position.get(0).equals(rowFuture))
-                        player1.position.set(1, colFuture);
-                    else
-                        player1.position.set(0, rowFuture);
-
-                    return true;
+                    inputMovePlayer(GameManager.playerCharacters.get(0), keycode);
                 } else if (keycode == Input.Keys.W
                         || keycode == Input.Keys.S
                         || keycode == Input.Keys.A
                         || keycode == Input.Keys.D
                 ) {
-                    Integer rowFuture = player2.position.get(0);
-                    Integer colFuture = player2.position.get(1);
-
-                    if (keycode == Input.Keys.W)
-                        rowFuture -= 1;
-                    else if (keycode == Input.Keys.S)
-                        rowFuture += 1;
-                    else if (keycode == Input.Keys.A)
-                        colFuture -= 1;
-                    else colFuture += 1;
-
-                    // only move if the future cell is "empty"
-                    CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
-                    TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
-                    if (!futureImg.equals(empty))
-                        return false;
-
-                    futureCell.setDrawable(player2.image);
-                    cellGrid.getCell(cells.get(player2.position.get(0)).get(player2.position.get(1))).getActor().setDrawable(empty);
-
-                    if (player2.position.get(0).equals(rowFuture))
-                        player2.position.set(1, colFuture);
-                    else
-                        player2.position.set(0, rowFuture);
+                    inputMovePlayer(GameManager.playerCharacters.get(1), keycode);
                 } else if (keycode == Input.Keys.SPACE) {
-                    System.out.println(player1.numActiveBombs);
-                    if (player1.numActiveBombs >= player1.maxNumOfBombs)
-                        return false;
-
-                    bombGrid.getCell(bombCells.get(player1.position.get(0)).get(player1.position.get(1))).getActor().setDrawable(bomb);
-
-                    float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-
-                    player1.numActiveBombs++;
-                    GameManager.activeBombs.add(new Bomb(0, new ArrayList<>(player1.position), time));
-                }
-                else if (keycode == Input.Keys.ENTER) {
-                    if (player2.numActiveBombs >= player2.maxNumOfBombs)
-                        return false;
-
-                    bombGrid.getCell(bombCells.get(player2.position.get(0)).get(player2.position.get(1))).getActor().setDrawable(bomb);
-
-                    float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-
-                    player2.numActiveBombs++;
-                    GameManager.activeBombs.add(new Bomb(1, new ArrayList<>(player2.position), time));
+                    inputCreateBomb(GameManager.playerCharacters.get(0));
+                } else if (keycode == Input.Keys.ENTER) {
+                    inputCreateBomb(GameManager.playerCharacters.get(1));
                 }
 
                 return false;
@@ -380,5 +311,44 @@ public class GameScreen extends ScreenAdapter {
         });
 
         return table;
+    }
+
+    private void inputCreateBomb(Player player) {
+        if (player.numActiveBombs >= player.maxNumOfBombs)
+            return;
+
+        bombGrid.getCell(bombCells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(bomb);
+
+        float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+
+        player.numActiveBombs++;
+        GameManager.activeBombs.add(new Bomb(1, new ArrayList<>(player.position), time));
+    }
+
+    private void inputMovePlayer(Player player, int keycode) {
+        Integer rowFuture = player.position.get(0);
+        Integer colFuture = player.position.get(1);
+
+        if (keycode == Input.Keys.W || keycode == Input.Keys.UP)
+            rowFuture -= 1;
+        else if (keycode == Input.Keys.S || keycode == Input.Keys.DOWN)
+            rowFuture += 1;
+        else if (keycode == Input.Keys.A || keycode == Input.Keys.LEFT)
+            colFuture -= 1;
+        else colFuture += 1;
+
+        // only move if the future cell is "empty"
+        CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
+        TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
+        if (!futureImg.equals(empty))
+            return;
+
+        futureCell.setDrawable(player.image);
+        cellGrid.getCell(cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(empty);
+
+        if (player.position.get(0).equals(rowFuture))
+            player.position.set(1, colFuture);
+        else
+            player.position.set(0, rowFuture);
     }
 }
