@@ -7,7 +7,7 @@ public class Bomb {
     public List<Integer> position;
     public Float timeCreated;
 
-    public Bomb (int createdByPlayer, List<Integer> position, float timeCreated) {
+    public Bomb(int createdByPlayer, List<Integer> position, float timeCreated) {
         this.createdByPlayer = createdByPlayer;
         this.position = position;
         this.timeCreated = timeCreated;

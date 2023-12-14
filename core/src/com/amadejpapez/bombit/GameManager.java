@@ -42,7 +42,7 @@ public class GameManager {
         soundsEnabled = PREFS.getBoolean(SOUNDS_ENABLED, true);
 
         playerCharacters = new ArrayList<>();
-        activeBombs= new ArrayList<>();
+        activeBombs = new ArrayList<>();
     }
 
     public static void generatePhysicalPlayers() {
@@ -52,7 +52,7 @@ public class GameManager {
         for (int i = 0; i < GameManager.numPhysicalPlayers; i++) {
             do {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
-            } while(characterAlreadyInUse(tmp));
+            } while (characterAlreadyInUse(tmp));
 
             playerCharacters.add(new Player(i, tmp));
         }
@@ -65,7 +65,7 @@ public class GameManager {
         for (int i = playerCharacters.size(); i < GameConfig.MAX_NUMBER_PLAYERS; i++) {
             do {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
-            } while(characterAlreadyInUse(tmp));
+            } while (characterAlreadyInUse(tmp));
 
             playerCharacters.add(new Player(i, tmp));
         }
@@ -131,15 +131,8 @@ public class GameManager {
         }
     }
 
-    public int getTotalNumberOfPlayer() {
-        Integer num = numPhysicalPlayers;
-        if (addComputerPlayers)
-            num += (GameConfig.MAX_NUMBER_PLAYERS - num);
-        return num;
-    }
-
     public static boolean characterAlreadyInUse(String character) {
-        for (Player player: playerCharacters) {
+        for (Player player : playerCharacters) {
             if (player.image == Player.characterImages.get(character))
                 return true;
         }

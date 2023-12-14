@@ -222,7 +222,7 @@ public class GameScreen extends ScreenAdapter {
         table.padLeft(20);
 
         Label tmpLabel;
-        for (Player player: GameManager.playerCharacters) {
+        for (Player player : GameManager.playerCharacters) {
             Image tmpImg = new Image(player.image);
             table.add(tmpImg).height(60).width(50).left().row();
 
@@ -258,7 +258,7 @@ public class GameScreen extends ScreenAdapter {
             for (int column = 0; column < GameConfig.NUM_COLUMNS; column++) {
                 List<Integer> location = List.of(row, column);
 
-                for (Player player: GameManager.playerCharacters) {
+                for (Player player : GameManager.playerCharacters) {
                     if (row == player.position.get(0) && column == player.position.get(1))
                         cells.get(row).get(column).setDrawable(player.image);
                 }
