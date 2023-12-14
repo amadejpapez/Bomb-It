@@ -373,8 +373,7 @@ public class GameScreen extends ScreenAdapter {
                     float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
                     player1.numActiveBombs++;
-                    GameManager.activeBombs.add(new Bomb(0, player1.position, time));
-                } else if (keycode == Input.Keys.ENTER) {
+                    GameManager.activeBombs.add(new Bomb(0, new ArrayList<>(player1.position), time));
                     if (player2.numActiveBombs >= player2.maxNumOfBombs)
                         return false;
 
@@ -383,7 +382,7 @@ public class GameScreen extends ScreenAdapter {
                     float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
                     player2.numActiveBombs++;
-                    GameManager.activeBombs.add(new Bomb(1, player2.position, time));
+                    GameManager.activeBombs.add(new Bomb(1, new ArrayList<>(player2.position), time));
                 }
 
                 return false;
