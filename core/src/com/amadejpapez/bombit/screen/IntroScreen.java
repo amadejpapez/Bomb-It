@@ -90,6 +90,7 @@ public class IntroScreen extends ScreenAdapter {
 
     private Actor createBackground() {
         Image bg = new Image(gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND));
+        bg.setSize(GameConfig.WIDTH, GameConfig.HEIGHT);
         bg.setPosition(0, 0);
         return bg;
     }
