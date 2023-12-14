@@ -70,7 +70,7 @@ public class GameScreen extends ScreenAdapter {
     final ParticleEffect explosionEffect = Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT);
     final ParticleEffectActor explosionEffectActor = new ParticleEffectActor(Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT));
 
-    final Sound explosionSound = Assets.assetManager.get(AssetDescriptors.BOMB_HIT);
+    final Sound explosionSound = Assets.assetManager.get(AssetDescriptors.BOMB_SOUND);
 
     private final List<List<CellActor>> cells = new ArrayList<>();
     private final Table cellGrid = new Table();

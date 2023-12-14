@@ -17,8 +17,11 @@ public class AssetDescriptors {
     public static final AssetDescriptor<Skin> SKIN =
             new AssetDescriptor<>(AssetPaths.SKIN, Skin.class);
 
-    public static final AssetDescriptor<Sound> BOMB_HIT =
-            new AssetDescriptor<>(AssetPaths.BOMB_HIT, Sound.class);
+    public static final AssetDescriptor<Sound> BOMB_SOUND =
+            new AssetDescriptor<>(AssetPaths.BOMB_SOUND, Sound.class);
+
+    public static final AssetDescriptor<Sound> POWER_UP_SOUND =
+            new AssetDescriptor<>(AssetPaths.POWER_UP_SOUND, Sound.class);
 
     public static final AssetDescriptor<ParticleEffect> EXPLOSION_EFFECT =
             new AssetDescriptor<>(AssetPaths.EXPLOSION_EFFECT, ParticleEffect.class);

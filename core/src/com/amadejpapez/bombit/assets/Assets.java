@@ -10,7 +10,8 @@ public class Assets {
         assetManager.load(AssetDescriptors.GAMEPLAY);
         assetManager.load(AssetDescriptors.FONT);
         assetManager.load(AssetDescriptors.SKIN);
-        assetManager.load(AssetDescriptors.BOMB_HIT);
+        assetManager.load(AssetDescriptors.BOMB_SOUND);
+        assetManager.load(AssetDescriptors.POWER_UP_SOUND);
         assetManager.load(AssetDescriptors.EXPLOSION_EFFECT);
         assetManager.finishLoading();
     }
