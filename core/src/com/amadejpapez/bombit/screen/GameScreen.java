@@ -23,6 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -234,6 +236,19 @@ public class GameScreen extends ScreenAdapter {
             tmpLabel.setColor(Color.BROWN);
             table.add(tmpLabel).left().row();
         }
+
+        TextButton quitButton = new TextButton("Exit Game", skin);
+        quitButton.setColor(Color.ORANGE);
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new IntroScreen(game));
+                GameManager.activeBombs.clear();
+                GameManager.playerCharacters.clear();
+            }
+        });
+
+        table.add(quitButton).left().row();
 
         table.left();
         table.pack();
