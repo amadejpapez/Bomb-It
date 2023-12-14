@@ -23,8 +23,7 @@ public class GameManager {
     private static Boolean soundsEnabled;
 
     public static List<Player> playerCharacters;
-
-    public static Integer numActiveBombs = 0;
+    public static List<Bomb> activeBombs;
 
     private static final String NUM_PHYSICAL_PLAYERS = "num_physical_players";
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
@@ -43,6 +42,7 @@ public class GameManager {
         soundsEnabled = PREFS.getBoolean(SOUNDS_ENABLED, true);
 
         playerCharacters = new ArrayList<>();
+        activeBombs= new ArrayList<>();
     }
 
     public static void generatePhysicalPlayers() {

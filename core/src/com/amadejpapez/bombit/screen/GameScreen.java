@@ -1,5 +1,6 @@
 package com.amadejpapez.bombit.screen;
 
+import com.amadejpapez.bombit.Bomb;
 import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.ParticleEffectActor;
 import com.amadejpapez.bombit.Player;
@@ -30,10 +31,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.assets.AssetDescriptors;
@@ -82,8 +81,6 @@ public class GameScreen extends ScreenAdapter {
 
     private final List<List<CellActor>> bombCells = new ArrayList<>();
     private final Table bombGrid = new Table();
-
-    private final Map<List<Integer>, Float> activeBombs= new HashMap<>();
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -144,36 +141,27 @@ public class GameScreen extends ScreenAdapter {
     private void checkBombs() {
         float elapsedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
-        for (Iterator<Map.Entry<List<Integer>, Float>> it = activeBombs.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<List<Integer>, Float> entry = it.next();
+        for (Iterator<Bomb> it = GameManager.activeBombs.iterator(); it.hasNext(); ) {
+            Bomb bomb = it.next();
 
-            Integer row = entry.getKey().get(0);
-            Integer col = entry.getKey().get(1);
-            List<List<Integer>> checkLocations = List.of(
-                    List.of(row, col + 1),
-                    List.of(row, col - 1),
-                    List.of(row + 1, col),
-                    List.of(row - 1, col)
-            );
-            List<TextureRegion> obstaclesTmp = Arrays.asList(obstacles);
+            List<List<Integer>> checkLocations = Bomb.getPositionToCheck(bomb.position.get(0), bomb.position.get(1));
 
-            if (elapsedTime - entry.getValue() > GameConfig.TIME_BOMB_ACTIVE) {
+            if (elapsedTime - bomb.timeCreated > GameConfig.TIME_BOMB_ACTIVE) {
                 for (List<Integer> loc : checkLocations) {
                     CellActor cellTmp = cellGrid.getCell(cells.get(loc.get(0)).get(loc.get(1))).getActor();
                     TextureRegion regTmp = ((TextureRegionDrawable) cellTmp.getDrawable()).getRegion();
-                    if (obstaclesTmp.contains(regTmp))
+                    if (Arrays.asList(obstacles).contains(regTmp))
                         cellTmp.setDrawable(empty);
                 }
 
-                Cell<CellActor> bomb = bombGrid.getCell(bombCells.get(row).get(col));
-                bomb.setActor(explosionEffectActor);
+                bombGrid.getCell(bombCells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(empty);
+//                bombCell.setActor(explosionEffectActor);
 
                 if (GameManager.INSTANCE.getSoundsEnabled())
                     explosionSound.play();
-
 //                explosionEffect.setPosition(bomb.getX(), bomb.getY());
 //                explosionEffect.start();
-                GameManager.numActiveBombs--;
+                GameManager.playerCharacters.get(bomb.createdByPlayer).numActiveBombs--;
                 it.remove();
             }
         }
@@ -374,6 +362,8 @@ public class GameScreen extends ScreenAdapter {
 
                     player1.numActiveBombs++;
                     GameManager.activeBombs.add(new Bomb(0, new ArrayList<>(player1.position), time));
+                }
+                else if (keycode == Input.Keys.ENTER) {
                     if (player2.numActiveBombs >= player2.maxNumOfBombs)
                         return false;
 

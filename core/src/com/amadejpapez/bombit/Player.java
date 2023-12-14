@@ -48,7 +48,7 @@ public class Player {
         this.health = 100;
         this.position = new ArrayList<>(STARTING_POSITIONS.get(num));
         this.numActiveBombs = 0;
-        this.maxNumOfBombs = GameConfig.MAX_NUMBER_BOMBS;
+        this.maxNumOfBombs = GameConfig.MAX_NUMBER_BOMBS_DEFAULT;
     }
 
     public void updateImage(String charColor) {

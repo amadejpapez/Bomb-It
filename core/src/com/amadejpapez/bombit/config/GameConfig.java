@@ -23,7 +23,7 @@ public class GameConfig {
     public static final Integer NUM_ROWS = 15;
     public static final Integer CELL_SIZE = 4;
 
-    public static Integer MAX_NUMBER_BOMBS = 1;
+    public static final Integer MAX_NUMBER_BOMBS_DEFAULT = 1;
     public static final float TIME_BOMB_ACTIVE = 2f;
 
     public static final List<String> AVAILABLE_PLAYERS = List.of("blue", "black", "green", "orange", "pink", "purple");
