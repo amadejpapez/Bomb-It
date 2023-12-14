@@ -322,7 +322,7 @@ public class GameScreen extends ScreenAdapter {
         float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
         player.numActiveBombs++;
-        GameManager.activeBombs.add(new Bomb(1, new ArrayList<>(player.position), time));
+        GameManager.activeBombs.add(new Bomb(player.num, new ArrayList<>(player.position), time));
     }
 
     private void inputMovePlayer(Player player, int keycode) {
