@@ -298,8 +298,8 @@ public class GameScreen extends ScreenAdapter {
         table.pack();
 
         gameplayStage.addListener(new InputListener() {
-            final List<Integer> curPositionPLayer1 = GameManager.playerCharacters.get(0).position;
-            final List<Integer> curPositionPLayer2 = GameManager.playerCharacters.get(1).position;
+            final Player player1 = GameManager.playerCharacters.get(0);
+            final Player player2 = GameManager.playerCharacters.get(1);
 
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
@@ -308,10 +308,8 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
-                    Player player1 = GameManager.playerCharacters.get(0);
-
-                    Integer rowFuture = curPositionPLayer1.get(0);
-                    Integer colFuture = curPositionPLayer1.get(1);
+                    Integer rowFuture = player1.position.get(0);
+                    Integer colFuture = player1.position.get(1);
 
                     if (keycode == Input.Keys.UP)
                         rowFuture -= 1;
@@ -328,24 +326,21 @@ public class GameScreen extends ScreenAdapter {
                         return false;
 
                     futureCell.setDrawable(player1.image);
-                    cellGrid.getCell(cells.get(curPositionPLayer1.get(0)).get(curPositionPLayer1.get(1))).getActor().setDrawable(empty);
+                    cellGrid.getCell(cells.get(player1.position.get(0)).get(player1.position.get(1))).getActor().setDrawable(empty);
 
-                    if (curPositionPLayer1.get(0).equals(rowFuture))
-                        GameManager.playerCharacters.get(0).position.set(1, colFuture);
+                    if (player1.position.get(0).equals(rowFuture))
+                        player1.position.set(1, colFuture);
                     else
-                        GameManager.playerCharacters.get(0).position.set(0, rowFuture);
+                        player1.position.set(0, rowFuture);
 
                     return true;
-                }
-                else if (keycode == Input.Keys.W
+                } else if (keycode == Input.Keys.W
                         || keycode == Input.Keys.S
                         || keycode == Input.Keys.A
                         || keycode == Input.Keys.D
                 ) {
-                    Player player2 = GameManager.playerCharacters.get(1);
-
-                    Integer rowFuture = curPositionPLayer2.get(0);
-                    Integer colFuture = curPositionPLayer2.get(1);
+                    Integer rowFuture = player2.position.get(0);
+                    Integer colFuture = player2.position.get(1);
 
                     if (keycode == Input.Keys.W)
                         rowFuture -= 1;
@@ -362,30 +357,33 @@ public class GameScreen extends ScreenAdapter {
                         return false;
 
                     futureCell.setDrawable(player2.image);
-                    cellGrid.getCell(cells.get(curPositionPLayer2.get(0)).get(curPositionPLayer2.get(1))).getActor().setDrawable(empty);
+                    cellGrid.getCell(cells.get(player2.position.get(0)).get(player2.position.get(1))).getActor().setDrawable(empty);
 
-                    if (curPositionPLayer2.get(0).equals(rowFuture))
-                        GameManager.playerCharacters.get(1).position.set(1, colFuture);
+                    if (player2.position.get(0).equals(rowFuture))
+                        player2.position.set(1, colFuture);
                     else
-                        GameManager.playerCharacters.get(1).position.set(0, rowFuture);
-                }
-                else if (keycode == Input.Keys.SPACE) {
-                    if (GameManager.numActiveBombs >= GameConfig.MAX_NUMBER_BOMBS)
+                        player2.position.set(0, rowFuture);
+                } else if (keycode == Input.Keys.SPACE) {
+                    System.out.println(player1.numActiveBombs);
+                    if (player1.numActiveBombs >= player1.maxNumOfBombs)
                         return false;
 
-                    GameManager.numActiveBombs++;
-                    bombGrid.getCell(bombCells.get(curPositionPLayer1.get(0)).get(curPositionPLayer1.get(1))).getActor().setDrawable(bomb);
-                    activeBombs.put(List.of(curPositionPLayer1.get(0), curPositionPLayer1.get(1)),
-                            TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f);
-                }
-                else if (keycode == Input.Keys.ENTER) {
-                    if (GameManager.numActiveBombs >= GameConfig.MAX_NUMBER_BOMBS)
+                    bombGrid.getCell(bombCells.get(player1.position.get(0)).get(player1.position.get(1))).getActor().setDrawable(bomb);
+
+                    float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+
+                    player1.numActiveBombs++;
+                    GameManager.activeBombs.add(new Bomb(0, player1.position, time));
+                } else if (keycode == Input.Keys.ENTER) {
+                    if (player2.numActiveBombs >= player2.maxNumOfBombs)
                         return false;
 
-                    GameManager.numActiveBombs++;
-                    bombGrid.getCell(bombCells.get(curPositionPLayer2.get(0)).get(curPositionPLayer2.get(1))).getActor().setDrawable(bomb);
-                    activeBombs.put(List.of(curPositionPLayer2.get(0), curPositionPLayer2.get(1)),
-                            TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f);
+                    bombGrid.getCell(bombCells.get(player2.position.get(0)).get(player2.position.get(1))).getActor().setDrawable(bomb);
+
+                    float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+
+                    player2.numActiveBombs++;
+                    GameManager.activeBombs.add(new Bomb(1, player2.position, time));
                 }
 
                 return false;
