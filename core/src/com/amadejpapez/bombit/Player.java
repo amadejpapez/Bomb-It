@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Player {
     public Integer num;
@@ -68,7 +69,9 @@ public class Player {
         for (Player player: GameManager.playerCharacters) {
             if (player.image == img) {
                 player.health -= 40;
-                GameManager.playerCharacters.get(hitBy).kills++;
+
+                if (!Objects.equals(player.num, hitBy))
+                    GameManager.playerCharacters.get(hitBy).kills++;
             }
         }
     }
