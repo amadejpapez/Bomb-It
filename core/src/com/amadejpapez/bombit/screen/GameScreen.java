@@ -151,7 +151,7 @@ public class GameScreen extends ScreenAdapter {
     private void checkBombs() {
         if (GameManager.gameEnded)
             return;
-        
+
         float elapsedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
         for (Iterator<Bomb> it = GameManager.activeBombs.iterator(); it.hasNext(); ) {
@@ -264,7 +264,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         timeLabel.setColor(Color.BLACK);
-        table.add(timeLabel).left().row();
+        table.add(timeLabel).padTop(30).left().row();
 
         TextButton quitButton = new TextButton("Exit Game", skin);
         quitButton.setColor(Color.ORANGE);
