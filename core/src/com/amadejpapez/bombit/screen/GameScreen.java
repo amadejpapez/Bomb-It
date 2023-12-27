@@ -367,21 +367,29 @@ public class GameScreen extends ScreenAdapter {
                 if (GameManager.gameEnded)
                     return false;
 
+                // PLAYER 1
                 if (keycode == Input.Keys.UP
                         || keycode == Input.Keys.DOWN
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
                     inputMovePlayer(GameManager.playerCharacters.get(0), keycode);
-                } else if (keycode == Input.Keys.W
+                } else if (keycode == Input.Keys.SPACE) {
+                    inputCreateBomb(GameManager.playerCharacters.get(0));
+                }
+
+                // PLAYER 2
+                if (GameManager.INSTANCE.getNumPhysicalPlayers() == 1)
+                    return false;
+
+                if (keycode == Input.Keys.W
                         || keycode == Input.Keys.S
                         || keycode == Input.Keys.A
                         || keycode == Input.Keys.D
                 ) {
                     inputMovePlayer(GameManager.playerCharacters.get(1), keycode);
-                } else if (keycode == Input.Keys.SPACE) {
-                    inputCreateBomb(GameManager.playerCharacters.get(0));
-                } else if (keycode == Input.Keys.ENTER) {
+                }
+                else if (keycode == Input.Keys.ENTER) {
                     inputCreateBomb(GameManager.playerCharacters.get(1));
                 }
 
