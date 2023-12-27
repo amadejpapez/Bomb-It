@@ -102,7 +102,7 @@ public class GameScreen extends ScreenAdapter {
         // update
         updateStatus();
         Bomb.updateBombs();
-        movingAi();
+        moveAllAi();
         gameplayStage.act(delta);
         hudStage.act(delta);
 
@@ -313,9 +313,9 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
-                    inputMovePlayer(GameManager.playerCharacters.get(0), keycode);
+                    GameManager.playerCharacters.get(0).inputMove(keycode);
                 } else if (keycode == Input.Keys.SPACE) {
-                    Bomb.addNew(GameManager.playerCharacters.get(0));
+                    GameManager.playerCharacters.get(0).inputAddBomb();
                 }
 
                 // PLAYER 2
@@ -327,9 +327,9 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.A
                         || keycode == Input.Keys.D
                 ) {
-                    inputMovePlayer(GameManager.playerCharacters.get(1), keycode);
+                    GameManager.playerCharacters.get(1).inputMove(keycode);
                 } else if (keycode == Input.Keys.ENTER) {
-                    Bomb.addNew(GameManager.playerCharacters.get(1));
+                    GameManager.playerCharacters.get(1).inputAddBomb();
                 }
 
                 return false;
@@ -337,51 +337,6 @@ public class GameScreen extends ScreenAdapter {
         });
 
         return table;
-    }
-
-    private void inputMovePlayer(Player player, int keycode) {
-        Integer rowFuture = player.position.get(0);
-        Integer colFuture = player.position.get(1);
-
-        if (keycode == Input.Keys.W || keycode == Input.Keys.UP)
-            rowFuture -= 1;
-        else if (keycode == Input.Keys.S || keycode == Input.Keys.DOWN)
-            rowFuture += 1;
-        else if (keycode == Input.Keys.A || keycode == Input.Keys.LEFT)
-            colFuture -= 1;
-        else colFuture += 1;
-
-        // only move if the future cell is "empty"
-        CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
-        TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
-        if (!futureImg.equals(Assets.empty)) {
-            if (futureImg.equals(Assets.bonusBombs)) {
-                cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor().setDrawable(Assets.empty);
-                player.maxNumOfBombs++;
-            } else if (futureImg.equals(Assets.bonusHand)) {
-                cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor().setDrawable(Assets.empty);
-                player.hasBonusHand = true;
-            } else {
-                return;
-            }
-        }
-
-        // player cannot move across bombs
-        CellActor futureCellBomb = Bomb.grid.getCell(Bomb.cells.get(rowFuture).get(colFuture)).getActor();
-        TextureRegion futureImgBomb = ((TextureRegionDrawable) futureCellBomb.getDrawable()).getRegion();
-        if (!futureImgBomb.equals(Assets.empty)) {
-            if (player.hasBonusHand)
-                Bomb.handleBonusHand(rowFuture, colFuture, keycode);
-            return;
-        }
-
-        player.grid.getCell(player.cells.get(rowFuture).get(colFuture)).getActor().setDrawable(player.image);
-        player.grid.getCell(player.cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(Assets.empty);
-
-        if (player.position.get(0).equals(rowFuture))
-            player.position.set(1, colFuture);
-        else
-            player.position.set(0, rowFuture);
     }
 
     private void updateStatus() {
@@ -423,33 +378,14 @@ public class GameScreen extends ScreenAdapter {
         GameManager.gameEnded = true;
     }
 
-    public void movingAi() {
-        // move only every second
+    public void moveAllAi() {
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
         if (currentTime - lastAiMove < 0.5)
             return;
+        lastAiMove = currentTime;
 
-        for (Player player : GameManager.playerCharacters) {
-            if (player.num < GameManager.INSTANCE.getNumPhysicalPlayers())
-                continue;
-
-            List<Integer> possibleMoves = List.of(
-                    Input.Keys.UP,
-                    Input.Keys.DOWN,
-                    Input.Keys.LEFT,
-                    Input.Keys.RIGHT
-            );
-
-            inputMovePlayer(
-                    player,
-                    possibleMoves.get(ThreadLocalRandom.current().nextInt(possibleMoves.size()))
-            );
-
-            if (ThreadLocalRandom.current().nextInt(4) == 0)
-                Bomb.addNew(player);
-        }
-
-        lastAiMove = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+        for (Player player : GameManager.playerCharacters)
+            player.moveAi();
     }
 
     public static boolean isMainCellEmpty(int x, int y) {

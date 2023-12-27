@@ -53,18 +53,6 @@ public class Bomb {
         return cellImg.equals(Assets.empty);
     }
 
-    public static void addNew(Player player) {
-        if (player.numActiveBombs >= player.maxNumOfBombs)
-            return;
-
-        grid.getCell(cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(Assets.bomb);
-
-        float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-
-        player.numActiveBombs++;
-        GameManager.activeBombs.add(new Bomb(player.num, new ArrayList<>(player.position), time));
-    }
-
     public static void updateBombs() {
         if (GameManager.gameEnded)
             return;
