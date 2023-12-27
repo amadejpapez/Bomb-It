@@ -21,6 +21,7 @@ public class Player {
     public TextureRegionDrawable image;
     public Integer numActiveBombs;
     public Integer maxNumOfBombs;
+    public Boolean hasBonusHand;
 
     public List<List<CellActor>> cells;
     public Table grid;
@@ -54,6 +55,7 @@ public class Player {
         this.maxNumOfBombs = GameConfig.MAX_NUMBER_BOMBS_DEFAULT;
         this.cells = new ArrayList<>();
         this.grid = new Table();
+        this.hasBonusHand = false;
     }
 
     public void updateImage(String charColor) {

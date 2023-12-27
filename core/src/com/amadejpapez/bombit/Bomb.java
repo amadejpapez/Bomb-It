@@ -22,4 +22,12 @@ public class Bomb {
                 List.of(row - 1, col)
         );
     }
+
+    public static Bomb getBombByPosition(List<Bomb> bombs, List<Integer> pos) {
+        for (Bomb bomb: bombs) {
+            if (bomb.position.get(0) == pos.get(0) && bomb.position.get(1) == pos.get(1))
+                return bomb;
+        }
+        return null;
+    }
 }

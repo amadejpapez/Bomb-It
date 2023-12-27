@@ -62,6 +62,7 @@ public class GameScreen extends ScreenAdapter {
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
     final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
     final TextureRegion bonusBombs = gameplayAtlas.findRegion(AssetRegionNames.BONUS_BOMB);
+    final TextureRegion bonusHand = gameplayAtlas.findRegion(AssetRegionNames.BONUS_HAND);
 
     final Skin skin = Assets.assetManager.get(AssetDescriptors.SKIN);
 
@@ -342,11 +343,17 @@ public class GameScreen extends ScreenAdapter {
                     int num = ThreadLocalRandom.current().nextInt(obstacles.length + 3);
                     if (num < obstacles.length) {
                         cells.get(row).get(column).setDrawable(obstacles[num]);
-                    }
-                    else {
+                    } else {
                         num = ThreadLocalRandom.current().nextInt(5);
-                        if (num == 0)
+                        if (num == 0) {
                             cells.get(row).get(column).setDrawable(bonusBombs);
+                        }
+                        else {
+                            num = ThreadLocalRandom.current().nextInt(10);
+                            if (num == 0) {
+                                cells.get(row).get(column).setDrawable(bonusHand);
+                            }
+                        }
                     }
                 }
 
@@ -431,8 +438,10 @@ public class GameScreen extends ScreenAdapter {
             if (futureImg.equals(bonusBombs)) {
                 cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor().setDrawable(empty);
                 player.maxNumOfBombs++;
-            }
-            else {
+            } else if (futureImg.equals(bonusHand)) {
+                cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor().setDrawable(empty);
+                player.hasBonusHand = true;
+            } else {
                 return;
             }
         }
@@ -440,8 +449,96 @@ public class GameScreen extends ScreenAdapter {
         // player cannot move across bombs
         CellActor futureCellBomb = bombGrid.getCell(bombCells.get(rowFuture).get(colFuture)).getActor();
         TextureRegion futureImgBomb = ((TextureRegionDrawable) futureCellBomb.getDrawable()).getRegion();
-        if (!futureImgBomb.equals(empty))
+        if (!futureImgBomb.equals(empty)) {
+            if (player.hasBonusHand) {
+                int tmpRow = rowFuture;
+                int tmpCol = colFuture;
+                Bomb tmpBomb = Bomb.getBombByPosition(GameManager.activeBombs, List.of(rowFuture, colFuture));
+
+                if (keycode == Input.Keys.DOWN) {
+                    while (true) {
+                        CellActor tmpNextCell = bombGrid.getCell(bombCells.get(tmpRow + 1).get(tmpCol)).getActor();
+                        TextureRegion tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        tmpNextCell = cellGrid.getCell(cells.get(tmpRow + 1).get(tmpCol)).getActor();
+                        tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol)).getActor().setDrawable(empty);
+                        bombGrid.getCell(bombCells.get(tmpRow + 1).get(tmpCol)).getActor().setDrawable(bomb);
+
+                        tmpBomb.position = List.of(tmpRow + 1, tmpCol);
+
+                        tmpRow++;
+                    }
+                }
+                else if (keycode == Input.Keys.RIGHT) {
+                    while (true) {
+                        CellActor tmpNextCell = bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol + 1)).getActor();
+                        TextureRegion tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        tmpNextCell = cellGrid.getCell(cells.get(tmpRow).get(tmpCol + 1)).getActor();
+                        tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol)).getActor().setDrawable(empty);
+                        bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol + 1)).getActor().setDrawable(bomb);
+
+                        tmpBomb.position = List.of(tmpRow, tmpCol + 1);
+
+                        tmpCol++;
+                    }
+                }
+                else if (keycode == Input.Keys.LEFT) {
+                    while (true) {
+                        CellActor tmpNextCell = bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol - 1)).getActor();
+                        TextureRegion tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        tmpNextCell = cellGrid.getCell(cells.get(tmpRow).get(tmpCol - 1)).getActor();
+                        tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol)).getActor().setDrawable(empty);
+                        bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol - 1)).getActor().setDrawable(bomb);
+
+                        tmpBomb.position = List.of(tmpRow, tmpCol - 1);
+
+                        tmpCol--;
+                    }
+                }
+                else if (keycode == Input.Keys.UP) {
+                    while (true) {
+                        CellActor tmpNextCell = bombGrid.getCell(bombCells.get(tmpRow - 1).get(tmpCol)).getActor();
+                        TextureRegion tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        tmpNextCell = cellGrid.getCell(cells.get(tmpRow - 1).get(tmpCol)).getActor();
+                        tmpNextCellImg = ((TextureRegionDrawable) tmpNextCell.getDrawable()).getRegion();
+                        if (!tmpNextCellImg.equals(empty))
+                            break;
+
+                        bombGrid.getCell(bombCells.get(tmpRow).get(tmpCol)).getActor().setDrawable(empty);
+                        bombGrid.getCell(bombCells.get(tmpRow - 1).get(tmpCol)).getActor().setDrawable(bomb);
+
+                        tmpBomb.position = List.of(tmpRow - 1, tmpCol);
+
+                        tmpRow--;
+                    }
+                }
+            }
+
             return;
+        }
 
         player.grid.getCell(player.cells.get(rowFuture).get(colFuture)).getActor().setDrawable(player.image);
         player.grid.getCell(player.cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(empty);
