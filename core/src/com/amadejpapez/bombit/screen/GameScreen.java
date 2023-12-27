@@ -85,7 +85,7 @@ public class GameScreen extends ScreenAdapter {
     private final List<List<CellActor>> bombCells = new ArrayList<>();
     private final Table bombGrid = new Table();
 
-    private final Map<Integer, List<Label>> statusLabels = new HashMap<>();
+    private final Map<Integer, Label> killLabels = new HashMap<>();
     private final Label timeLabel = new Label("", skin);
 
     public GameScreen(BombIt game) {
@@ -239,15 +239,11 @@ public class GameScreen extends ScreenAdapter {
             Image tmpImg = new Image(player.image);
             table.add(tmpImg).height(60).width(50).left().row();
 
-            Label tmpLabel1 = new Label("Health: " + player.getHealth(), skin);
+            Label tmpLabel1 = new Label("Kills: " + player.getKills(), skin);
             tmpLabel1.setColor(Color.BROWN);
             table.add(tmpLabel1).left().row();
 
-            Label tmpLabel2 = new Label("Kills: " + player.getKills(), skin);
-            tmpLabel2.setColor(Color.BROWN);
-            table.add(tmpLabel2).left().row();
-
-            statusLabels.put(player.num, new ArrayList<>(List.of(tmpLabel1, tmpLabel2)));
+            killLabels.put(player.num, tmpLabel1);
         }
 
         timeLabel.setColor(Color.BLACK);
@@ -388,8 +384,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void updateStatus() {
         for (Player player: GameManager.playerCharacters) {
-            statusLabels.get(player.num).get(0).setText("Health: " + player.getHealth());
-            statusLabels.get(player.num).get(1).setText("Kills: " + player.getKills());
+            killLabels.get(player.num).setText("Kills: " + player.getKills());
         }
     }
 }

@@ -14,7 +14,6 @@ import java.util.Objects;
 
 public class Player {
     public Integer num;
-    private Integer health;
     private Integer kills;
     public List<Integer> position;
     public String character;
@@ -46,7 +45,6 @@ public class Player {
         this.character = charColor;
         this.image = characterImages.get(charColor);
         this.kills = 0;
-        this.health = 100;
         this.position = new ArrayList<>(STARTING_POSITIONS.get(num));
         this.numActiveBombs = 0;
         this.maxNumOfBombs = GameConfig.MAX_NUMBER_BOMBS_DEFAULT;
@@ -57,10 +55,6 @@ public class Player {
         this.image = characterImages.get(charColor);
     }
 
-    public int getHealth() {
-        return health;
-    }
-
     public int getKills() {
         return kills;
     }
@@ -68,8 +62,6 @@ public class Player {
     public static void playerHit(TextureRegionDrawable img, Integer hitBy) {
         for (Player player: GameManager.playerCharacters) {
             if (player.image == img) {
-                player.health -= 40;
-
                 if (!Objects.equals(player.num, hitBy))
                     GameManager.playerCharacters.get(hitBy).kills++;
             }
