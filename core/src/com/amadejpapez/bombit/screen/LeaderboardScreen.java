@@ -39,12 +39,10 @@ public class LeaderboardScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
 
-    private List<Result> results;
+    private static List<Result> results = new ArrayList<>();
 
     public LeaderboardScreen(BombIt game) {
         this.game = game;
-
-        results = new ArrayList<>();
         loadJson();
     }
 
@@ -138,7 +136,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         return table;
     }
 
-    public void addResult(Integer num) {
+    public static void addResult(Integer num) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy_H:m");
         String name = "game_" + LocalDateTime.now().format(formatter);
 
@@ -150,7 +148,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         saveJson();
     }
 
-    public void saveJson() {
+    public static void saveJson() {
         FileHandle file = Gdx.files.local("leaderboard.json");
         Json json = new Json();
 

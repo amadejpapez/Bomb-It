@@ -36,6 +36,8 @@ public class GameManager {
     public static final Music startMusic = Assets.assetManager.get(AssetDescriptors.START_MUSIC);
     public static final Music gameMusic = Assets.assetManager.get(AssetDescriptors.GAME_MUSIC);
 
+    public static Boolean gameEnded = false;
+
     private GameManager() {
         PREFS = Gdx.app.getPreferences(BombIt.class.getSimpleName());
 

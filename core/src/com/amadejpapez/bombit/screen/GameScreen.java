@@ -32,6 +32,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -111,8 +112,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
         GameManager.INSTANCE.playGameMusic();
-
         GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+        GameManager.gameEnded = false;
     }
 
     @Override
@@ -148,6 +149,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void checkBombs() {
+        if (GameManager.gameEnded)
+            return;
+        
         float elapsedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
         for (Iterator<Bomb> it = GameManager.activeBombs.iterator(); it.hasNext(); ) {
@@ -226,6 +230,22 @@ public class GameScreen extends ScreenAdapter {
                 viewport.getWorldHeight() / 2f - 6f);
         mid.setScale(0.035f);
         return mid;
+    }
+
+    private Actor createLost() {
+        Image lost = new Image(gameplayAtlas.findRegion(AssetRegionNames.YOU_LOSE));
+        lost.setPosition(viewport.getWorldWidth() / 2f - 13f,
+                viewport.getWorldHeight() / 2f - 12f);
+        lost.setScale(0.12f);
+        return lost;
+    }
+
+    private Actor createWon() {
+        Image won = new Image(gameplayAtlas.findRegion(AssetRegionNames.YOU_WIN));
+        won.setPosition(viewport.getWorldWidth() / 2f - 13f,
+                viewport.getWorldHeight() / 2f - 12f);
+        won.setScale(0.1f);
+        return won;
     }
 
     private Actor createGridHud() {
@@ -315,6 +335,9 @@ public class GameScreen extends ScreenAdapter {
         gameplayStage.addListener(new InputListener() {
             @Override
             public boolean keyDown(InputEvent event, int keycode) {
+                if (GameManager.gameEnded)
+                    return false;
+
                 if (keycode == Input.Keys.UP
                         || keycode == Input.Keys.DOWN
                         || keycode == Input.Keys.LEFT
@@ -380,11 +403,41 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void updateStatus() {
-        for (Player player: GameManager.playerCharacters) {
+        if (GameManager.gameEnded)
+            return;
+
+        for (Player player : GameManager.playerCharacters)
             killLabels.get(player.num).setText("Kills: " + player.getKills());
-        }
 
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-        timeLabel.setText("Time: " + (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime)));
+        int remainingTime = (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime));
+        timeLabel.setText("Time: " + remainingTime);
+
+        if (remainingTime <= 0)
+            timeIsUp();
+    }
+
+    public void timeIsUp() {
+        ArrayList<Integer> allKills = new ArrayList<>();
+        for (Player player : GameManager.playerCharacters)
+            allKills.add(player.getKills());
+
+        boolean physicalWon = false;
+
+        if (Collections.max(allKills) == GameManager.playerCharacters.get(0).getKills()) {
+            physicalWon = true;
+            LeaderboardScreen.addResult(GameManager.playerCharacters.get(0).getKills());
+        }
+        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && Collections.max(allKills) == GameManager.playerCharacters.get(1).getKills()) {
+            physicalWon = true;
+            LeaderboardScreen.addResult(GameManager.playerCharacters.get(1).getKills());
+        }
+
+        if (physicalWon)
+            gameplayStage.addActor(createWon());
+        else
+            gameplayStage.addActor(createLost());
+
+        GameManager.gameEnded = true;
     }
 }
