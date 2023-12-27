@@ -391,6 +391,12 @@ public class GameScreen extends ScreenAdapter {
         if (!futureImg.equals(empty))
             return;
 
+        // player cannot move across bombs
+        CellActor futureCellBomb = bombGrid.getCell(bombCells.get(rowFuture).get(colFuture)).getActor();
+        TextureRegion futureImgBomb = ((TextureRegionDrawable) futureCellBomb.getDrawable()).getRegion();
+        if (!futureImgBomb.equals(empty))
+            return;
+
         futureCell.setDrawable(player.image);
         cellGrid.getCell(cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(empty);
 
