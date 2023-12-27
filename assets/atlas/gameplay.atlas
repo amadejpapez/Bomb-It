@@ -6,86 +6,93 @@ filter: Nearest, Nearest
 repeat: none
 background
   rotate: false
-  xy: 2, 418
+  xy: 2, 415
   size: 800, 600
   orig: 800, 600
   offset: 0, 0
   index: -1
-basket_blue
-  rotate: false
-  xy: 2, 2
-  size: 123, 92
-  orig: 123, 92
-  offset: 0, 0
-  index: -1
-basket_orange
-  rotate: false
-  xy: 804, 567
-  size: 128, 130
-  orig: 128, 130
-  offset: 0, 0
-  index: -1
 bomb
   rotate: false
-  xy: 804, 417
+  xy: 804, 479
   size: 110, 148
   orig: 110, 148
   offset: 0, 0
   index: -1
 bonus_bomb
   rotate: false
-  xy: 899, 293
+  xy: 777, 2
   size: 121, 122
   orig: 121, 122
   offset: 0, 0
   index: -1
 bonus_hand
   rotate: false
-  xy: 899, 170
+  xy: 900, 3
   size: 120, 121
   orig: 120, 121
   offset: 0, 0
   index: -1
 bonus_pistol
   rotate: false
-  xy: 899, 48
+  xy: 901, 167
   size: 120, 120
   orig: 120, 120
   offset: 0, 0
   index: -1
 cone_blue
   rotate: false
-  xy: 804, 857
+  xy: 777, 126
   size: 122, 161
   orig: 122, 161
   offset: 0, 0
   index: -1
 cone_red
   rotate: false
-  xy: 804, 699
+  xy: 804, 859
   size: 122, 156
   orig: 122, 156
   offset: 0, 0
   index: -1
 empty
   rotate: false
-  xy: 916, 465
+  xy: 916, 527
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 middle
   rotate: false
-  xy: 558, 42
+  xy: 2, 40
   size: 339, 373
   orig: 339, 373
   offset: 0, 0
   index: -1
-you_win
+speed_up
   rotate: false
-  xy: 2, 96
-  size: 554, 320
-  orig: 554, 320
+  xy: 804, 629
+  size: 117, 118
+  orig: 117, 118
+  offset: 0, 0
+  index: -1
+title
+  rotate: false
+  xy: 343, 289
+  size: 600, 124
+  orig: 600, 124
+  offset: 0, 0
+  index: -1
+whistle
+  rotate: false
+  xy: 804, 749
+  size: 120, 108
+  orig: 120, 108
+  offset: 0, 0
+  index: -1
+you_lose
+  rotate: false
+  xy: 343, 75
+  size: 432, 212
+  orig: 432, 212
   offset: 0, 0
   index: -1
 
@@ -96,51 +103,30 @@ filter: Nearest, Nearest
 repeat: none
 background_leaderboard
   rotate: false
-  xy: 2, 358
+  xy: 2, 342
   size: 600, 600
   orig: 600, 600
   offset: 0, 0
   index: -1
 player_pink
   rotate: false
-  xy: 604, 18
+  xy: 604, 2
   size: 371, 464
   orig: 371, 464
   offset: 0, 0
   index: -1
 player_purple
   rotate: false
-  xy: 604, 484
+  xy: 604, 468
   size: 404, 474
   orig: 404, 474
   offset: 0, 0
   index: -1
-speed_up
+you_win
   rotate: false
-  xy: 436, 112
-  size: 117, 118
-  orig: 117, 118
-  offset: 0, 0
-  index: -1
-title
-  rotate: false
-  xy: 2, 232
-  size: 600, 124
-  orig: 600, 124
-  offset: 0, 0
-  index: -1
-whistle
-  rotate: false
-  xy: 436, 2
-  size: 120, 108
-  orig: 120, 108
-  offset: 0, 0
-  index: -1
-you_lose
-  rotate: false
-  xy: 2, 18
-  size: 432, 212
-  orig: 432, 212
+  xy: 2, 20
+  size: 554, 320
+  orig: 554, 320
   offset: 0, 0
   index: -1
 

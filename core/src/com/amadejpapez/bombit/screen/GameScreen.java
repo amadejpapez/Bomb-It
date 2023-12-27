@@ -58,8 +58,6 @@ public class GameScreen extends ScreenAdapter {
     private final TextureAtlas gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
     final TextureRegion coneRed = gameplayAtlas.findRegion(AssetRegionNames.CONE_RED);
-    final TextureRegion basketBlue = gameplayAtlas.findRegion(AssetRegionNames.BASKET_BLUE);
-    final TextureRegion basketOrange = gameplayAtlas.findRegion(AssetRegionNames.BASKET_ORANGE);
     final TextureRegion empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
     final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
@@ -310,10 +308,6 @@ public class GameScreen extends ScreenAdapter {
 
                 if (row == 0 || row == GameConfig.NUM_ROWS - 1 || column == 0 || column == GameConfig.NUM_COLUMNS - 1)
                     cells.get(row).get(column).setDrawable(coneRed);
-                else if (row == 5 && column == 8)
-                    cells.get(row).get(column).setDrawable(basketBlue);
-                else if (row == 7 && column == 6)
-                    cells.get(row).get(column).setDrawable(basketOrange);
                 else if (GameConfig.LOC_FIXED_OBSTACLES.contains(location))
                     cells.get(row).get(column).setDrawable(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]);
                 else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location) && ThreadLocalRandom.current().nextBoolean()) {
