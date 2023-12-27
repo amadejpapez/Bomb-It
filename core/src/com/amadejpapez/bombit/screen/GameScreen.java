@@ -126,8 +126,7 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(195 / 255f, 195 / 255f, 195 / 255f, 0f);
 
         // update
-        float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-        timeLabel.setText("Time: " + (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime)));
+        updateStatus();
         checkBombs();
         gameplayStage.act(delta);
         hudStage.act(delta);
@@ -162,10 +161,8 @@ public class GameScreen extends ScreenAdapter {
                     TextureRegionDrawable drawTmp = (TextureRegionDrawable) cellTmp.getDrawable();
                     if (Arrays.asList(obstacles).contains(drawTmp.getRegion()))
                         cellTmp.setDrawable(empty);
-                    if (Player.characterImages.containsValue(drawTmp)) {
+                    if (Player.characterImages.containsValue(drawTmp))
                         Player.playerHit(drawTmp, bomb.createdByPlayer);
-                        updateStatus();
-                    }
                 }
 
                 bombGrid.getCell(bombCells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(empty);
@@ -386,5 +383,8 @@ public class GameScreen extends ScreenAdapter {
         for (Player player: GameManager.playerCharacters) {
             killLabels.get(player.num).setText("Kills: " + player.getKills());
         }
+
+        float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+        timeLabel.setText("Time: " + (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime)));
     }
 }
