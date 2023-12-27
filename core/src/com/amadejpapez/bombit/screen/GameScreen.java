@@ -61,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
     final TextureRegion empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
     final TextureRegion floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
     final TextureRegion bomb = gameplayAtlas.findRegion(AssetRegionNames.BOMB);
+    final TextureRegion bonusBombs = gameplayAtlas.findRegion(AssetRegionNames.BONUS_BOMB);
 
     final Skin skin = Assets.assetManager.get(AssetDescriptors.SKIN);
 
@@ -337,10 +338,16 @@ public class GameScreen extends ScreenAdapter {
                     cells.get(row).get(column).setDrawable(coneRed);
                 else if (GameConfig.LOC_FIXED_OBSTACLES.contains(location))
                     cells.get(row).get(column).setDrawable(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]);
-                else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location) && ThreadLocalRandom.current().nextBoolean()) {
+                else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location)) {
                     int num = ThreadLocalRandom.current().nextInt(obstacles.length + 3);
-                    if (num < obstacles.length)
+                    if (num < obstacles.length) {
                         cells.get(row).get(column).setDrawable(obstacles[num]);
+                    }
+                    else {
+                        num = ThreadLocalRandom.current().nextInt(5);
+                        if (num == 0)
+                            cells.get(row).get(column).setDrawable(bonusBombs);
+                    }
                 }
 
                 cellGrid.add(cells.get(row).get(column));
@@ -412,8 +419,15 @@ public class GameScreen extends ScreenAdapter {
         // only move if the future cell is "empty"
         CellActor futureCell = cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor();
         TextureRegion futureImg = ((TextureRegionDrawable) futureCell.getDrawable()).getRegion();
-        if (!futureImg.equals(empty))
-            return;
+        if (!futureImg.equals(empty)) {
+            if (futureImg.equals(bonusBombs)) {
+                cellGrid.getCell(cells.get(rowFuture).get(colFuture)).getActor().setDrawable(empty);
+                player.maxNumOfBombs++;
+            }
+            else {
+                return;
+            }
+        }
 
         // player cannot move across bombs
         CellActor futureCellBomb = bombGrid.getCell(bombCells.get(rowFuture).get(colFuture)).getActor();
