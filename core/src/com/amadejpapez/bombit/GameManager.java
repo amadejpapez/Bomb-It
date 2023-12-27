@@ -6,6 +6,7 @@ import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ public class GameManager {
 
     public static List<Player> playerCharacters;
     public static List<Bomb> activeBombs;
+
+    public static float gameStartedTime;
 
     private static final String NUM_PHYSICAL_PLAYERS = "num_physical_players";
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";

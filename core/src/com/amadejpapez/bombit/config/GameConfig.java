@@ -26,6 +26,8 @@ public class GameConfig {
     public static final Integer MAX_NUMBER_BOMBS_DEFAULT = 1;
     public static final float TIME_BOMB_ACTIVE = 2f;
 
+    public static final Integer GAME_TIME = 180;  // seconds
+
     public static final List<String> AVAILABLE_PLAYERS = List.of("blue", "black", "green", "orange", "pink", "purple");
     public static final Integer MAX_NUMBER_PLAYERS = 4;
 

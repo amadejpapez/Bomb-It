@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -87,6 +86,7 @@ public class GameScreen extends ScreenAdapter {
     private final Table bombGrid = new Table();
 
     private final Map<Integer, List<Label>> statusLabels = new HashMap<>();
+    private final Label timeLabel = new Label("", skin);
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -111,6 +111,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
         GameManager.INSTANCE.playGameMusic();
+
+        GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
     }
 
     @Override
@@ -124,6 +126,8 @@ public class GameScreen extends ScreenAdapter {
         ScreenUtils.clear(195 / 255f, 195 / 255f, 195 / 255f, 0f);
 
         // update
+        float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+        timeLabel.setText("Time: " + (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime)));
         checkBombs();
         gameplayStage.act(delta);
         hudStage.act(delta);
@@ -231,7 +235,6 @@ public class GameScreen extends ScreenAdapter {
         final Table table = new Table();
         table.padLeft(20);
 
-        Label tmpLabel;
         for (Player player : GameManager.playerCharacters) {
             Image tmpImg = new Image(player.image);
             table.add(tmpImg).height(60).width(50).left().row();
@@ -246,6 +249,9 @@ public class GameScreen extends ScreenAdapter {
 
             statusLabels.put(player.num, new ArrayList<>(List.of(tmpLabel1, tmpLabel2)));
         }
+
+        timeLabel.setColor(Color.BLACK);
+        table.add(timeLabel).left().row();
 
         TextButton quitButton = new TextButton("Exit Game", skin);
         quitButton.setColor(Color.ORANGE);
