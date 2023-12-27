@@ -104,6 +104,8 @@ public class GameScreen extends ScreenAdapter {
 
         gameplayStage.addActor(createGridBackground());
         gameplayStage.addActor(createGridBombs());
+        for (Player player: GameManager.playerCharacters)
+            gameplayStage.addActor(createGridPlayer(player));
         gameplayStage.addActor(createGridMain());
         gameplayStage.addActor(createMiddle());
         gameplayStage.addActor(new ParticleEffectActor(explosionEffect));
@@ -226,6 +228,28 @@ public class GameScreen extends ScreenAdapter {
         return table;
     }
 
+    private Actor createGridPlayer(Player player) {
+        Table table = new Table();
+        player.grid.defaults().size(GameConfig.CELL_SIZE);
+
+        for (int i = 0; i < GameConfig.NUM_ROWS; i++) {
+            player.cells.add(new ArrayList<>());
+            for (int j = 0; j < GameConfig.NUM_COLUMNS; j++) {
+                player.cells.get(i).add(new CellActor(empty));
+                player.grid.add(player.cells.get(i).get(j));
+            }
+            player.grid.row();
+        }
+
+        table.add(player.grid).row();
+        table.right();
+        table.padRight(3);
+        table.setFillParent(true);
+        table.pack();
+
+        return table;
+    }
+
     private Actor createMiddle() {
         Image mid = new Image(gameplayAtlas.findRegion(AssetRegionNames.MIDDLE));
         mid.setPosition(viewport.getWorldWidth() / 2f + 7f,
@@ -306,7 +330,7 @@ public class GameScreen extends ScreenAdapter {
 
                 for (Player player : GameManager.playerCharacters) {
                     if (row == player.position.get(0) && column == player.position.get(1))
-                        cells.get(row).get(column).setDrawable(player.image);
+                        player.cells.get(row).get(column).setDrawable(player.image);
                 }
 
                 if (row == 0 || row == GameConfig.NUM_ROWS - 1 || column == 0 || column == GameConfig.NUM_COLUMNS - 1)
@@ -397,8 +421,8 @@ public class GameScreen extends ScreenAdapter {
         if (!futureImgBomb.equals(empty))
             return;
 
-        futureCell.setDrawable(player.image);
-        cellGrid.getCell(cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(empty);
+        player.grid.getCell(player.cells.get(rowFuture).get(colFuture)).getActor().setDrawable(player.image);
+        player.grid.getCell(player.cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(empty);
 
         if (player.position.get(0).equals(rowFuture))
             player.position.set(1, colFuture);

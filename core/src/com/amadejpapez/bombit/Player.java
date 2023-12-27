@@ -5,6 +5,7 @@ import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class Player {
     public TextureRegionDrawable image;
     public Integer numActiveBombs;
     public Integer maxNumOfBombs;
+
+    public List<List<CellActor>> cells;
+    public Table grid;
 
     private static final TextureAtlas gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
@@ -48,6 +52,8 @@ public class Player {
         this.position = new ArrayList<>(STARTING_POSITIONS.get(num));
         this.numActiveBombs = 0;
         this.maxNumOfBombs = GameConfig.MAX_NUMBER_BOMBS_DEFAULT;
+        this.cells = new ArrayList<>();
+        this.grid = new Table();
     }
 
     public void updateImage(String charColor) {
