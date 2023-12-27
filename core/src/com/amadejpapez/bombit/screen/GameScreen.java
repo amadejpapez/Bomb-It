@@ -88,6 +88,8 @@ public class GameScreen extends ScreenAdapter {
     private final Map<Integer, Label> killLabels = new HashMap<>();
     private final Label timeLabel = new Label("", skin);
 
+    private float lastAiMove;
+
     public GameScreen(BombIt game) {
         this.game = game;
     }
@@ -128,6 +130,7 @@ public class GameScreen extends ScreenAdapter {
         // update
         updateStatus();
         checkBombs();
+        movingAi();
         gameplayStage.act(delta);
         hudStage.act(delta);
 
@@ -434,5 +437,34 @@ public class GameScreen extends ScreenAdapter {
             gameplayStage.addActor(createLost());
 
         GameManager.gameEnded = true;
+    }
+
+    public void movingAi() {
+        // move only every second
+        float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+        if (currentTime - lastAiMove < 0.5)
+            return;
+
+        for (Player player: GameManager.playerCharacters) {
+            if (player.num < GameManager.INSTANCE.getNumPhysicalPlayers())
+                continue;
+
+            List<Integer> possibleMoves = List.of(
+                Input.Keys.UP,
+                Input.Keys.DOWN,
+                Input.Keys.LEFT,
+                Input.Keys.RIGHT
+            );
+
+            inputMovePlayer(
+                    player,
+                    possibleMoves.get(ThreadLocalRandom.current().nextInt(possibleMoves.size()))
+            );
+
+            if (ThreadLocalRandom.current().nextInt(4) == 0)
+                inputCreateBomb(player);
+        }
+
+        lastAiMove = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
     }
 }
