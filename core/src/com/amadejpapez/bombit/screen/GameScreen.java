@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.assets.AssetDescriptors;
@@ -424,13 +425,13 @@ public class GameScreen extends ScreenAdapter {
 
         boolean physicalWon = false;
 
-        if (Collections.max(allKills) == GameManager.playerCharacters.get(0).getKills()) {
+        if (Objects.equals(Collections.max(allKills), allKills.get(0))) {
             physicalWon = true;
-            LeaderboardScreen.addResult(GameManager.playerCharacters.get(0).getKills());
+            LeaderboardScreen.addResult(allKills.get(0));
         }
-        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && Collections.max(allKills) == GameManager.playerCharacters.get(1).getKills()) {
+        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && Objects.equals(Collections.max(allKills), allKills.get(1))) {
             physicalWon = true;
-            LeaderboardScreen.addResult(GameManager.playerCharacters.get(1).getKills());
+            LeaderboardScreen.addResult(allKills.get(1));
         }
 
         if (physicalWon)
