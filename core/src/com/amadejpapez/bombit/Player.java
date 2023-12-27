@@ -67,13 +67,10 @@ public class Player {
         return kills;
     }
 
-    public static void playerHit(TextureRegionDrawable img, Integer hitBy) {
-        for (Player player: GameManager.playerCharacters) {
-            if (player.image == img) {
-                if (!Objects.equals(player.num, hitBy))
-                    GameManager.playerCharacters.get(hitBy).kills++;
-            }
-        }
+    public void hit(int hitBy) {
+        // called on the player that created the bomb!
+        if (!Objects.equals(num, hitBy))
+            GameManager.playerCharacters.get(hitBy).kills++;
     }
 
     public void inputMove(int keycode) {

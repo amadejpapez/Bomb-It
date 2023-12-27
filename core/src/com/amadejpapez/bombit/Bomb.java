@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public class Bomb {
     public Integer createdByPlayer;
@@ -41,7 +40,7 @@ public class Bomb {
 
     public static Bomb getBombByPosition(List<Bomb> bombs, List<Integer> pos) {
         for (Bomb bomb : bombs) {
-            if (Objects.equals(bomb.position.get(0), pos.get(0)) && Objects.equals(bomb.position.get(1), pos.get(1)))
+            if (bomb.position.equals(pos))
                 return bomb;
         }
         return null;
@@ -70,8 +69,11 @@ public class Bomb {
                     TextureRegionDrawable drawTmp = (TextureRegionDrawable) cellTmp.getDrawable();
                     if (Arrays.asList(GameScreen.obstacles).contains(drawTmp.getRegion()))
                         cellTmp.setDrawable(Assets.empty);
-                    if (Player.characterImages.containsValue(drawTmp))
-                        Player.playerHit(drawTmp, bomb.createdByPlayer);
+
+                    for (Player player: GameManager.playerCharacters) {
+                        if (player.position.equals(loc))
+                            player.hit(bomb.createdByPlayer);
+                    }
                 }
 
                 grid.getCell(cells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(Assets.empty);
