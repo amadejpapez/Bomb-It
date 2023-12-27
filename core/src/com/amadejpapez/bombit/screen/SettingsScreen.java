@@ -2,21 +2,17 @@ package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.GameManager;
-import com.amadejpapez.bombit.assets.AssetDescriptors;
-import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -29,9 +25,7 @@ public class SettingsScreen extends ScreenAdapter {
     private final BombIt game;
 
     private Viewport viewport;
-    private TextureAtlas gameplayAtlas;
     private Stage stage;
-    private Skin skin;
 
     private TextButton onePhysicalPlayer;
     private TextButton twoPhysicalPlayers;
@@ -49,15 +43,12 @@ public class SettingsScreen extends ScreenAdapter {
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
         stage = new Stage(viewport, game.getBatch());
 
-        skin = Assets.assetManager.get(AssetDescriptors.SKIN);
-        gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
-
-        onePhysicalPlayer = new TextButton("1", skin);
-        twoPhysicalPlayers = new TextButton("2", skin);
+        onePhysicalPlayer = new TextButton("1", Assets.skin);
+        twoPhysicalPlayers = new TextButton("2", Assets.skin);
 
         CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
         checkBoxStyle.fontColor = Color.BLACK;
-        checkBoxStyle.font = Assets.assetManager.get(AssetDescriptors.FONT);
+        checkBoxStyle.font = Assets.font;
 
         computerPlayersEnabled = new CheckBox("On", checkBoxStyle);
         musicEnabled = new CheckBox("On", checkBoxStyle);
@@ -95,18 +86,18 @@ public class SettingsScreen extends ScreenAdapter {
     private Actor createUi() {
         Table table = new Table();
         table.defaults().pad(20);
-        table.setBackground(new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND)));
+        table.setBackground(new TextureRegionDrawable(Assets.background));
 
         Table grid = new Table();
         grid.defaults().padLeft(30).padRight(30);
 
         // TITLE
-        Label tmpLabel = new Label("Gameplay", skin);
+        Label tmpLabel = new Label("Gameplay", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         grid.add(tmpLabel).padBottom(50).colspan(3).row();
 
         // PHYSICAL PLAYERS
-        tmpLabel = new Label("Number of physical players:", skin);
+        tmpLabel = new Label("Number of physical players:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel).left();
 
@@ -133,7 +124,7 @@ public class SettingsScreen extends ScreenAdapter {
         grid.add(tablePlayers).padBottom(5).row();
 
         // COMPUTER PLAYERS
-        tmpLabel = new Label("Add computer players:", skin);
+        tmpLabel = new Label("Add computer players:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel).left();
 
@@ -147,7 +138,7 @@ public class SettingsScreen extends ScreenAdapter {
         grid.add(computerPlayersEnabled).colspan(2).padBottom(5).row();
 
         // MUSIC
-        tmpLabel = new Label("Music:", skin);
+        tmpLabel = new Label("Music:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel).left();
 
@@ -162,7 +153,7 @@ public class SettingsScreen extends ScreenAdapter {
         grid.add(musicEnabled).colspan(2).padBottom(5).row();
 
         // SOUNDS
-        tmpLabel = new Label("Sounds:", skin);
+        tmpLabel = new Label("Sounds:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel).left();
 
@@ -176,7 +167,7 @@ public class SettingsScreen extends ScreenAdapter {
         grid.add(soundsEnabled).colspan(2).padBottom(5).row();
 
         // CONTINUE
-        TextButton playButton = new TextButton("Continue", skin);
+        TextButton playButton = new TextButton("Continue", Assets.skin);
         playButton.setColor(Color.ORANGE);
         playButton.addListener(new ClickListener() {
             @Override

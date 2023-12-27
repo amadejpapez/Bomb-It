@@ -4,13 +4,10 @@ import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,8 +16,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import com.amadejpapez.bombit.assets.AssetDescriptors;
-import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.config.GameConfig;
 
@@ -28,9 +23,7 @@ public class MenuScreen extends ScreenAdapter {
     private final BombIt game;
 
     private Viewport viewport;
-    private TextureAtlas gameplayAtlas;
     private Stage stage;
-    private Skin skin;
 
     public MenuScreen(BombIt game) {
         this.game = game;
@@ -40,9 +33,6 @@ public class MenuScreen extends ScreenAdapter {
     public void show() {
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
         stage = new Stage(viewport, game.getBatch());
-
-        skin = Assets.assetManager.get(AssetDescriptors.SKIN);
-        gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
         stage.addActor(createUi());
         Gdx.input.setInputProcessor(stage);
@@ -73,7 +63,7 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private Actor createTitle() {
-        Image title = new Image(gameplayAtlas.findRegion(AssetRegionNames.TITLE));
+        Image title = new Image(Assets.title);
         title.setPosition(viewport.getWorldWidth() / 2f - title.getWidth() / 2f,
                 viewport.getWorldHeight() - title.getHeight() - 100f);
         return title;
@@ -83,10 +73,9 @@ public class MenuScreen extends ScreenAdapter {
         Table table = new Table();
         table.defaults().pad(20).padTop(150);
 
-        TextureRegion backgroundRegion = gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND);
-        table.setBackground(new TextureRegionDrawable(backgroundRegion));
+        table.setBackground(new TextureRegionDrawable(Assets.background));
 
-        TextButton playButton = new TextButton("Play", skin);
+        TextButton playButton = new TextButton("Play", Assets.skin);
         playButton.setColor(Color.ORANGE);
         playButton.addListener(new ClickListener() {
             @Override
@@ -95,7 +84,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        TextButton leaderboardButton = new TextButton("Leaderboard", skin);
+        TextButton leaderboardButton = new TextButton("Leaderboard", Assets.skin);
         leaderboardButton.setColor(Color.ORANGE);
         leaderboardButton.addListener(new ClickListener() {
             @Override
@@ -104,7 +93,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        TextButton quitButton = new TextButton("Quit", skin);
+        TextButton quitButton = new TextButton("Quit", Assets.skin);
         quitButton.setColor(Color.ORANGE);
         quitButton.addListener(new ClickListener() {
             @Override

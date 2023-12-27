@@ -1,5 +1,6 @@
 package com.amadejpapez.bombit;
 
+import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.amadejpapez.bombit.screen.GameScreen;
 import com.badlogic.gdx.Input;
@@ -49,14 +50,14 @@ public class Bomb {
     public static boolean isBombCellEmpty(int x, int y) {
         CellActor cell = Bomb.grid.getCell(cells.get(x).get(y)).getActor();
         TextureRegion cellImg = ((TextureRegionDrawable) cell.getDrawable()).getRegion();
-        return cellImg.equals(GameScreen.empty);
+        return cellImg.equals(Assets.empty);
     }
 
     public static void addNew(Player player) {
         if (player.numActiveBombs >= player.maxNumOfBombs)
             return;
 
-        grid.getCell(cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(GameScreen.bomb);
+        grid.getCell(cells.get(player.position.get(0)).get(player.position.get(1))).getActor().setDrawable(Assets.bomb);
 
         float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
 
@@ -80,16 +81,16 @@ public class Bomb {
                     CellActor cellTmp = GameScreen.cellGrid.getCell(GameScreen.cells.get(loc.get(0)).get(loc.get(1))).getActor();
                     TextureRegionDrawable drawTmp = (TextureRegionDrawable) cellTmp.getDrawable();
                     if (Arrays.asList(GameScreen.obstacles).contains(drawTmp.getRegion()))
-                        cellTmp.setDrawable(GameScreen.empty);
+                        cellTmp.setDrawable(Assets.empty);
                     if (Player.characterImages.containsValue(drawTmp))
                         Player.playerHit(drawTmp, bomb.createdByPlayer);
                 }
 
-                grid.getCell(cells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(GameScreen.empty);
+                grid.getCell(cells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(Assets.empty);
 //                bombCell.setActor(explosionEffectActor);
 
                 if (GameManager.INSTANCE.getSoundsEnabled())
-                    GameScreen.explosionSound.play();
+                    Assets.explosionSound.play();
 //                explosionEffect.setPosition(bomb.getX(), bomb.getY());
 //                explosionEffect.start();
                 GameManager.playerCharacters.get(bomb.createdByPlayer).numActiveBombs--;
@@ -111,8 +112,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow + 1, tmpCol)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow + 1, tmpCol)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(GameScreen.empty);
-                grid.getCell(cells.get(tmpRow + 1).get(tmpCol)).getActor().setDrawable(GameScreen.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
+                grid.getCell(cells.get(tmpRow + 1).get(tmpCol)).getActor().setDrawable(Assets.bomb);
                 tmpBomb.position = List.of(tmpRow + 1, tmpCol);
                 tmpRow++;
             }
@@ -121,8 +122,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow, tmpCol + 1)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow, tmpCol + 1)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(GameScreen.empty);
-                grid.getCell(cells.get(tmpRow).get(tmpCol + 1)).getActor().setDrawable(GameScreen.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
+                grid.getCell(cells.get(tmpRow).get(tmpCol + 1)).getActor().setDrawable(Assets.bomb);
                 tmpBomb.position = List.of(tmpRow, tmpCol + 1);
                 tmpCol++;
             }
@@ -131,8 +132,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow, tmpCol - 1)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow, tmpCol - 1)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(GameScreen.empty);
-                grid.getCell(cells.get(tmpRow).get(tmpCol - 1)).getActor().setDrawable(GameScreen.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
+                grid.getCell(cells.get(tmpRow).get(tmpCol - 1)).getActor().setDrawable(Assets.bomb);
                 tmpBomb.position = List.of(tmpRow, tmpCol - 1);
                 tmpCol--;
             }
@@ -141,8 +142,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow - 1, tmpCol)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow - 1, tmpCol)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(GameScreen.empty);
-                grid.getCell(cells.get(tmpRow - 1).get(tmpCol)).getActor().setDrawable(GameScreen.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
+                grid.getCell(cells.get(tmpRow - 1).get(tmpCol)).getActor().setDrawable(Assets.bomb);
                 tmpBomb.position = List.of(tmpRow - 1, tmpCol);
                 tmpRow--;
             }

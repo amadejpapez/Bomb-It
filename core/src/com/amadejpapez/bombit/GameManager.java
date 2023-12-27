@@ -1,12 +1,9 @@
 package com.amadejpapez.bombit;
 
-import com.amadejpapez.bombit.assets.AssetDescriptors;
 import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +29,6 @@ public class GameManager {
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
     private static final String MUSIC_ENABLED = "music_enabled";
     private static final String SOUNDS_ENABLED = "sounds_enabled";
-
-    public static final Music startMusic = Assets.assetManager.get(AssetDescriptors.START_MUSIC);
-    public static final Music gameMusic = Assets.assetManager.get(AssetDescriptors.GAME_MUSIC);
 
     public static Boolean gameEnded = false;
 
@@ -118,21 +112,21 @@ public class GameManager {
 
     public void playStartMusic() {
         if (GameManager.INSTANCE.getMusicEnabled()) {
-            GameManager.gameMusic.stop();
-            GameManager.startMusic.setLooping(true);
-            GameManager.startMusic.play();
+            Assets.gameMusic.stop();
+            Assets.startMusic.setLooping(true);
+            Assets.startMusic.play();
         } else {
-            GameManager.startMusic.stop();
+            Assets.startMusic.stop();
         }
     }
 
     public void playGameMusic() {
         if (GameManager.INSTANCE.getMusicEnabled()) {
-            GameManager.startMusic.stop();
-            GameManager.gameMusic.setLooping(true);
-            GameManager.gameMusic.play();
+            Assets.startMusic.stop();
+            Assets.gameMusic.setLooping(true);
+            Assets.gameMusic.play();
         } else {
-            GameManager.gameMusic.stop();
+            Assets.gameMusic.stop();
         }
     }
 

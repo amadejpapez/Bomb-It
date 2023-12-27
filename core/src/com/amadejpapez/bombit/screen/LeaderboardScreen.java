@@ -6,13 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -22,8 +19,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import com.amadejpapez.bombit.assets.AssetDescriptors;
-import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.config.GameConfig;
 
@@ -82,13 +77,9 @@ public class LeaderboardScreen extends ScreenAdapter {
         Table table = new Table();
         table.defaults().pad(20);
 
-        Skin uiSkin = Assets.assetManager.get(AssetDescriptors.SKIN);
-        TextureAtlas gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
+        table.setBackground(new TextureRegionDrawable(Assets.background));
 
-        TextureRegion backgroundRegion = gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND);
-        table.setBackground(new TextureRegionDrawable(backgroundRegion));
-
-        TextButton backButton = new TextButton("Back", uiSkin);
+        TextButton backButton = new TextButton("Back", Assets.skin);
         backButton.setColor(Color.ORANGE);
         backButton.addListener(new ClickListener() {
             @Override
@@ -97,31 +88,30 @@ public class LeaderboardScreen extends ScreenAdapter {
             }
         });
 
-        Table contentTable = new Table(uiSkin);
+        Table contentTable = new Table(Assets.skin);
 
-        TextureRegion menuBackground = gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND_LB);
-        contentTable.setBackground(new TextureRegionDrawable(menuBackground));
+        contentTable.setBackground(new TextureRegionDrawable(Assets.backgroundLb));
 
         Label tmpLabel;
 
-        tmpLabel = new Label("Leaderboard", uiSkin);
+        tmpLabel = new Label("Leaderboard", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
 
-        tmpLabel = new Label("Player:", uiSkin);
+        tmpLabel = new Label("Player:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         contentTable.add(tmpLabel).left();
 
-        tmpLabel = new Label("Num of kills:", uiSkin);
+        tmpLabel = new Label("Num of kills:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         contentTable.add(tmpLabel).right().row();
 
         for (int i = 0; i < 7; i++) {
-            tmpLabel = new Label(results.get(i).name, uiSkin);
+            tmpLabel = new Label(results.get(i).name, Assets.skin);
             tmpLabel.setColor(Color.BLACK);
             contentTable.add(tmpLabel).left().padRight(20);
 
-            tmpLabel = new Label(results.get(i).score.toString(), uiSkin);
+            tmpLabel = new Label(results.get(i).score.toString(), Assets.skin);
             tmpLabel.setColor(Color.BLACK);
             contentTable.add(tmpLabel).right().row();
         }

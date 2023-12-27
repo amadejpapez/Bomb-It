@@ -2,10 +2,8 @@ package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.GameManager;
-import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -17,14 +15,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.amadejpapez.bombit.assets.AssetDescriptors;
 import com.amadejpapez.bombit.config.GameConfig;
 
 public class IntroScreen extends ScreenAdapter {
     private final BombIt game;
 
     private Viewport viewport;
-    private TextureAtlas gameplayAtlas;
     private Stage stage;
 
     public static final float INTRO_DURATION_IN_SEC = 3f;   // duration of the (intro) animation
@@ -39,12 +35,7 @@ public class IntroScreen extends ScreenAdapter {
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
         stage = new Stage(viewport, game.getBatch());
 
-        Assets.assetManager.load(AssetDescriptors.FONT);
-        Assets.assetManager.load(AssetDescriptors.SKIN);
-        Assets.assetManager.load(AssetDescriptors.GAMEPLAY);
-        Assets.assetManager.finishLoading();
-
-        gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
+        Assets.load();
 
         stage.addActor(createBackground());
         stage.addActor(createAnimationTitle());
@@ -89,14 +80,14 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createBackground() {
-        Image bg = new Image(gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND));
+        Image bg = new Image(Assets.background);
         bg.setSize(GameConfig.WIDTH, GameConfig.HEIGHT);
         bg.setPosition(0, 0);
         return bg;
     }
 
     private Actor createAnimationTitle() {
-        Image title = new Image(gameplayAtlas.findRegion(AssetRegionNames.TITLE));
+        Image title = new Image(Assets.title);
 
         // set positions x, y to center the image to the center of the window
         float posX = (viewport.getWorldWidth() / 2f) - title.getWidth() / 2f;
@@ -121,7 +112,7 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createAnimationPlayerBlack() {
-        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK));
+        Image player = new Image(Assets.playerBlack);
 
         float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
         float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
@@ -143,7 +134,7 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createAnimationPlayerGreen() {
-        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN));
+        Image player = new Image(Assets.playerGreen);
 
         float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
         float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
@@ -165,7 +156,7 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createAnimationPlayerOrange() {
-        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE));
+        Image player = new Image(Assets.playerOrange);
 
         float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
         float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
@@ -187,7 +178,7 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createAnimationPlayerPink() {
-        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PINK));
+        Image player = new Image(Assets.playerPink);
 
         float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
         float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
@@ -209,7 +200,7 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createAnimationPlayerBlue() {
-        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE));
+        Image player = new Image(Assets.playerBlue);
 
         float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
         float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);
@@ -231,7 +222,7 @@ public class IntroScreen extends ScreenAdapter {
     }
 
     private Actor createAnimationPlayerPurple() {
-        Image player = new Image(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE));
+        Image player = new Image(Assets.playerPurple);
 
         float posX = ThreadLocalRandom.current().nextFloat(0f, GameConfig.WIDTH / 2f);
         float posY = ThreadLocalRandom.current().nextFloat(0f, GameConfig.HEIGHT / 2f);

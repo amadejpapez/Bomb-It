@@ -3,22 +3,17 @@ package com.amadejpapez.bombit.screen;
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.Player;
-import com.amadejpapez.bombit.assets.AssetDescriptors;
-import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -35,9 +30,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
     private final BombIt game;
 
     private Viewport viewport;
-    private TextureAtlas gameplayAtlas;
     private Stage stage;
-    private Skin skin;
 
     private Map<String, TextureRegionDrawable> characters;
     private Image selectedPlayer;
@@ -54,9 +47,6 @@ public class SelectCharacterScreen extends ScreenAdapter {
     public void show() {
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
         stage = new Stage(viewport, game.getBatch());
-
-        skin = Assets.assetManager.get(AssetDescriptors.SKIN);
-        gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
 
         // remove image that was selected for the first player
         characters = new HashMap<>(Player.characterImages);
@@ -96,11 +86,10 @@ public class SelectCharacterScreen extends ScreenAdapter {
         Table table = new Table();
         table.defaults().pad(20);
 
-        TextureRegion backgroundRegion = gameplayAtlas.findRegion(AssetRegionNames.BACKGROUND);
-        table.setBackground(new TextureRegionDrawable(backgroundRegion));
+        table.setBackground(new TextureRegionDrawable(Assets.background));
 
         // SELECT CHARACTER
-        Label tmpLabel = new Label("Select character for player " + (numPlayer + 1), skin);
+        Label tmpLabel = new Label("Select character for player " + (numPlayer + 1), Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         table.add(tmpLabel).padRight(20).row();
 
@@ -126,7 +115,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         Table tableStatus = new Table();
         tableStatus.defaults();
 
-        tmpLabel = new Label("Selected:", skin);
+        tmpLabel = new Label("Selected:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         tableStatus.add(tmpLabel).padRight(20);
 
@@ -137,7 +126,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         // BUTTON
         TextButton playButton;
         if (Objects.equals(numPlayer + 1, GameManager.INSTANCE.getNumPhysicalPlayers())) {
-            playButton = new TextButton("Start game", skin);
+            playButton = new TextButton("Start game", Assets.skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {
                 @Override
@@ -147,7 +136,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
                 }
             });
         } else {
-            playButton = new TextButton("Continue", skin);
+            playButton = new TextButton("Continue", Assets.skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {
                 @Override

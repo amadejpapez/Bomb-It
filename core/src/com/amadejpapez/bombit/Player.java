@@ -1,10 +1,7 @@
 package com.amadejpapez.bombit;
 
-import com.amadejpapez.bombit.assets.AssetDescriptors;
-import com.amadejpapez.bombit.assets.AssetRegionNames;
 import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -26,15 +23,13 @@ public class Player {
     public List<List<CellActor>> cells;
     public Table grid;
 
-    private static final TextureAtlas gameplayAtlas = Assets.assetManager.get(AssetDescriptors.GAMEPLAY);
-
     public static final Map<String, TextureRegionDrawable> characterImages = Map.ofEntries(
-            Map.entry("blue", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE))),
-            Map.entry("black", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK))),
-            Map.entry("green", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN))),
-            Map.entry("pink", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PINK))),
-            Map.entry("orange", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_ORANGE))),
-            Map.entry("purple", new TextureRegionDrawable(gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE)))
+            Map.entry("blue", new TextureRegionDrawable(Assets.playerBlue)),
+            Map.entry("black", new TextureRegionDrawable(Assets.playerBlack)),
+            Map.entry("green", new TextureRegionDrawable(Assets.playerGreen)),
+            Map.entry("pink", new TextureRegionDrawable(Assets.playerPink)),
+            Map.entry("orange", new TextureRegionDrawable(Assets.playerOrange)),
+            Map.entry("purple", new TextureRegionDrawable(Assets.playerPurple))
     );
 
     public static final List<List<Integer>> STARTING_POSITIONS = List.of(
