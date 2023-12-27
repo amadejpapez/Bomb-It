@@ -304,24 +304,18 @@ public class GameScreen extends ScreenAdapter {
                         player.cells.get(row).get(column).setDrawable(player.image);
                 }
 
-                if (row == 0 || row == GameConfig.NUM_ROWS - 1 || column == 0 || column == GameConfig.NUM_COLUMNS - 1)
+                if (row == 0 || row == GameConfig.NUM_ROWS - 1 || column == 0 || column == GameConfig.NUM_COLUMNS - 1) {
                     cells.get(row).get(column).setDrawable(Assets.coneRed);
-                else if (GameConfig.LOC_FIXED_OBSTACLES.contains(location))
+                } else if (GameConfig.LOC_FIXED_OBSTACLES.contains(location)) {
                     cells.get(row).get(column).setDrawable(fixedObstacles[ThreadLocalRandom.current().nextInt(fixedObstacles.length)]);
-                else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location)) {
+                } else if (!GameConfig.LOC_SKIP_OBSTACLES.contains(location)) {
                     int num = ThreadLocalRandom.current().nextInt(obstacles.length + 3);
                     if (num < obstacles.length) {
                         cells.get(row).get(column).setDrawable(obstacles[num]);
-                    } else {
-                        num = ThreadLocalRandom.current().nextInt(5);
-                        if (num == 0) {
-                            cells.get(row).get(column).setDrawable(Assets.bonusBombs);
-                        } else {
-                            num = ThreadLocalRandom.current().nextInt(10);
-                            if (num == 0) {
-                                cells.get(row).get(column).setDrawable(Assets.bonusHand);
-                            }
-                        }
+                    } else if (ThreadLocalRandom.current().nextInt(6) == 0) {
+                        cells.get(row).get(column).setDrawable(Assets.bonusBombs);
+                    } else if (ThreadLocalRandom.current().nextInt(13) == 0) {
+                        cells.get(row).get(column).setDrawable(Assets.bonusHand);
                     }
                 }
 
