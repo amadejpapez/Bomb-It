@@ -82,6 +82,41 @@ public class GameScreen extends ScreenAdapter {
 
         hudStage.addActor(createGridHud());
 
+        gameplayStage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (GameManager.gameEnded)
+                    return false;
+
+                // PLAYER 1
+                if (keycode == Input.Keys.UP
+                        || keycode == Input.Keys.DOWN
+                        || keycode == Input.Keys.LEFT
+                        || keycode == Input.Keys.RIGHT
+                ) {
+                    GameManager.playerCharacters.get(0).inputMove(keycode);
+                } else if (keycode == Input.Keys.SPACE) {
+                    GameManager.playerCharacters.get(0).inputAddBomb();
+                }
+
+                // PLAYER 2
+                if (GameManager.INSTANCE.getNumPhysicalPlayers() == 1)
+                    return false;
+
+                if (keycode == Input.Keys.W
+                        || keycode == Input.Keys.S
+                        || keycode == Input.Keys.A
+                        || keycode == Input.Keys.D
+                ) {
+                    GameManager.playerCharacters.get(1).inputMove(keycode);
+                } else if (keycode == Input.Keys.ENTER) {
+                    GameManager.playerCharacters.get(1).inputAddBomb();
+                }
+
+                return false;
+            }
+        });
+
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
         GameManager.INSTANCE.playGameMusic();
@@ -300,41 +335,6 @@ public class GameScreen extends ScreenAdapter {
         table.padRight(3);
         table.setFillParent(true);
         table.pack();
-
-        gameplayStage.addListener(new InputListener() {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                if (GameManager.gameEnded)
-                    return false;
-
-                // PLAYER 1
-                if (keycode == Input.Keys.UP
-                        || keycode == Input.Keys.DOWN
-                        || keycode == Input.Keys.LEFT
-                        || keycode == Input.Keys.RIGHT
-                ) {
-                    GameManager.playerCharacters.get(0).inputMove(keycode);
-                } else if (keycode == Input.Keys.SPACE) {
-                    GameManager.playerCharacters.get(0).inputAddBomb();
-                }
-
-                // PLAYER 2
-                if (GameManager.INSTANCE.getNumPhysicalPlayers() == 1)
-                    return false;
-
-                if (keycode == Input.Keys.W
-                        || keycode == Input.Keys.S
-                        || keycode == Input.Keys.A
-                        || keycode == Input.Keys.D
-                ) {
-                    GameManager.playerCharacters.get(1).inputMove(keycode);
-                } else if (keycode == Input.Keys.ENTER) {
-                    GameManager.playerCharacters.get(1).inputAddBomb();
-                }
-
-                return false;
-            }
-        });
 
         return table;
     }
