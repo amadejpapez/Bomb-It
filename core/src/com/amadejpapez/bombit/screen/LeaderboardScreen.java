@@ -106,7 +106,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BLACK);
         contentTable.add(tmpLabel).right().row();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < results.size(); i++) {
             tmpLabel = new Label(results.get(i).name, Assets.skin);
             tmpLabel.setColor(Color.BLACK);
             contentTable.add(tmpLabel).left().padRight(20);
