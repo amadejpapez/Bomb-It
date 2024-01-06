@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
+    public String username;
     public Integer num;
     private Integer kills;
     public List<Integer> position;
