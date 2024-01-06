@@ -70,7 +70,7 @@ public class Bomb {
                     if (Arrays.asList(GameScreen.obstacles).contains(drawTmp.getRegion()))
                         cellTmp.setDrawable(Assets.empty);
 
-                    for (Player player : GameManager.playerCharacters) {
+                    for (Player player : GameManager.players) {
                         if (player.position.equals(loc))
                             player.hit(bomb.createdByPlayer);
                     }
@@ -83,7 +83,7 @@ public class Bomb {
                     Assets.explosionSound.play();
 //                explosionEffect.setPosition(bomb.getX(), bomb.getY());
 //                explosionEffect.start();
-                GameManager.playerCharacters.get(bomb.createdByPlayer).numActiveBombs--;
+                GameManager.players.get(bomb.createdByPlayer).numActiveBombs--;
                 it.remove();
             }
         }

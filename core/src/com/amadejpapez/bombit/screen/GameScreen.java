@@ -74,7 +74,7 @@ public class GameScreen extends ScreenAdapter {
 
         gameplayStage.addActor(createGridBackground());
         gameplayStage.addActor(createGridBombs());
-        for (Player player : GameManager.playerCharacters)
+        for (Player player : GameManager.players)
             gameplayStage.addActor(createGridPlayer(player));
         gameplayStage.addActor(createGridMain());
         gameplayStage.addActor(createMiddle());
@@ -94,9 +94,9 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.LEFT
                         || keycode == Input.Keys.RIGHT
                 ) {
-                    GameManager.playerCharacters.get(0).inputMove(keycode);
+                    GameManager.players.get(0).inputMove(keycode);
                 } else if (keycode == Input.Keys.SPACE) {
-                    GameManager.playerCharacters.get(0).inputAddBomb();
+                    GameManager.players.get(0).inputAddBomb();
                 }
 
                 // PLAYER 2
@@ -108,9 +108,9 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.A
                         || keycode == Input.Keys.D
                 ) {
-                    GameManager.playerCharacters.get(1).inputMove(keycode);
+                    GameManager.players.get(1).inputMove(keycode);
                 } else if (keycode == Input.Keys.ENTER) {
-                    GameManager.playerCharacters.get(1).inputAddBomb();
+                    GameManager.players.get(1).inputAddBomb();
                 }
 
                 return false;
@@ -249,7 +249,7 @@ public class GameScreen extends ScreenAdapter {
         final Table table = new Table();
         table.padLeft(20);
 
-        for (Player player : GameManager.playerCharacters) {
+        for (Player player : GameManager.players) {
             Image tmpImg = new Image(player.image);
             table.add(tmpImg).height(60).width(50).left().row();
 
@@ -270,7 +270,7 @@ public class GameScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new IntroScreen(game));
                 GameManager.activeBombs.clear();
-                GameManager.playerCharacters.clear();
+                GameManager.players.clear();
             }
         });
 
@@ -299,7 +299,7 @@ public class GameScreen extends ScreenAdapter {
             for (int column = 0; column < GameConfig.NUM_COLUMNS; column++) {
                 List<Integer> location = List.of(row, column);
 
-                for (Player player : GameManager.playerCharacters) {
+                for (Player player : GameManager.players) {
                     if (row == player.position.get(0) && column == player.position.get(1))
                         player.cells.get(row).get(column).setDrawable(player.image);
                 }
@@ -337,7 +337,7 @@ public class GameScreen extends ScreenAdapter {
         if (GameManager.gameEnded)
             return;
 
-        for (Player player : GameManager.playerCharacters)
+        for (Player player : GameManager.players)
             killLabels.get(player.num).setText("Kills: " + player.getKills());
 
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
@@ -350,18 +350,18 @@ public class GameScreen extends ScreenAdapter {
 
     public void timeIsUp() {
         ArrayList<Integer> allKills = new ArrayList<>();
-        for (Player player : GameManager.playerCharacters)
+        for (Player player : GameManager.players)
             allKills.add(player.getKills());
 
         boolean physicalWon = false;
 
         if (Objects.equals(Collections.max(allKills), allKills.get(0))) {
             physicalWon = true;
-            LeaderboardScreen.addResult(GameManager.playerCharacters.get(0));
+            LeaderboardScreen.addResult(GameManager.players.get(0));
         }
         if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && Objects.equals(Collections.max(allKills), allKills.get(1))) {
             physicalWon = true;
-            LeaderboardScreen.addResult(GameManager.playerCharacters.get(1));
+            LeaderboardScreen.addResult(GameManager.players.get(1));
         }
 
         if (physicalWon)
@@ -378,7 +378,7 @@ public class GameScreen extends ScreenAdapter {
             return;
         lastAiMove = currentTime;
 
-        for (Player player : GameManager.playerCharacters)
+        for (Player player : GameManager.players)
             player.moveAi();
     }
 

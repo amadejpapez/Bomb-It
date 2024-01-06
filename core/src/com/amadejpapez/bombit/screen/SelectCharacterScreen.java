@@ -52,7 +52,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         // remove image that was selected for the first player
         characters = new HashMap<>(Player.characterImages);
         if (player.num == 1)
-            characters.remove(GameManager.playerCharacters.get(0).character);
+            characters.remove(GameManager.players.get(0).character);
 
         selectedImage = new Image(player.image);
 
@@ -170,7 +170,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     player.username = usernameInput.getText();
-                    game.setScreen(new SelectCharacterScreen(game, GameManager.playerCharacters.get(1)));
+                    game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(1)));
                 }
             });
         }

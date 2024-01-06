@@ -20,7 +20,7 @@ public class GameManager {
     private static Boolean musicEnabled;
     private static Boolean soundsEnabled;
 
-    public static List<Player> playerCharacters;
+    public static List<Player> players;
     public static List<Bomb> activeBombs;
 
     public static float gameStartedTime;
@@ -40,7 +40,7 @@ public class GameManager {
         musicEnabled = PREFS.getBoolean(MUSIC_ENABLED, true);
         soundsEnabled = PREFS.getBoolean(SOUNDS_ENABLED, true);
 
-        playerCharacters = new ArrayList<>();
+        players = new ArrayList<>();
         activeBombs = new ArrayList<>();
     }
 
@@ -53,7 +53,7 @@ public class GameManager {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
             } while (characterAlreadyInUse(tmp));
 
-            playerCharacters.add(new Player(i, tmp));
+            players.add(new Player(i, tmp));
         }
     }
 
@@ -61,12 +61,12 @@ public class GameManager {
         // called after user selects his physical player characters
         // this is for players that are computers
         String tmp;
-        for (int i = playerCharacters.size(); i < GameConfig.MAX_NUMBER_PLAYERS; i++) {
+        for (int i = players.size(); i < GameConfig.MAX_NUMBER_PLAYERS; i++) {
             do {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
             } while (characterAlreadyInUse(tmp));
 
-            playerCharacters.add(new Player(i, tmp));
+            players.add(new Player(i, tmp));
         }
     }
 
@@ -131,7 +131,7 @@ public class GameManager {
     }
 
     public static boolean characterAlreadyInUse(String character) {
-        for (Player player : playerCharacters) {
+        for (Player player : players) {
             if (player.image == Player.characterImages.get(character))
                 return true;
         }

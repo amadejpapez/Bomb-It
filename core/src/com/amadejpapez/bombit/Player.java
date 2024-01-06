@@ -75,7 +75,7 @@ public class Player {
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(image);
 
         if (!Objects.equals(num, hitBy))
-            GameManager.playerCharacters.get(hitBy).kills++;
+            GameManager.players.get(hitBy).kills++;
     }
 
     public void inputMove(int keycode) {
