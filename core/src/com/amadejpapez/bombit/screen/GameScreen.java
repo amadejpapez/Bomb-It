@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.CellActor;
@@ -353,18 +352,19 @@ public class GameScreen extends ScreenAdapter {
         for (Player player : GameManager.players)
             allKills.add(player.getKills());
 
-        boolean physicalWon = false;
+        int maxKill = Collections.max(allKills);
+        // if everyone is at zero, no one wins
+        if (maxKill == 0)
+            maxKill = -1;
 
-        if (Objects.equals(Collections.max(allKills), allKills.get(0))) {
-            physicalWon = true;
-            LeaderboardScreen.addResult(GameManager.players.get(0));
-        }
-        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && Objects.equals(Collections.max(allKills), allKills.get(1))) {
-            physicalWon = true;
-            LeaderboardScreen.addResult(GameManager.players.get(1));
+        for (Player player : GameManager.players) {
+            if (player.getKills() == maxKill) {
+                killLabels.get(player.num).setText("Kills: " + player.getKills() + " *");
+                LeaderboardScreen.addResult(player);
+            }
         }
 
-        if (physicalWon)
+        if (maxKill == allKills.get(0) || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && maxKill == allKills.get(1)))
             gameplayStage.addActor(createWon());
         else
             gameplayStage.addActor(createLost());
