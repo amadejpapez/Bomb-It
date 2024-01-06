@@ -357,11 +357,11 @@ public class GameScreen extends ScreenAdapter {
 
         if (Objects.equals(Collections.max(allKills), allKills.get(0))) {
             physicalWon = true;
-            LeaderboardScreen.addResult(allKills.get(0));
+            LeaderboardScreen.addResult(GameManager.playerCharacters.get(0));
         }
         if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && Objects.equals(Collections.max(allKills), allKills.get(1))) {
             physicalWon = true;
-            LeaderboardScreen.addResult(allKills.get(1));
+            LeaderboardScreen.addResult(GameManager.playerCharacters.get(1));
         }
 
         if (physicalWon)

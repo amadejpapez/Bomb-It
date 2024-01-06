@@ -1,5 +1,6 @@
 package com.amadejpapez.bombit.screen;
 
+import com.amadejpapez.bombit.Player;
 import com.amadejpapez.bombit.Result;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
@@ -22,8 +23,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.config.GameConfig;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -98,16 +97,16 @@ public class LeaderboardScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BROWN);
         contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
 
-        tmpLabel = new Label("Player:", Assets.skin);
+        tmpLabel = new Label("Username:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
-        contentTable.add(tmpLabel).left();
+        contentTable.add(tmpLabel).padRight(50).left();
 
         tmpLabel = new Label("Num of kills:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         contentTable.add(tmpLabel).right().row();
 
         for (int i = 0; i < results.size(); i++) {
-            tmpLabel = new Label(results.get(i).name, Assets.skin);
+            tmpLabel = new Label(results.get(i).username, Assets.skin);
             tmpLabel.setColor(Color.BLACK);
             contentTable.add(tmpLabel).left().padRight(20);
 
@@ -126,13 +125,10 @@ public class LeaderboardScreen extends ScreenAdapter {
         return table;
     }
 
-    public static void addResult(Integer num) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy_H:m");
-        String name = "game_" + LocalDateTime.now().format(formatter);
-
+    public static void addResult(Player player) {
         Result tmp = new Result();
-        tmp.name = name;
-        tmp.score = num;
+        tmp.username = player.username;
+        tmp.score = player.getKills();
 
         results.add(tmp);
         saveJson();
