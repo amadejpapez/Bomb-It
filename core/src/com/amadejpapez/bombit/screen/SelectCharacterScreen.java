@@ -92,7 +92,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         // TITLE
         Label tmpLabel = new Label("Player " + (player.num + 1), Assets.skin);
         tmpLabel.setColor(Color.BROWN);
-        table.add(tmpLabel).padRight(20).row();
+        table.add(tmpLabel).padRight(20).padBottom(40).row();
 
         // USERNAME
         Table tableUsername = new Table();
@@ -107,14 +107,13 @@ public class SelectCharacterScreen extends ScreenAdapter {
         textFieldStyle.cursor = Assets.skin.get("default", TextFieldStyle.class).cursor;
         textFieldStyle.fontColor = Color.DARK_GRAY;
 
-        TextField test = new TextField("Guest", Assets.skin);
-        test.setMaxLength(15);
-        test.setStyle(textFieldStyle);
-        test.setFocusTraversal(true);
-        tableUsername.add(test).row();
+        TextField usernameInput = new TextField("Guest", Assets.skin);
+        usernameInput.setMaxLength(15);
+        usernameInput.setStyle(textFieldStyle);
+        tableUsername.add(usernameInput).row();
 
         tableUsername.center();
-        table.add(tableUsername).padBottom(0).row();
+        table.add(tableUsername).row();
 
         // SELECT CHARACTER
         Table tableCharacters = new Table();
@@ -159,7 +158,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    player.username = test.getText();
+                    player.username = usernameInput.getText();
                     GameManager.generateOtherPlayers();
                     game.setScreen(new GameScreen(game));
                 }
@@ -170,7 +169,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
             playButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    player.username = test.getText();
+                    player.username = usernameInput.getText();
                     game.setScreen(new SelectCharacterScreen(game, GameManager.playerCharacters.get(1)));
                 }
             });
