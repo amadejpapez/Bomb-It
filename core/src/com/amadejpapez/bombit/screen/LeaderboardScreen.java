@@ -91,7 +91,7 @@ public class LeaderboardScreen extends ScreenAdapter {
 
         Label tmpLabel;
 
-        tmpLabel = new Label("Leaderboard", Assets.skin);
+        tmpLabel = new Label("Leaderboard - Top 8", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
 
@@ -99,11 +99,14 @@ public class LeaderboardScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.DARK_GRAY);
         contentTable.add(tmpLabel).padRight(50).padBottom(10).left();
 
-        tmpLabel = new Label("Num of kills:", Assets.skin);
+        tmpLabel = new Label("Number of kills:", Assets.skin);
         tmpLabel.setColor(Color.DARK_GRAY);
         contentTable.add(tmpLabel).right().padBottom(10).row();
 
         for (int i = 0; i < results.size(); i++) {
+            if (i >= 8)
+                break;
+
             tmpLabel = new Label(results.get(i).username, Assets.skin);
             tmpLabel.setColor(Color.BLACK);
             contentTable.add(tmpLabel).left().padRight(20);
