@@ -70,7 +70,7 @@ public class Bomb {
                     if (Arrays.asList(GameScreen.obstacles).contains(drawTmp.getRegion()))
                         cellTmp.setDrawable(Assets.empty);
 
-                    for (Player player: GameManager.playerCharacters) {
+                    for (Player player : GameManager.playerCharacters) {
                         if (player.position.equals(loc))
                             player.hit(bomb.createdByPlayer);
                     }

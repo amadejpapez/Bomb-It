@@ -68,7 +68,11 @@ public class Player {
     }
 
     public void hit(int hitBy) {
-        // called on the player that created the bomb!
+        // move player to the start
+        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(Assets.empty);
+        this.position = new ArrayList<>(STARTING_POSITIONS.get(this.num));
+        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(image);
+
         if (!Objects.equals(num, hitBy))
             GameManager.playerCharacters.get(hitBy).kills++;
     }
