@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -88,13 +90,40 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         table.setBackground(new TextureRegionDrawable(Assets.background));
 
-        // SELECT CHARACTER
-        Label tmpLabel = new Label("Select character for player " + (numPlayer + 1), Assets.skin);
+        // TITLE
+        Label tmpLabel = new Label("Player " + (numPlayer + 1), Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         table.add(tmpLabel).padRight(20).row();
 
+        // USERNAME
+        Table tableUsername = new Table();
+        tableUsername.defaults();
+
+        tmpLabel = new Label("Enter username:", Assets.skin);
+        tmpLabel.setColor(Color.BLACK);
+        tableUsername.add(tmpLabel).padRight(20);
+
+        TextFieldStyle textFieldStyle = new TextFieldStyle();
+        textFieldStyle.font = Assets.skin.getFont("font");
+        textFieldStyle.cursor = Assets.skin.get("default", TextFieldStyle.class).cursor;
+        textFieldStyle.fontColor = Color.DARK_GRAY;
+
+        TextField test = new TextField("Guest", Assets.skin);
+        test.setMaxLength(15);
+        test.setStyle(textFieldStyle);
+        test.setFocusTraversal(true);
+        tableUsername.add(test).row();
+
+        tableUsername.center();
+        table.add(tableUsername).padBottom(0).row();
+
+        // SELECT CHARACTER
         Table tableCharacters = new Table();
         tableCharacters.defaults();
+
+        tmpLabel = new Label("Select character:", Assets.skin);
+        tmpLabel.setColor(Color.BLACK);
+        tableCharacters.add(tmpLabel).padRight(20);
 
         for (Map.Entry<String, TextureRegionDrawable> entry : characters.entrySet()) {
             ImageButton tmp = new ImageButton(entry.getValue());
@@ -109,7 +138,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
         }
 
         tableCharacters.center();
-        table.add(tableCharacters).row();
+        table.add(tableCharacters).padBottom(0).row();
 
         // STATUS
         Table tableStatus = new Table();
