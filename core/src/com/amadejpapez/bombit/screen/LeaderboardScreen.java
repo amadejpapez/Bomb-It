@@ -33,11 +33,10 @@ public class LeaderboardScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
 
-    private static List<Result> results = new ArrayList<>();
+    private static final List<Result> results = readJson();
 
     public LeaderboardScreen(BombIt game) {
         this.game = game;
-        loadJson();
     }
 
     @Override
@@ -88,7 +87,6 @@ public class LeaderboardScreen extends ScreenAdapter {
         });
 
         Table contentTable = new Table(Assets.skin);
-
         contentTable.setBackground(new TextureRegionDrawable(Assets.backgroundLb));
 
         Label tmpLabel;
@@ -142,7 +140,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         file.writeString(json.toJson(results), false);
     }
 
-    public void loadJson() {
+    public static List<Result> readJson() {
         FileHandle file = Gdx.files.local("leaderboard.json");
 
         if (!file.exists())
@@ -150,7 +148,9 @@ public class LeaderboardScreen extends ScreenAdapter {
 
         Json json = new Json();
 
-        results = json.fromJson(ArrayList.class, file);
-        results.sort(Comparator.comparing(Result::getScore).reversed());
+        List<Result> tmpResults = json.fromJson(ArrayList.class, file);
+        tmpResults.sort(Comparator.comparing(Result::getScore).reversed());
+
+        return tmpResults;
     }
 }
