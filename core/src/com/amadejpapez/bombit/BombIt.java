@@ -6,23 +6,23 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BombIt extends Game {
-	SpriteBatch batch;
+    SpriteBatch batch;
 
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		Assets.load();
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        Assets.load();
 
-		setScreen(new IntroScreen(this));
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		Assets.dispose();
-	}
+        setScreen(new IntroScreen(this));
+    }
 
-	public SpriteBatch getBatch() {
-		return batch;
-	}
+    @Override
+    public void dispose() {
+        batch.dispose();
+        Assets.dispose();
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
 }

@@ -89,9 +89,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         Table contentTable = new Table(Assets.skin);
         contentTable.setBackground(new TextureRegionDrawable(Assets.backgroundLb));
 
-        Label tmpLabel;
-
-        tmpLabel = new Label("Leaderboard - Top 8", Assets.skin);
+        Label tmpLabel = new Label("Leaderboard - Top 8", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
 
