@@ -66,7 +66,9 @@ public class GameManager {
                 tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
             } while (characterAlreadyInUse(tmp));
 
-            players.add(new Player(i, tmp));
+            Player newPlayer = new Player(i, tmp);
+            newPlayer.username = "Bot";
+            players.add(newPlayer);
         }
     }
 
