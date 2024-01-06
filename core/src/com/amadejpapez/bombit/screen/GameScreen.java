@@ -373,6 +373,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void moveAllAi() {
+        if (GameManager.gameEnded)
+            return;
+
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
         if (currentTime - lastAiMove < 0.5)
             return;
