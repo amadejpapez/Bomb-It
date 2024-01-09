@@ -411,7 +411,7 @@ public class GameScreen extends ScreenAdapter {
             return;
 
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-        if (currentTime - lastAiMove < 0.5)
+        if (currentTime - lastAiMove < 0.1)
             return;
         lastAiMove = currentTime;
 

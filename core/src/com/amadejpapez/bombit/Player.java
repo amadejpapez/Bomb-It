@@ -28,6 +28,9 @@ public class Player {
     public List<List<CellActor>> cells;
     public Table grid;
 
+    // used only for computer players
+    public List<Integer> previousMoves;
+
     public static final List<List<Integer>> STARTING_POSITIONS = List.of(
             List.of(1, 1),
             List.of(1, 15),
@@ -48,6 +51,7 @@ public class Player {
         this.cells = new ArrayList<>();
         this.grid = new Table();
         this.hasBonusHand = false;
+        this.previousMoves = new ArrayList<>();
     }
 
     public void updateImage(CellState newImage) {
@@ -63,6 +67,9 @@ public class Player {
     }
 
     public void hit(int hitBy) {
+        if (num == hitBy && isComputerPlayer())
+            return;
+
         // move player to the start
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
         this.position = new ArrayList<>(STARTING_POSITIONS.get(this.num));
@@ -77,7 +84,7 @@ public class Player {
         }
     }
 
-    public void inputMove(int keycode) {
+    public List<Integer> inputMoveGetNextCell(int keycode) {
         Integer nextRow = position.get(0);
         Integer nextCol = position.get(1);
 
@@ -89,6 +96,14 @@ public class Player {
             nextCol -= 1;
         else nextCol += 1;
 
+        return List.of(nextRow, nextCol);
+    }
+
+    public Boolean inputMove(int keycode) {
+        List<Integer> nextCellPos = inputMoveGetNextCell(keycode);
+        Integer nextRow = nextCellPos.get(0);
+        Integer nextCol = nextCellPos.get(1);
+
         // only move if the future cell is "empty"
         CellActor nextCell = GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor();
         if (!nextCell.isEmpty()) {
@@ -99,7 +114,7 @@ public class Player {
                 GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor().setState(CellState.EMPTY);
                 hasBonusHand = true;
             } else {
-                return;
+                return false;
             }
         }
 
@@ -107,7 +122,7 @@ public class Player {
         if (!Bomb.isBombCellEmpty(nextRow, nextCol)) {
             if (hasBonusHand)
                 Bomb.handleBonusHand(nextRow, nextCol, keycode);
-            return;
+            return false;
         }
 
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
@@ -122,6 +137,11 @@ public class Player {
             position.set(1, nextCol);
         else
             position.set(0, nextRow);
+
+        if (isComputerPlayer())
+            previousMoves.add(keycode);
+
+        return true;
     }
 
     public void inputAddBomb() {
@@ -144,10 +164,28 @@ public class Player {
                 Input.Keys.RIGHT
         );
 
-        inputMove(possibleMoves.get(ThreadLocalRandom.current().nextInt(possibleMoves.size())));
+        Integer randomMove = possibleMoves.get(ThreadLocalRandom.current().nextInt(possibleMoves.size()));
 
-        if (ThreadLocalRandom.current().nextInt(4) == 0)
-            inputAddBomb();
+        Boolean hasMoved = inputMove(randomMove);
+
+        // if player cannot move to the position
+        if (!hasMoved) {
+            List<Integer> nextCellPosition = inputMoveGetNextCell(randomMove);
+            CellState nextState = GameScreen.cellGrid.getCell(GameScreen.cells.get(nextCellPosition.get(0)).get(nextCellPosition.get(1))).getActor().getState();
+
+            // if next cell is a tmp obstacle or player, put a bomb
+            if (CellActor.TMP_OBSTACLES.contains(nextState) || CellActor.PLAYERS.contains(nextState))
+                inputAddBomb();
+            // avoid a bomb
+            else if (nextState == CellState.BOMB) {
+                if (previousMoves.size() >= 2) {
+                    inputMove(previousMoves.get(previousMoves.size() - 1));
+                    inputMove(previousMoves.get(previousMoves.size() - 2));
+                }
+            }
+            else
+                moveAi();
+        }
     }
 
     private void unColorTiles() {
