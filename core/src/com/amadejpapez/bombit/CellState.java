@@ -13,6 +13,7 @@ public enum CellState {
     PLAYER_GREEN,
     PLAYER_ORANGE,
     PLAYER_PINK,
+    PLAYER_PURPLE,
     POM_PINK,
     POM_YELLOW,
     TILE_BLACK,

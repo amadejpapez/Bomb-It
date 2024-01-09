@@ -18,7 +18,8 @@ public class CellActor extends Image {
             CellState.PLAYER_BLUE,
             CellState.PLAYER_GREEN,
             CellState.PLAYER_ORANGE,
-            CellState.PLAYER_PINK
+            CellState.PLAYER_PINK,
+            CellState.PLAYER_PURPLE
     );
     public static final List<CellState> TMP_OBSTACLES = List.of(
             CellState.POM_PINK,
@@ -89,6 +90,8 @@ public class CellActor extends Image {
                 return Assets.playerOrange;
             case PLAYER_PINK:
                 return Assets.playerPink;
+            case PLAYER_PURPLE:
+                return Assets.playerPurple;
             case POM_PINK:
                 return Assets.pomPink;
             case POM_YELLOW:
