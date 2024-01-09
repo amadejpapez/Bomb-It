@@ -117,8 +117,10 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
         GameManager.INSTANCE.playGameMusic();
-        GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
         GameManager.gameEnded = false;
+
+        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE"))
+            GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
     }
 
     @Override
@@ -259,8 +261,10 @@ public class GameScreen extends ScreenAdapter {
             killLabels.put(player.num, tmpLabel1);
         }
 
-        timeLabel.setColor(Color.BLACK);
-        table.add(timeLabel).padTop(30).left().row();
+        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
+            timeLabel.setColor(Color.BLACK);
+            table.add(timeLabel).padTop(30).left().row();
+        }
 
         TextButton quitButton = new TextButton("Exit Game", Assets.skin);
         quitButton.setColor(Color.ORANGE);
@@ -348,12 +352,21 @@ public class GameScreen extends ScreenAdapter {
                 killLabels.get(player.num).setText("Tiles: " + player.tiles + "/50");
         }
 
-        float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
-        int remainingTime = (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime));
-        timeLabel.setText("Time: " + remainingTime);
+        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
+            float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+            int remainingTime = (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime));
+            timeLabel.setText("Time: " + remainingTime);
 
-        if (remainingTime <= 0)
-            timeIsUp();
+            if (remainingTime <= 0)
+                timeIsUp();
+        }
+
+        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG")) {
+            for (Player player: GameManager.players) {
+                if (player.tiles >= GameConfig.TAG_TILES_GOAL)
+                    maxTileReached(player);
+            }
+        }
     }
 
     public void timeIsUp() {
@@ -374,6 +387,18 @@ public class GameScreen extends ScreenAdapter {
         }
 
         if (maxKill == allKills.get(0) || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && maxKill == allKills.get(1)))
+            gameplayStage.addActor(createWon());
+        else
+            gameplayStage.addActor(createLost());
+
+        GameManager.gameEnded = true;
+    }
+
+    public void maxTileReached(Player player) {
+        killLabels.get(player.num).setText("Tiles: " + player.tiles + "/50 *");
+//        LeaderboardScreen.addResult(player);
+
+        if (player.num == 0 || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && player.num == 1))
             gameplayStage.addActor(createWon());
         else
             gameplayStage.addActor(createLost());

@@ -31,9 +31,11 @@ public class GameConfig {
 
     public static final Integer GAME_TIME = 180;  // seconds
 
+    public static final Integer TAG_TILES_GOAL = 50;
+
     public static final Map<String, String> GAME_MODES = Map.ofEntries(
             entry("ARCADE", "Arcade - get the most kills"),
-            entry("TILE_TAG", "Tile Tag - color 50 tiles")
+            entry("TILE_TAG", "Tile Tag - color " + TAG_TILES_GOAL + " tiles")
     );
 
     public static final Integer MAX_NUMBER_PLAYERS = 4;
