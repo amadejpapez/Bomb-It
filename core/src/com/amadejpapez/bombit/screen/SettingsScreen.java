@@ -23,7 +23,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class SettingsScreen extends ScreenAdapter {
     private final BombIt game;
@@ -189,7 +188,7 @@ public class SettingsScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 for (Map.Entry<String, String> entry: GameConfig.GAME_MODES.entrySet()) {
-                    if (Objects.equals(entry.getValue(), selectBox.getSelected()))
+                    if (entry.getValue().equals(selectBox.getSelected()))
                         GameManager.INSTANCE.setGameMode(entry.getKey());
                 }
 

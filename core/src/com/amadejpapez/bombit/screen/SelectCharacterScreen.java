@@ -28,7 +28,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SelectCharacterScreen extends ScreenAdapter {
     private final BombIt game;
@@ -154,7 +153,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         // BUTTON
         TextButton playButton;
-        if (Objects.equals(player.num + 1, GameManager.INSTANCE.getNumPhysicalPlayers())) {
+        if (player.num + 1 == GameManager.INSTANCE.getNumPhysicalPlayers()) {
             playButton = new TextButton("Start game", Assets.skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {

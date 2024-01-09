@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Player {
@@ -75,7 +74,7 @@ public class Player {
         this.position = new ArrayList<>(STARTING_POSITIONS.get(this.num));
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(image);
 
-        if (!Objects.equals(num, hitBy))
+        if (num != hitBy)
             GameManager.players.get(hitBy).kills++;
 
         if (GameManager.INSTANCE.getGameMode().equals("TILE_TAG")) {
@@ -128,7 +127,7 @@ public class Player {
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
         grid.getCell(cells.get(nextRow).get(nextCol)).getActor().setState(image);
 
-        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG")) {
+        if (GameManager.INSTANCE.getGameMode().equals("TILE_TAG")) {
             GameScreen.colorATile(position.get(0), position.get(1), this);
             GameScreen.colorATile(nextRow, nextCol, this);
         }

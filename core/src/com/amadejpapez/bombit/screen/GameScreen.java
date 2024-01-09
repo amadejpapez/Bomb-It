@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.CellActor;
@@ -119,7 +118,7 @@ public class GameScreen extends ScreenAdapter {
         GameManager.INSTANCE.playGameMusic();
         GameManager.gameEnded = false;
 
-        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE"))
+        if (GameManager.INSTANCE.getGameMode().equals("ARCADE"))
             GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
     }
 
@@ -261,7 +260,7 @@ public class GameScreen extends ScreenAdapter {
             killLabels.put(player.num, tmpLabel1);
         }
 
-        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
+        if (GameManager.INSTANCE.getGameMode().equals("ARCADE")) {
             timeLabel.setColor(Color.BLACK);
             table.add(timeLabel).padTop(30).left().row();
         }
@@ -306,7 +305,7 @@ public class GameScreen extends ScreenAdapter {
                     if (row == player.position.get(0) && column == player.position.get(1)) {
                         player.cells.get(row).get(column).setState(player.image);
 
-                        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG"))
+                        if (GameManager.INSTANCE.getGameMode().equals("TILE_TAG"))
                             colorATile(row, column, player);
                     }
                 }
@@ -346,7 +345,7 @@ public class GameScreen extends ScreenAdapter {
             return;
 
         for (Player player : GameManager.players) {
-            if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
+            if (GameManager.INSTANCE.getGameMode().equals("ARCADE")) {
                 killLabels.get(player.num).setText("Kills: " + player.getKills());
 
                 if (player.getKills() == getBestKiller())
@@ -354,7 +353,7 @@ public class GameScreen extends ScreenAdapter {
                 else
                     killLabels.get(player.num).setColor(Color.BROWN);
             }
-            else if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG")) {
+            else if (GameManager.INSTANCE.getGameMode().equals("TILE_TAG")) {
                 killLabels.get(player.num).setText("Tiles: " + player.tiles + "/" + GameConfig.TAG_TILES_GOAL);
 
                 if (player.tiles >= GameConfig.TAG_TILES_GOAL - 10)
@@ -366,7 +365,7 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
+        if (GameManager.INSTANCE.getGameMode().equals("ARCADE")) {
             float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
             int remainingTime = (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime));
             timeLabel.setText("Time: " + remainingTime);
@@ -375,7 +374,7 @@ public class GameScreen extends ScreenAdapter {
                 timeIsUp();
         }
 
-        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG")) {
+        if (GameManager.INSTANCE.getGameMode().equals("TILE_TAG")) {
             for (Player player: GameManager.players) {
                 if (player.tiles >= GameConfig.TAG_TILES_GOAL)
                     maxTileReached(player);
