@@ -346,9 +346,24 @@ public class GameScreen extends ScreenAdapter {
             return;
 
         for (Player player : GameManager.players) {
-            if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE"))
+            if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
                 killLabels.get(player.num).setText("Kills: " + player.getKills());
+
+                if (player.getKills() == getBestKiller())
+                    killLabels.get(player.num).setColor(Color.BLUE);
+                else
+                    killLabels.get(player.num).setColor(Color.BROWN);
+            }
+            else if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG")) {
                 killLabels.get(player.num).setText("Tiles: " + player.tiles + "/" + GameConfig.TAG_TILES_GOAL);
+
+                if (player.tiles >= GameConfig.TAG_TILES_GOAL - 10)
+                    killLabels.get(player.num).setColor(Color.RED);
+                else if (player.tiles >= GameConfig.TAG_TILES_GOAL / 2)
+                    killLabels.get(player.num).setColor(Color.BLUE);
+                else
+                    killLabels.get(player.num).setColor(Color.BROWN);
+            }
         }
 
         if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
@@ -368,15 +383,19 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    public void timeIsUp() {
-        ArrayList<Integer> allKills = new ArrayList<>();
+    public Integer getBestKiller() {
+        ArrayList<Integer> kills = new ArrayList<>();
         for (Player player : GameManager.players)
-            allKills.add(player.getKills());
+            kills.add(player.getKills());
 
-        int maxKill = Collections.max(allKills);
-        // if everyone is at zero, no one wins
-        if (maxKill == 0)
-            maxKill = -1;
+        Integer max = Collections.max(kills);
+        if (max == 0)
+            return -1;
+        return max;
+    }
+
+    public void timeIsUp() {
+        int maxKill = getBestKiller();
 
         for (Player player : GameManager.players) {
             if (player.getKills() == maxKill) {
@@ -385,7 +404,7 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        if (maxKill == allKills.get(0) || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && maxKill == allKills.get(1)))
+        if (maxKill == GameManager.players.get(0).getKills() || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && maxKill == GameManager.players.get(1).getKills()))
             gameplayStage.addActor(createWon());
         else
             gameplayStage.addActor(createLost());
