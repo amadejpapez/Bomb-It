@@ -93,6 +93,18 @@ public class CellActor extends Image {
                 return Assets.pomPink;
             case POM_YELLOW:
                 return Assets.pomYellow;
+            case TILE_BLACK:
+                return Assets.tileBlack;
+            case TILE_BLUE:
+                return Assets.tileBlue;
+            case TILE_GREEN:
+                return Assets.tileGreen;
+            case TILE_ORANGE:
+                return Assets.tileOrange;
+            case TILE_PINK:
+                return Assets.tilePink;
+            case TILE_PURPLE:
+                return Assets.tilePurple;
             case WHISTLE:
                 return Assets.whistle;
             default:

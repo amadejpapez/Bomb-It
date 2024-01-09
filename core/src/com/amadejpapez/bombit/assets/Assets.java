@@ -40,6 +40,12 @@ public class Assets {
     public static TextureRegion playerPurple;
     public static TextureRegion pomPink;
     public static TextureRegion pomYellow;
+    public static TextureRegion tileBlack;
+    public static TextureRegion tileBlue;
+    public static TextureRegion tileGreen;
+    public static TextureRegion tileOrange;
+    public static TextureRegion tilePink;
+    public static TextureRegion tilePurple;
     public static TextureRegion title;
     public static TextureRegion whistle;
     public static TextureRegion youLose;
@@ -85,6 +91,12 @@ public class Assets {
         playerPurple = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_PURPLE);
         pomPink = gameplayAtlas.findRegion(AssetRegionNames.POM_PINK);
         pomYellow = gameplayAtlas.findRegion(AssetRegionNames.POM_YELLOW);
+        tileBlack = gameplayAtlas.findRegion(AssetRegionNames.TILE_BLACK);
+        tileBlue = gameplayAtlas.findRegion(AssetRegionNames.TILE_BLUE);
+        tileGreen = gameplayAtlas.findRegion(AssetRegionNames.TILE_GREEN);
+        tileOrange = gameplayAtlas.findRegion(AssetRegionNames.TILE_ORANGE);
+        tilePink = gameplayAtlas.findRegion(AssetRegionNames.TILE_PINK);
+        tilePurple = gameplayAtlas.findRegion(AssetRegionNames.TILE_PURPLE);
         title = gameplayAtlas.findRegion(AssetRegionNames.TITLE);
         whistle = gameplayAtlas.findRegion(AssetRegionNames.WHISTLE);
         youLose = gameplayAtlas.findRegion(AssetRegionNames.YOU_LOSE);

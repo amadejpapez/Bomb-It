@@ -32,5 +32,12 @@ public class AssetRegionNames {
     public static final String BONUS_BOMB = "bonus_bomb";
     public static final String BONUS_HAND = "bonus_hand";
 
+    public static final String TILE_BLACK = "tile_black";
+    public static final String TILE_BLUE = "tile_blue";
+    public static final String TILE_GREEN = "tile_green";
+    public static final String TILE_ORANGE = "tile_orange";
+    public static final String TILE_PINK = "tile_pink";
+    public static final String TILE_PURPLE = "tile_purple";
+
     private AssetRegionNames() { }
 }
