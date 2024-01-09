@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,8 +14,6 @@ public class Assets {
     public static BitmapFont font;
 
     public static Skin skin;
-
-    public static ParticleEffect explosionEffect;
 
     public static Sound explosionSound;
 
@@ -57,14 +54,11 @@ public class Assets {
         assetManager.load(AssetDescriptors.POWER_UP_SOUND);
         assetManager.load(AssetDescriptors.GAME_MUSIC);
         assetManager.load(AssetDescriptors.START_MUSIC);
-        assetManager.load(AssetDescriptors.EXPLOSION_EFFECT);
         assetManager.finishLoading();
 
         font = Assets.assetManager.get(AssetDescriptors.FONT);
 
         skin = Assets.assetManager.get(AssetDescriptors.SKIN);
-
-        explosionEffect = Assets.assetManager.get(AssetDescriptors.EXPLOSION_EFFECT);
 
         explosionSound = Assets.assetManager.get(AssetDescriptors.BOMB_SOUND);
 

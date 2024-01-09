@@ -2,7 +2,6 @@ package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.Bomb;
 import com.amadejpapez.bombit.GameManager;
-import com.amadejpapez.bombit.ParticleEffectActor;
 import com.amadejpapez.bombit.Player;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
@@ -49,8 +48,6 @@ public class GameScreen extends ScreenAdapter {
     public static final TextureRegion[] obstacles = {Assets.pomPink, Assets.pomYellow, Assets.whistle};
     final TextureRegion[] fixedObstacles = {Assets.coneBlue, Assets.coneRed};
 
-    final ParticleEffectActor explosionEffectActor = new ParticleEffectActor(Assets.explosionEffect);
-
     public static final List<List<CellActor>> cells = new ArrayList<>();
     public static final Table cellGrid = new Table();
 
@@ -77,7 +74,6 @@ public class GameScreen extends ScreenAdapter {
             gameplayStage.addActor(createGridPlayer(player));
         gameplayStage.addActor(createGridMain());
         gameplayStage.addActor(createMiddle());
-        gameplayStage.addActor(explosionEffectActor);
 
         hudStage.addActor(createGridHud());
 

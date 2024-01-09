@@ -77,12 +77,10 @@ public class Bomb {
                 }
 
                 grid.getCell(cells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(Assets.empty);
-//                bombCell.setActor(explosionEffectActor);
 
                 if (GameManager.INSTANCE.getSoundsEnabled())
                     Assets.explosionSound.play();
-//                explosionEffect.setPosition(bomb.getX(), bomb.getY());
-//                explosionEffect.start();
+
                 GameManager.players.get(bomb.createdByPlayer).numActiveBombs--;
                 it.remove();
             }
