@@ -169,7 +169,6 @@ public class Player {
         );
 
         Integer randomMove = possibleMoves.get(ThreadLocalRandom.current().nextInt(possibleMoves.size()));
-
         Boolean hasMoved = inputMove(randomMove);
 
         // if player cannot move to the position
@@ -180,7 +179,7 @@ public class Player {
             // if next cell is a tmp obstacle or player, put a bomb
             if (CellActor.TMP_OBSTACLES.contains(nextState) || CellActor.PLAYERS.contains(nextState))
                 inputAddBomb();
-            
+
             // avoid a bomb
             if (nextState == CellState.BOMB) {
                 if (previousMoves.size() >= 2) {

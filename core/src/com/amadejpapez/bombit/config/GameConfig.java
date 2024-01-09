@@ -33,12 +33,15 @@ public class GameConfig {
 
     public static final Integer TAG_TILES_GOAL = 50;
 
+    public static final Integer MAX_NUMBER_PLAYERS = 4;
+
+    public static final Float AI_SPEED_IN_ARCADE = 0.3f;
+    public static final Float AI_SPEED_IN_TILE_TAG = 0.07f;
+
     public static final Map<String, String> GAME_MODES = Map.ofEntries(
             entry("ARCADE", "Arcade - get the most kills"),
             entry("TILE_TAG", "Tile Tag - color " + TAG_TILES_GOAL + " tiles")
     );
-
-    public static final Integer MAX_NUMBER_PLAYERS = 4;
 
     public static final List<List<Integer>> LOC_SKIP_OBSTACLES = List.of(
             List.of(1, 1),

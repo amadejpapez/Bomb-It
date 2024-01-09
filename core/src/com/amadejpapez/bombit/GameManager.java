@@ -34,6 +34,8 @@ public class GameManager {
 
     public static Boolean gameEnded = false;
 
+    public static Float aiSpeed;
+
     private GameManager() {
         PREFS = Gdx.app.getPreferences(BombIt.class.getSimpleName());
 
@@ -41,7 +43,8 @@ public class GameManager {
         addComputerPlayers = PREFS.getBoolean(ADD_COMPUTER_PLAYERS, false);
         musicEnabled = PREFS.getBoolean(MUSIC_ENABLED, true);
         soundsEnabled = PREFS.getBoolean(SOUNDS_ENABLED, true);
-        gameMode = PREFS.getString(GAME_MODE, "ARCADE");
+
+        setGameMode(PREFS.getString(GAME_MODE, "ARCADE"));
 
         players = new ArrayList<>();
         activeBombs = new ArrayList<>();
@@ -111,6 +114,11 @@ public class GameManager {
         GameManager.gameMode = gameMode;
         PREFS.putString(GAME_MODE, gameMode);
         PREFS.flush();
+
+        if (gameMode.equals("ARCADE"))
+            aiSpeed = GameConfig.AI_SPEED_IN_ARCADE;
+        else if (gameMode.equals("TILE_TAG"))
+            aiSpeed = GameConfig.AI_SPEED_IN_TILE_TAG;
     }
 
     public void setMusicEnabled(Boolean val) {
