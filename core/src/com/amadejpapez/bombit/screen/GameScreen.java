@@ -104,7 +104,7 @@ public class GameScreen extends ScreenAdapter {
                         || keycode == Input.Keys.D
                 ) {
                     GameManager.players.get(1).inputMove(keycode);
-                } else if (keycode == Input.Keys.ENTER) {
+                } else if (keycode == Input.Keys.X) {
                     GameManager.players.get(1).inputAddBomb();
                 }
 
