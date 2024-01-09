@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.amadejpapez.bombit.CellActor;
@@ -43,6 +44,9 @@ public class GameScreen extends ScreenAdapter {
 
     private Stage gameplayStage;
     private Stage hudStage;
+
+    public static final List<List<CellActor>> bgCells = new ArrayList<>();
+    public static final Table bgCellGrid = new Table();
 
     public static final List<List<CellActor>> cells = new ArrayList<>();
     public static final Table cellGrid = new Table();
@@ -152,16 +156,18 @@ public class GameScreen extends ScreenAdapter {
 
     private Actor createGridBackground() {
         Table table = new Table();
-        Table grid = new Table();
-        grid.defaults().size(GameConfig.CELL_SIZE);
+        bgCellGrid.defaults().size(GameConfig.CELL_SIZE);
 
         for (int i = 0; i < GameConfig.NUM_ROWS; i++) {
-            for (int j = 0; j < GameConfig.NUM_COLUMNS; j++)
-                grid.add(new CellActor(CellState.FLOOR));
-            grid.row();
+            bgCells.add(new ArrayList<>());
+            for (int j = 0; j < GameConfig.NUM_COLUMNS; j++) {
+                bgCells.get(i).add(new CellActor(CellState.FLOOR));
+                bgCellGrid.add(bgCells.get(i).get(j));
+            }
+            bgCellGrid.row();
         }
 
-        table.add(grid).row();
+        table.add(bgCellGrid).row();
         table.right();
         table.padRight(3);
         table.setFillParent(true);
