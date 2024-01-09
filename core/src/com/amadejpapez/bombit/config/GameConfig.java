@@ -1,6 +1,9 @@
 package com.amadejpapez.bombit.config;
 
+import static java.util.Map.entry;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * Be careful which 'GameConfig' class you use in a specific examples. This class is 'public' because
@@ -27,6 +30,11 @@ public class GameConfig {
     public static final float TIME_BOMB_ACTIVE = 1.5f;
 
     public static final Integer GAME_TIME = 180;  // seconds
+
+    public static final Map<String, String> GAME_MODES = Map.ofEntries(
+            entry("ARCADE", "Arcade - get the most kills"),
+            entry("TILE_TAG", "Tile Tag - color 50 tiles")
+    );
 
     public static final Integer MAX_NUMBER_PLAYERS = 4;
 

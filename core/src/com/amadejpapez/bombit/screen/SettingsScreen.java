@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -20,6 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.Map;
+import java.util.Objects;
 
 public class SettingsScreen extends ScreenAdapter {
     private final BombIt game;
@@ -123,6 +127,18 @@ public class SettingsScreen extends ScreenAdapter {
         tablePlayers.add(twoPhysicalPlayers);
         grid.add(tablePlayers).padBottom(5).row();
 
+        // GAME MODE
+        tmpLabel = new Label("Select game mode:", Assets.skin);
+        tmpLabel.setColor(Color.BLACK);
+        grid.add(tmpLabel).left();
+
+        SelectBox<String> selectBox = new SelectBox<String>(Assets.skin);
+        selectBox.setColor(Color.BROWN);
+        selectBox.setItems(GameConfig.GAME_MODES.values().toArray(new String[0]));
+        selectBox.setSelected(GameConfig.GAME_MODES.get(GameManager.INSTANCE.getGameMode()));
+
+        grid.add(selectBox).padBottom(5).left().row();
+
         // COMPUTER PLAYERS
         tmpLabel = new Label("Add computer players:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
@@ -172,6 +188,11 @@ public class SettingsScreen extends ScreenAdapter {
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                for (Map.Entry<String, String> entry: GameConfig.GAME_MODES.entrySet()) {
+                    if (Objects.equals(entry.getValue(), selectBox.getSelected()))
+                        GameManager.INSTANCE.setGameMode(entry.getKey());
+                }
+
                 GameManager.generatePhysicalPlayers();
                 game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(0)));
             }

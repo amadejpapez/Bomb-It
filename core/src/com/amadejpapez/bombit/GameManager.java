@@ -19,6 +19,7 @@ public class GameManager {
     private static Boolean addComputerPlayers;
     private static Boolean musicEnabled;
     private static Boolean soundsEnabled;
+    private static String gameMode;
 
     public static List<Player> players;
     public static List<Bomb> activeBombs;
@@ -29,6 +30,7 @@ public class GameManager {
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
     private static final String MUSIC_ENABLED = "music_enabled";
     private static final String SOUNDS_ENABLED = "sounds_enabled";
+    private static final String GAME_MODE = "game_mode";
 
     public static Boolean gameEnded = false;
 
@@ -39,6 +41,7 @@ public class GameManager {
         addComputerPlayers = PREFS.getBoolean(ADD_COMPUTER_PLAYERS, false);
         musicEnabled = PREFS.getBoolean(MUSIC_ENABLED, true);
         soundsEnabled = PREFS.getBoolean(SOUNDS_ENABLED, true);
+        gameMode = PREFS.getString(GAME_MODE, "ARCADE");
 
         players = new ArrayList<>();
         activeBombs = new ArrayList<>();
@@ -88,6 +91,10 @@ public class GameManager {
         return soundsEnabled;
     }
 
+    public String getGameMode() {
+        return gameMode;
+    }
+
     public void setNumPhysicalPlayers(Integer num) {
         numPhysicalPlayers = num;
         PREFS.putInteger(NUM_PHYSICAL_PLAYERS, num);
@@ -97,6 +104,12 @@ public class GameManager {
     public void setAddComputerPlayers(Boolean val) {
         addComputerPlayers = val;
         PREFS.putBoolean(ADD_COMPUTER_PLAYERS, val);
+        PREFS.flush();
+    }
+
+    public void setGameMode(String gameMode) {
+        GameManager.gameMode = gameMode;
+        PREFS.putString(GAME_MODE, gameMode);
         PREFS.flush();
     }
 
