@@ -399,9 +399,23 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public static void colorATile(int x, int y, Player player) {
-        if (CellActor.COLORED_TILES.contains(bgCellGrid.getCell(bgCells.get(x).get(y)).getActor().getState()))
+        CellState curState = bgCellGrid.getCell(bgCells.get(x).get(y)).getActor().getState();
+
+        // if tile is already the same color
+        if (curState == player.imageTile)
             return;
 
+        // if tile has been colored before
+        if (CellActor.COLORED_TILES.contains(curState)) {
+            for (Player player2 : GameManager.players) {
+                if (curState == player2.imageTile) {
+                    player2.tiles--;
+                    break;
+                }
+            }
+        }
+
+        // if tile has not been colored before
         bgCellGrid.getCell(bgCells.get(x).get(y)).getActor().setState(player.imageTile);
         player.tiles++;
     }

@@ -66,6 +66,9 @@ public class Player {
 
         if (!Objects.equals(num, hitBy))
             GameManager.players.get(hitBy).kills++;
+
+        unColorTiles();
+        GameScreen.colorATile(position.get(0), position.get(1), this);
     }
 
     public void inputMove(int keycode) {
@@ -142,5 +145,17 @@ public class Player {
 
         if (ThreadLocalRandom.current().nextInt(4) == 0)
             inputAddBomb();
+    }
+
+    private void unColorTiles() {
+        // used in Tile Tag, when a player dies
+        for (int i = 0; i < GameConfig.NUM_ROWS; i++) {
+            for (int j = 0; j < GameConfig.NUM_COLUMNS; j++) {
+                if (GameScreen.bgCells.get(i).get(j).getState() == imageTile) {
+                    GameScreen.bgCellGrid.getCell(GameScreen.bgCells.get(i).get(j)).getActor().setState(CellState.FLOOR);
+                    tiles--;
+                }
+            }
+        }
     }
 }
