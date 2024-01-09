@@ -180,15 +180,14 @@ public class Player {
             // if next cell is a tmp obstacle or player, put a bomb
             if (CellActor.TMP_OBSTACLES.contains(nextState) || CellActor.PLAYERS.contains(nextState))
                 inputAddBomb();
+            
             // avoid a bomb
-            else if (nextState == CellState.BOMB) {
+            if (nextState == CellState.BOMB) {
                 if (previousMoves.size() >= 2) {
                     inputMove(previousMoves.get(previousMoves.size() - 1));
                     inputMove(previousMoves.get(previousMoves.size() - 2));
                 }
             }
-            else
-                moveAi();
         }
     }
 
