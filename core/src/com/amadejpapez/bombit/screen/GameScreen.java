@@ -58,6 +58,8 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        resetAfterGameEnd();
+
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
         hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
 
@@ -380,5 +382,16 @@ public class GameScreen extends ScreenAdapter {
 
     public static boolean isMainCellEmpty(int x, int y) {
         return cellGrid.getCell(cells.get(x).get(y)).getActor().isEmpty();
+    }
+
+    public void resetAfterGameEnd() {
+        cells.clear();
+        cellGrid.clear();
+        killLabels.clear();
+
+        Bomb.grid.clear();
+        Bomb.cells.clear();
+
+        GameManager.activeBombs.clear();
     }
 }
