@@ -299,8 +299,12 @@ public class GameScreen extends ScreenAdapter {
                 List<Integer> location = List.of(row, column);
 
                 for (Player player : GameManager.players) {
-                    if (row == player.position.get(0) && column == player.position.get(1))
+                    if (row == player.position.get(0) && column == player.position.get(1)) {
                         player.cells.get(row).get(column).setState(player.image);
+
+                        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG"))
+                            colorATile(row, column, player);
+                    }
                 }
 
                 if (row == 0 || row == GameConfig.NUM_ROWS - 1 || column == 0 || column == GameConfig.NUM_COLUMNS - 1) {
