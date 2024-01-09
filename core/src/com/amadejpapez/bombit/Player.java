@@ -58,6 +58,10 @@ public class Player {
         return kills;
     }
 
+    public boolean isComputerPlayer() {
+        return !(num == 0 || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && num == 1));
+    }
+
     public void hit(int hitBy) {
         // move player to the start
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
@@ -133,9 +137,6 @@ public class Player {
     }
 
     public void moveAi() {
-        if (num < GameManager.INSTANCE.getNumPhysicalPlayers())
-            return;
-
         final List<Integer> possibleMoves = List.of(
                 Input.Keys.UP,
                 Input.Keys.DOWN,

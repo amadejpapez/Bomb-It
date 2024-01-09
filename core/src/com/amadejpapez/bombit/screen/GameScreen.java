@@ -398,7 +398,7 @@ public class GameScreen extends ScreenAdapter {
         killLabels.get(player.num).setText("Tiles: " + player.tiles + "/50 *");
 //        LeaderboardScreen.addResult(player);
 
-        if (player.num == 0 || (GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && player.num == 1))
+        if (!player.isComputerPlayer())
             gameplayStage.addActor(createWon());
         else
             gameplayStage.addActor(createLost());
@@ -415,8 +415,10 @@ public class GameScreen extends ScreenAdapter {
             return;
         lastAiMove = currentTime;
 
-        for (Player player : GameManager.players)
-            player.moveAi();
+        for (Player player : GameManager.players) {
+            if (player.isComputerPlayer())
+                player.moveAi();
+        }
     }
 
     public static boolean isMainCellEmpty(int x, int y) {
