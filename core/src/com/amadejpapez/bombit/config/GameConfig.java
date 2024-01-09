@@ -24,7 +24,7 @@ public class GameConfig {
     public static final Integer CELL_SIZE = 4;
 
     public static final Integer MAX_NUMBER_BOMBS_DEFAULT = 1;
-    public static final float TIME_BOMB_ACTIVE = 2f;
+    public static final float TIME_BOMB_ACTIVE = 1.5f;
 
     public static final Integer GAME_TIME = 180;  // seconds
 
