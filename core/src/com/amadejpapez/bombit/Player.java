@@ -67,8 +67,10 @@ public class Player {
         if (!Objects.equals(num, hitBy))
             GameManager.players.get(hitBy).kills++;
 
-        unColorTiles();
-        GameScreen.colorATile(position.get(0), position.get(1), this);
+        if (GameManager.INSTANCE.getGameMode().equals("TILE_TAG")) {
+            unColorTiles();
+            GameScreen.colorATile(position.get(0), position.get(1), this);
+        }
     }
 
     public void inputMove(int keycode) {
