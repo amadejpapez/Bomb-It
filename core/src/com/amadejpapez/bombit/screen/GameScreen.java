@@ -446,8 +446,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void resetAfterGameEnd() {
+        bgCells.clear();
+        bgCellGrid.clear();
+
         cells.clear();
         cellGrid.clear();
+
         killLabels.clear();
 
         Bomb.grid.clear();
