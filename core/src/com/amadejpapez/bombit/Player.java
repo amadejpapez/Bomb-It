@@ -14,12 +14,16 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Player {
     public String username;
     public Integer num;
-    private Integer kills;
     public List<Integer> position;
-    public CellState image;
     public Integer numActiveBombs;
     public Integer maxNumOfBombs;
     public Boolean hasBonusHand;
+
+    private Integer kills;
+    public Integer tiles;
+
+    public CellState image;
+    public CellState imageTile;
 
     public List<List<CellActor>> cells;
     public Table grid;
@@ -35,7 +39,9 @@ public class Player {
         // first player num should be zero!
         this.num = num;
         this.image = playerState;
+        this.imageTile = CellActor.COLORED_TILES_MAPPED.get(playerState);
         this.kills = 0;
+        this.tiles = 0;
         this.position = new ArrayList<>(STARTING_POSITIONS.get(num));
         this.numActiveBombs = 0;
         this.maxNumOfBombs = GameConfig.MAX_NUMBER_BOMBS_DEFAULT;
@@ -95,8 +101,13 @@ public class Player {
             return;
         }
 
-        grid.getCell(cells.get(nextRow).get(nextCol)).getActor().setState(image);
         grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
+        grid.getCell(cells.get(nextRow).get(nextCol)).getActor().setState(image);
+
+        if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG")) {
+            GameScreen.colorATile(position.get(0), position.get(1), this);
+            GameScreen.colorATile(nextRow, nextCol, this);
+        }
 
         if (position.get(0).equals(nextRow))
             position.set(1, nextCol);

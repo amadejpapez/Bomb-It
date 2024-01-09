@@ -337,8 +337,12 @@ public class GameScreen extends ScreenAdapter {
         if (GameManager.gameEnded)
             return;
 
-        for (Player player : GameManager.players)
-            killLabels.get(player.num).setText("Kills: " + player.getKills());
+        for (Player player : GameManager.players) {
+            if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE"))
+                killLabels.get(player.num).setText("Kills: " + player.getKills());
+            else if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG"))
+                killLabels.get(player.num).setText("Tiles: " + player.tiles + "/50");
+        }
 
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
         int remainingTime = (int) (GameConfig.GAME_TIME - (currentTime - GameManager.gameStartedTime));
@@ -388,6 +392,14 @@ public class GameScreen extends ScreenAdapter {
 
     public static boolean isMainCellEmpty(int x, int y) {
         return cellGrid.getCell(cells.get(x).get(y)).getActor().isEmpty();
+    }
+
+    public static void colorATile(int x, int y, Player player) {
+        if (CellActor.COLORED_TILES.contains(bgCellGrid.getCell(bgCells.get(x).get(y)).getActor().getState()))
+            return;
+
+        bgCellGrid.getCell(bgCells.get(x).get(y)).getActor().setState(player.imageTile);
+        player.tiles++;
     }
 
     public void resetAfterGameEnd() {
