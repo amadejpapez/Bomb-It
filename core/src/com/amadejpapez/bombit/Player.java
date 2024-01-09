@@ -138,8 +138,12 @@ public class Player {
         else
             position.set(0, nextRow);
 
-        if (isComputerPlayer())
+        if (isComputerPlayer()) {
             previousMoves.add(keycode);
+
+            if (previousMoves.size() > 2)
+                previousMoves.remove(0);
+        }
 
         return true;
     }
