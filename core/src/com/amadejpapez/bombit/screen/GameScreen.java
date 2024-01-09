@@ -348,8 +348,7 @@ public class GameScreen extends ScreenAdapter {
         for (Player player : GameManager.players) {
             if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE"))
                 killLabels.get(player.num).setText("Kills: " + player.getKills());
-            else if (Objects.equals(GameManager.INSTANCE.getGameMode(), "TILE_TAG"))
-                killLabels.get(player.num).setText("Tiles: " + player.tiles + "/50");
+                killLabels.get(player.num).setText("Tiles: " + player.tiles + "/" + GameConfig.TAG_TILES_GOAL);
         }
 
         if (Objects.equals(GameManager.INSTANCE.getGameMode(), "ARCADE")) {
@@ -395,7 +394,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void maxTileReached(Player player) {
-        killLabels.get(player.num).setText("Tiles: " + player.tiles + "/50 *");
+        killLabels.get(player.num).setText("Tiles: " + player.tiles + "/" + GameConfig.TAG_TILES_GOAL + " *");
 //        LeaderboardScreen.addResult(player);
 
         if (!player.isComputerPlayer())
