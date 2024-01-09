@@ -1,6 +1,8 @@
 package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.BombIt;
+import com.amadejpapez.bombit.CellActor;
+import com.amadejpapez.bombit.CellState;
 import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.Player;
 import com.amadejpapez.bombit.assets.Assets;
@@ -24,8 +26,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SelectCharacterScreen extends ScreenAdapter {
@@ -34,7 +36,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
 
-    private Map<String, TextureRegionDrawable> characters;
+    private List<CellState> availablePlayers;
     private Image selectedImage;
 
     private final Player player;
@@ -50,11 +52,11 @@ public class SelectCharacterScreen extends ScreenAdapter {
         stage = new Stage(viewport, game.getBatch());
 
         // remove image that was selected for the first player
-        characters = new HashMap<>(Player.characterImages);
+        availablePlayers = new ArrayList<>(CellActor.PLAYERS);
         if (player.num == 1)
-            characters.remove(GameManager.players.get(0).character);
+            availablePlayers.remove(GameManager.players.get(0).image);
 
-        selectedImage = new Image(player.image);
+        selectedImage = new Image(CellActor.getImageFromState(player.image));
 
         stage.addActor(createUi());
         Gdx.input.setInputProcessor(stage);
@@ -123,13 +125,13 @@ public class SelectCharacterScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BLACK);
         tableCharacters.add(tmpLabel).padRight(20);
 
-        for (Map.Entry<String, TextureRegionDrawable> entry : characters.entrySet()) {
-            ImageButton tmp = new ImageButton(entry.getValue());
+        for (CellState state : availablePlayers) {
+            ImageButton tmp = new ImageButton(new TextureRegionDrawable(CellActor.getImageFromState(state)));
             tmp.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    player.updateImage(entry.getKey());
-                    selectedImage.setDrawable(player.image);
+                    player.updateImage(state);
+                    selectedImage.setDrawable(new TextureRegionDrawable(CellActor.getImageFromState(state)));
                 }
             });
             tableCharacters.add(tmp).height(60).width(60).padBottom(5);

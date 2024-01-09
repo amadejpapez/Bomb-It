@@ -1,17 +1,13 @@
 package com.amadejpapez.bombit;
 
-import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.amadejpapez.bombit.screen.GameScreen;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -20,23 +16,13 @@ public class Player {
     public Integer num;
     private Integer kills;
     public List<Integer> position;
-    public String character;
-    public TextureRegionDrawable image;
+    public CellState image;
     public Integer numActiveBombs;
     public Integer maxNumOfBombs;
     public Boolean hasBonusHand;
 
     public List<List<CellActor>> cells;
     public Table grid;
-
-    public static final Map<String, TextureRegionDrawable> characterImages = Map.ofEntries(
-            Map.entry("blue", new TextureRegionDrawable(Assets.playerBlue)),
-            Map.entry("black", new TextureRegionDrawable(Assets.playerBlack)),
-            Map.entry("green", new TextureRegionDrawable(Assets.playerGreen)),
-            Map.entry("pink", new TextureRegionDrawable(Assets.playerPink)),
-            Map.entry("orange", new TextureRegionDrawable(Assets.playerOrange)),
-            Map.entry("purple", new TextureRegionDrawable(Assets.playerPurple))
-    );
 
     public static final List<List<Integer>> STARTING_POSITIONS = List.of(
             List.of(1, 1),
@@ -45,11 +31,10 @@ public class Player {
             List.of(13, 15)
     );
 
-    Player(int num, String charColor) {
+    Player(int num, CellState playerState) {
         // first player num should be zero!
         this.num = num;
-        this.character = charColor;
-        this.image = characterImages.get(charColor);
+        this.image = playerState;
         this.kills = 0;
         this.position = new ArrayList<>(STARTING_POSITIONS.get(num));
         this.numActiveBombs = 0;
@@ -59,9 +44,8 @@ public class Player {
         this.hasBonusHand = false;
     }
 
-    public void updateImage(String charColor) {
-        this.character = charColor;
-        this.image = characterImages.get(charColor);
+    public void updateImage(CellState newImage) {
+        this.image = newImage;
     }
 
     public int getKills() {
@@ -70,9 +54,9 @@ public class Player {
 
     public void hit(int hitBy) {
         // move player to the start
-        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(Assets.empty);
+        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
         this.position = new ArrayList<>(STARTING_POSITIONS.get(this.num));
-        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(image);
+        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(image);
 
         if (!Objects.equals(num, hitBy))
             GameManager.players.get(hitBy).kills++;
@@ -92,13 +76,12 @@ public class Player {
 
         // only move if the future cell is "empty"
         CellActor nextCell = GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor();
-        TextureRegion nextCellImg = ((TextureRegionDrawable) nextCell.getDrawable()).getRegion();
-        if (!nextCellImg.equals(Assets.empty)) {
-            if (nextCellImg.equals(Assets.bonusBombs)) {
-                GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor().setDrawable(Assets.empty);
+        if (!nextCell.isEmpty()) {
+            if (nextCell.getState() == CellState.BONUS_BOMB) {
+                GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor().setState(CellState.EMPTY);
                 maxNumOfBombs++;
-            } else if (nextCellImg.equals(Assets.bonusHand)) {
-                GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor().setDrawable(Assets.empty);
+            } else if (nextCell.getState() == CellState.BONUS_HAND) {
+                GameScreen.cellGrid.getCell(GameScreen.cells.get(nextRow).get(nextCol)).getActor().setState(CellState.EMPTY);
                 hasBonusHand = true;
             } else {
                 return;
@@ -112,8 +95,8 @@ public class Player {
             return;
         }
 
-        grid.getCell(cells.get(nextRow).get(nextCol)).getActor().setDrawable(image);
-        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(Assets.empty);
+        grid.getCell(cells.get(nextRow).get(nextCol)).getActor().setState(image);
+        grid.getCell(cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.EMPTY);
 
         if (position.get(0).equals(nextRow))
             position.set(1, nextCol);
@@ -125,7 +108,7 @@ public class Player {
         if (numActiveBombs >= maxNumOfBombs)
             return;
 
-        Bomb.grid.getCell(Bomb.cells.get(position.get(0)).get(position.get(1))).getActor().setDrawable(Assets.bomb);
+        Bomb.grid.getCell(Bomb.cells.get(position.get(0)).get(position.get(1))).getActor().setState(CellState.BOMB);
 
         float time = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
         GameManager.activeBombs.add(new Bomb(num, new ArrayList<>(position), time));

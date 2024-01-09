@@ -4,13 +4,10 @@ import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.amadejpapez.bombit.screen.GameScreen;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,9 +44,7 @@ public class Bomb {
     }
 
     public static boolean isBombCellEmpty(int x, int y) {
-        CellActor cell = Bomb.grid.getCell(cells.get(x).get(y)).getActor();
-        TextureRegion cellImg = ((TextureRegionDrawable) cell.getDrawable()).getRegion();
-        return cellImg.equals(Assets.empty);
+        return Bomb.grid.getCell(cells.get(x).get(y)).getActor().isEmpty();
     }
 
     public static void updateBombs() {
@@ -66,9 +61,8 @@ public class Bomb {
             if (elapsedTime - bomb.timeCreated > GameConfig.TIME_BOMB_ACTIVE) {
                 for (List<Integer> loc : checkLocations) {
                     CellActor cellTmp = GameScreen.cellGrid.getCell(GameScreen.cells.get(loc.get(0)).get(loc.get(1))).getActor();
-                    TextureRegionDrawable drawTmp = (TextureRegionDrawable) cellTmp.getDrawable();
-                    if (Arrays.asList(GameScreen.obstacles).contains(drawTmp.getRegion()))
-                        cellTmp.setDrawable(Assets.empty);
+                    if (CellActor.TMP_OBSTACLES.contains(cellTmp.getState()))
+                        cellTmp.setState(CellState.EMPTY);
 
                     for (Player player : GameManager.players) {
                         if (player.position.equals(loc))
@@ -76,7 +70,7 @@ public class Bomb {
                     }
                 }
 
-                grid.getCell(cells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setDrawable(Assets.empty);
+                grid.getCell(cells.get(bomb.position.get(0)).get(bomb.position.get(1))).getActor().setState(CellState.EMPTY);
 
                 if (GameManager.INSTANCE.getSoundsEnabled())
                     Assets.explosionSound.play();
@@ -100,8 +94,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow + 1, tmpCol)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow + 1, tmpCol)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
-                grid.getCell(cells.get(tmpRow + 1).get(tmpCol)).getActor().setDrawable(Assets.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setState(CellState.EMPTY);
+                grid.getCell(cells.get(tmpRow + 1).get(tmpCol)).getActor().setState(CellState.BOMB);
                 tmpBomb.position = List.of(tmpRow + 1, tmpCol);
                 tmpRow++;
             }
@@ -110,8 +104,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow, tmpCol + 1)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow, tmpCol + 1)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
-                grid.getCell(cells.get(tmpRow).get(tmpCol + 1)).getActor().setDrawable(Assets.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setState(CellState.EMPTY);
+                grid.getCell(cells.get(tmpRow).get(tmpCol + 1)).getActor().setState(CellState.BOMB);
                 tmpBomb.position = List.of(tmpRow, tmpCol + 1);
                 tmpCol++;
             }
@@ -120,8 +114,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow, tmpCol - 1)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow, tmpCol - 1)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
-                grid.getCell(cells.get(tmpRow).get(tmpCol - 1)).getActor().setDrawable(Assets.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setState(CellState.EMPTY);
+                grid.getCell(cells.get(tmpRow).get(tmpCol - 1)).getActor().setState(CellState.BOMB);
                 tmpBomb.position = List.of(tmpRow, tmpCol - 1);
                 tmpCol--;
             }
@@ -130,8 +124,8 @@ public class Bomb {
                 if (!isBombCellEmpty(tmpRow - 1, tmpCol)) break;
                 if (!GameScreen.isMainCellEmpty(tmpRow - 1, tmpCol)) break;
 
-                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setDrawable(Assets.empty);
-                grid.getCell(cells.get(tmpRow - 1).get(tmpCol)).getActor().setDrawable(Assets.bomb);
+                grid.getCell(cells.get(tmpRow).get(tmpCol)).getActor().setState(CellState.EMPTY);
+                grid.getCell(cells.get(tmpRow - 1).get(tmpCol)).getActor().setState(CellState.BOMB);
                 tmpBomb.position = List.of(tmpRow - 1, tmpCol);
                 tmpRow--;
             }

@@ -47,10 +47,10 @@ public class GameManager {
     public static void generatePhysicalPlayers() {
         // called after first startup screen is complete and before users selects his characters
         // this acts like a default character if user does not select any
-        String tmp;
+        CellState tmp;
         for (int i = 0; i < GameManager.numPhysicalPlayers; i++) {
             do {
-                tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
+                tmp = CellActor.PLAYERS.get(ThreadLocalRandom.current().nextInt(CellActor.PLAYERS.size()));
             } while (characterAlreadyInUse(tmp));
 
             players.add(new Player(i, tmp));
@@ -60,10 +60,10 @@ public class GameManager {
     public static void generateOtherPlayers() {
         // called after user selects his physical player characters
         // this is for players that are computers
-        String tmp;
+        CellState tmp;
         for (int i = players.size(); i < GameConfig.MAX_NUMBER_PLAYERS; i++) {
             do {
-                tmp = GameConfig.AVAILABLE_PLAYERS.get(ThreadLocalRandom.current().nextInt(GameConfig.AVAILABLE_PLAYERS.size()));
+                tmp = CellActor.PLAYERS.get(ThreadLocalRandom.current().nextInt(CellActor.PLAYERS.size()));
             } while (characterAlreadyInUse(tmp));
 
             Player newPlayer = new Player(i, tmp);
@@ -132,9 +132,9 @@ public class GameManager {
         }
     }
 
-    public static boolean characterAlreadyInUse(String character) {
+    public static boolean characterAlreadyInUse(CellState newCharacter) {
         for (Player player : players) {
-            if (player.image == Player.characterImages.get(character))
+            if (player.image == newCharacter)
                 return true;
         }
         return false;
