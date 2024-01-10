@@ -75,7 +75,7 @@ public class MenuScreen extends ScreenAdapter {
 
         table.setBackground(new TextureRegionDrawable(Assets.background));
 
-        TextButton playButton = new TextButton("Play", Assets.skin);
+        TextButton playButton = new TextButton("Start", Assets.skin);
         playButton.setColor(Color.ORANGE);
         playButton.addListener(new ClickListener() {
             @Override
