@@ -99,6 +99,18 @@ public class SettingsScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BROWN);
         grid.add(tmpLabel).padBottom(50).colspan(3).row();
 
+        // GAME MODE
+        tmpLabel = new Label("Game mode:", Assets.skin);
+        tmpLabel.setColor(Color.BLACK);
+        grid.add(tmpLabel).left();
+
+        SelectBox<String> selectBox = new SelectBox<String>(Assets.skin);
+        selectBox.setColor(Color.BROWN);
+        selectBox.setItems(GameConfig.GAME_MODES.values().toArray(new String[0]));
+        selectBox.setSelected(GameConfig.GAME_MODES.get(GameManager.INSTANCE.getGameMode()));
+
+        grid.add(selectBox).padBottom(5).left().row();
+
         // PHYSICAL PLAYERS
         tmpLabel = new Label("Number of physical players:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
@@ -126,18 +138,6 @@ public class SettingsScreen extends ScreenAdapter {
         tablePlayers.add(twoPhysicalPlayers);
         grid.add(tablePlayers).padBottom(5).row();
 
-        // GAME MODE
-        tmpLabel = new Label("Select game mode:", Assets.skin);
-        tmpLabel.setColor(Color.BLACK);
-        grid.add(tmpLabel).left();
-
-        SelectBox<String> selectBox = new SelectBox<String>(Assets.skin);
-        selectBox.setColor(Color.BROWN);
-        selectBox.setItems(GameConfig.GAME_MODES.values().toArray(new String[0]));
-        selectBox.setSelected(GameConfig.GAME_MODES.get(GameManager.INSTANCE.getGameMode()));
-
-        grid.add(selectBox).padBottom(5).left().row();
-
         // COMPUTER PLAYERS
         tmpLabel = new Label("Add computer players:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
@@ -151,6 +151,7 @@ public class SettingsScreen extends ScreenAdapter {
             }
         });
         grid.add(computerPlayersEnabled).colspan(2).padBottom(5).row();
+
 
         // MUSIC
         tmpLabel = new Label("Music:", Assets.skin);
