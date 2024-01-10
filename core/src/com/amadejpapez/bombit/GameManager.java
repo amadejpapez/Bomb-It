@@ -64,6 +64,9 @@ public class GameManager {
     }
 
     public static void generateOtherPlayers() {
+        if (!addComputerPlayers)
+            return;
+
         // called after user selects his physical player characters
         // this is for players that are computers
         CellState tmp;
