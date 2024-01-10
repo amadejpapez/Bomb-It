@@ -95,7 +95,7 @@ public class SettingsScreen extends ScreenAdapter {
         grid.defaults().padLeft(30).padRight(30);
 
         // TITLE
-        Label tmpLabel = new Label("Gameplay", Assets.skin);
+        Label tmpLabel = new Label("Game Settings", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         grid.add(tmpLabel).padBottom(50).colspan(3).row();
 
