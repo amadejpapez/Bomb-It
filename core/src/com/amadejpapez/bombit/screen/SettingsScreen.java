@@ -113,7 +113,7 @@ public class SettingsScreen extends ScreenAdapter {
         SelectBox<String> playersNumDropdown = new SelectBox<>(Assets.skin);
         playersNumDropdown.setColor(Color.BROWN);
         playersNumDropdown.setItems(" 1", " 2");
-        playersNumDropdown.setSelected(Integer.toString(GameManager.INSTANCE.getNumPhysicalPlayers()));
+        playersNumDropdown.setSelected(" " + Integer.toString(GameManager.INSTANCE.getNumPhysicalPlayers()));
 
         grid.add(playersNumDropdown).padBottom(5).row();
 
