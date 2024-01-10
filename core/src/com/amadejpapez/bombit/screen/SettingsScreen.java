@@ -30,9 +30,6 @@ public class SettingsScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
 
-    private TextButton onePhysicalPlayer;
-    private TextButton twoPhysicalPlayers;
-
     private CheckBox computerPlayersEnabled;
     private CheckBox musicEnabled;
     private CheckBox soundsEnabled;
@@ -45,9 +42,6 @@ public class SettingsScreen extends ScreenAdapter {
     public void show() {
         viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
         stage = new Stage(viewport, game.getBatch());
-
-        onePhysicalPlayer = new TextButton("1", Assets.skin);
-        twoPhysicalPlayers = new TextButton("2", Assets.skin);
 
         CheckBoxStyle checkBoxStyle = new CheckBoxStyle();
         checkBoxStyle.fontColor = Color.BLACK;
@@ -104,39 +98,24 @@ public class SettingsScreen extends ScreenAdapter {
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel).left();
 
-        SelectBox<String> selectBox = new SelectBox<String>(Assets.skin);
-        selectBox.setColor(Color.BROWN);
-        selectBox.setItems(GameConfig.GAME_MODES.values().toArray(new String[0]));
-        selectBox.setSelected(GameConfig.GAME_MODES.get(GameManager.INSTANCE.getGameMode()));
+        SelectBox<String> gameModeDropdown = new SelectBox<>(Assets.skin);
+        gameModeDropdown.setColor(Color.BROWN);
+        gameModeDropdown.setItems(GameConfig.GAME_MODES.values().toArray(new String[0]));
+        gameModeDropdown.setSelected(GameConfig.GAME_MODES.get(GameManager.INSTANCE.getGameMode()));
 
-        grid.add(selectBox).padBottom(5).left().row();
+        grid.add(gameModeDropdown).padBottom(5).row();
 
         // PHYSICAL PLAYERS
         tmpLabel = new Label("Number of physical players:", Assets.skin);
         tmpLabel.setColor(Color.BLACK);
         grid.add(tmpLabel).left();
 
-        Table tablePlayers = new Table();
-        tablePlayers.defaults();
+        SelectBox<String> playersNumDropdown = new SelectBox<>(Assets.skin);
+        playersNumDropdown.setColor(Color.BROWN);
+        playersNumDropdown.setItems(" 1", " 2");
+        playersNumDropdown.setSelected(Integer.toString(GameManager.INSTANCE.getNumPhysicalPlayers()));
 
-        onePhysicalPlayer.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameManager.INSTANCE.setNumPhysicalPlayers(1);
-                checkDisabledEnabledButtons();
-            }
-        });
-        twoPhysicalPlayers.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameManager.INSTANCE.setNumPhysicalPlayers(2);
-                checkDisabledEnabledButtons();
-            }
-        });
-
-        tablePlayers.add(onePhysicalPlayer);
-        tablePlayers.add(twoPhysicalPlayers);
-        grid.add(tablePlayers).padBottom(5).row();
+        grid.add(playersNumDropdown).padBottom(5).row();
 
         // COMPUTER PLAYERS
         tmpLabel = new Label("Add computer players:", Assets.skin);
@@ -151,7 +130,6 @@ public class SettingsScreen extends ScreenAdapter {
             }
         });
         grid.add(computerPlayersEnabled).colspan(2).padBottom(5).row();
-
 
         // MUSIC
         tmpLabel = new Label("Music:", Assets.skin);
@@ -189,9 +167,11 @@ public class SettingsScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 for (Map.Entry<String, String> entry: GameConfig.GAME_MODES.entrySet()) {
-                    if (entry.getValue().equals(selectBox.getSelected()))
+                    if (entry.getValue().equals(gameModeDropdown.getSelected()))
                         GameManager.INSTANCE.setGameMode(entry.getKey());
                 }
+
+                GameManager.INSTANCE.setNumPhysicalPlayers(Integer.parseInt(playersNumDropdown.getSelected().trim()));
 
                 GameManager.generatePhysicalPlayers();
                 game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(0)));
@@ -210,16 +190,6 @@ public class SettingsScreen extends ScreenAdapter {
     }
 
     private void checkDisabledEnabledButtons() {
-        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 1)
-            onePhysicalPlayer.setColor(Color.ORANGE);
-        else
-            onePhysicalPlayer.setColor(Color.BROWN);
-
-        if (GameManager.INSTANCE.getNumPhysicalPlayers() == 2)
-            twoPhysicalPlayers.setColor(Color.ORANGE);
-        else
-            twoPhysicalPlayers.setColor(Color.BROWN);
-
         if (GameManager.INSTANCE.getAddComputerPlayers())
             computerPlayersEnabled.setText("On");
         else
