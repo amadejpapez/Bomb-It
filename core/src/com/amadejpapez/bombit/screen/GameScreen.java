@@ -270,7 +270,7 @@ public class GameScreen extends ScreenAdapter {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new IntroScreen(game));
+                game.setScreen(new MenuScreen(game));
                 GameManager.activeBombs.clear();
                 GameManager.players.clear();
             }
