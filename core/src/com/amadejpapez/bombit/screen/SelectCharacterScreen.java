@@ -52,7 +52,9 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         // remove image that was selected for the first player
         availablePlayers = new ArrayList<>(CellActor.PLAYERS);
-        if (player.num == 1)
+        if (player.num == 0)
+            availablePlayers.remove(GameManager.players.get(1).image);
+        else
             availablePlayers.remove(GameManager.players.get(0).image);
 
         selectedImage = new Image(CellActor.getImageFromState(player.image));
