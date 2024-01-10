@@ -160,6 +160,17 @@ public class SettingsScreen extends ScreenAdapter {
         });
         grid.add(soundsEnabled).colspan(2).padBottom(5).row();
 
+        // BACK
+        TextButton backButton = new TextButton("Back", Assets.skin);
+        backButton.setColor(Color.BLACK);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+            }
+        });
+        grid.add(backButton).padTop(50).width(250).expandX().fill();
+
         // CONTINUE
         TextButton playButton = new TextButton("Continue", Assets.skin);
         playButton.setColor(Color.ORANGE);
@@ -177,7 +188,7 @@ public class SettingsScreen extends ScreenAdapter {
                 game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(0)));
             }
         });
-        grid.add(playButton).padTop(50).width(250).expandX().fill().colspan(grid.getColumns()).row();
+        grid.add(playButton).padTop(50).width(250).expandX().fill().colspan(2).row();
 
         // FINISH
         grid.center();

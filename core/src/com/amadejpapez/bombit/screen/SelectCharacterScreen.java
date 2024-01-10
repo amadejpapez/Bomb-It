@@ -151,10 +151,36 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         table.add(tableStatus).row();
 
+        // BACK
+        Table tableButtons = new Table();
+        tableButtons.defaults();
+
+        TextButton backButton = new TextButton("Back", Assets.skin);
+        backButton.setColor(Color.BLACK);
+
+        if (player.num == 0) {
+            backButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new SettingsScreen(game));
+                }
+            });
+        } else {
+            backButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    player.username = usernameInput.getText();
+                    game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(0)));
+                }
+            });
+        }
+
+        tableButtons.add(backButton).padTop(50).width(250);
+
         // BUTTON
         TextButton playButton;
         if (player.num + 1 == GameManager.INSTANCE.getNumPhysicalPlayers()) {
-            playButton = new TextButton("Start game", Assets.skin);
+            playButton = new TextButton("Play", Assets.skin);
             playButton.setColor(Color.ORANGE);
             playButton.addListener(new ClickListener() {
                 @Override
@@ -176,7 +202,10 @@ public class SelectCharacterScreen extends ScreenAdapter {
             });
         }
 
-        table.add(playButton).padTop(50).width(250).expandX().fill().colspan(table.getColumns()).row();
+        tableButtons.add(playButton).padTop(50).width(250);
+        tableButtons.center();
+
+        table.add(tableButtons).row();
 
         table.center();
         table.setFillParent(true);
