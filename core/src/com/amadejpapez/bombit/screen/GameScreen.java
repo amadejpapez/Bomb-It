@@ -281,7 +281,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         timeLabel.setColor(Color.BLACK);
-        table.add(timeLabel).padTop(30).left().row();
+        table.add(timeLabel).padTop(60).left().row();
 
         button = new TextButton("Pause", Assets.skin);
         button.setColor(Color.ORANGE);
