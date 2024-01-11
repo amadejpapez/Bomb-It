@@ -295,7 +295,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
-        table.add(button).left().row();
+        table.add(button).left().padTop(10).row();
 
         table.left();
         table.pack();
