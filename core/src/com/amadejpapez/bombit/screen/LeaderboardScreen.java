@@ -97,7 +97,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         contentTable = new Table(Assets.skin);
         contentTable.setBackground(new TextureRegionDrawable(Assets.backgroundLb));
 
-        Label tmpLabel = new Label("Leaderboard - Top 8", Assets.skin);
+        Label tmpLabel = new Label("Leaderboard - Top 5", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
         contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
 
@@ -145,7 +145,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         cell.add(tmpLabel).right().padBottom(10).row();
 
         for (int i = 0; i < results.size(); i++) {
-            if (i >= 8)
+            if (i >= 5)
                 break;
 
             tmpLabel = new Label(results.get(i).username, Assets.skin);
