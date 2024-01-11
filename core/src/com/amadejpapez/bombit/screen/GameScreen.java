@@ -126,7 +126,7 @@ public class GameScreen extends ScreenAdapter {
 
         GameManager.INSTANCE.playGameMusic();
 
-        if (GameManager.INSTANCE.getGameMode().equals("ARCADE") && !GameManager.INSTANCE.getIfPaused())
+        if (!GameManager.INSTANCE.getIfPaused())
             GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
     }
 
@@ -280,10 +280,8 @@ public class GameScreen extends ScreenAdapter {
             killLabels.put(player.num, tmpLabel1);
         }
 
-        if (GameManager.INSTANCE.getGameMode().equals("ARCADE")) {
-            timeLabel.setColor(Color.BLACK);
-            table.add(timeLabel).padTop(30).left().row();
-        }
+        timeLabel.setColor(Color.BLACK);
+        table.add(timeLabel).padTop(30).left().row();
 
         button = new TextButton("Pause", Assets.skin);
         button.setColor(Color.ORANGE);
@@ -419,6 +417,9 @@ public class GameScreen extends ScreenAdapter {
                 if (player.tiles >= GameConfig.TAG_TILES_GOAL)
                     maxTileReached(player);
             }
+
+            float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+            timeLabel.setText("Time: " + (int) (currentTime - GameManager.gameStartedTime));
         }
     }
 
@@ -439,7 +440,7 @@ public class GameScreen extends ScreenAdapter {
         for (Player player : GameManager.players) {
             if (player.getKills() == maxKill) {
                 killLabels.get(player.num).setText("Kills: " + player.getKills() + " *");
-                LeaderboardScreen.addResult(player);
+                LeaderboardScreen.addResult(player, GameManager.INSTANCE.getGameMode());
             }
         }
 
@@ -453,7 +454,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void maxTileReached(Player player) {
         killLabels.get(player.num).setText("Tiles: " + player.tiles + "/" + GameConfig.TAG_TILES_GOAL + " *");
-//        LeaderboardScreen.addResult(player);
+        LeaderboardScreen.addResult(player, GameManager.INSTANCE.getGameMode());
 
         if (!player.isComputerPlayer())
             gameplayStage.addActor(createWon());
