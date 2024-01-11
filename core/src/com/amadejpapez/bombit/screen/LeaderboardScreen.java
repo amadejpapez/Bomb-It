@@ -85,21 +85,12 @@ public class LeaderboardScreen extends ScreenAdapter {
 
         table.setBackground(new TextureRegionDrawable(Assets.background));
 
-        TextButton backButton = new TextButton("Back", Assets.skin);
-        backButton.setColor(Color.ORANGE);
-        backButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
-            }
-        });
-
         contentTable = new Table(Assets.skin);
         contentTable.setBackground(new TextureRegionDrawable(Assets.backgroundLb));
 
         Label tmpLabel = new Label("Leaderboard - Top 5", Assets.skin);
         tmpLabel.setColor(Color.BROWN);
-        contentTable.add(tmpLabel).padBottom(50).colspan(2).row();
+        contentTable.add(tmpLabel).padBottom(50).padTop(30).colspan(2).row();
 
         SelectBox<String> gameModeDropdown = new SelectBox<>(Assets.skin);
         gameModeDropdown.setColor(Color.BROWN);
@@ -120,7 +111,15 @@ public class LeaderboardScreen extends ScreenAdapter {
         contentTable.add(resultsTable).width(100).padTop(20).colspan(2).row();
         updateResultsTable(resultsArcade);
 
-        contentTable.add(backButton).width(100).padTop(50).colspan(2).row();
+        TextButton backButton = new TextButton("Back", Assets.skin);
+        backButton.setColor(Color.ORANGE);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+            }
+        });
+        contentTable.add(backButton).width(250).pad(40).colspan(2).row();
 
         table.add(contentTable);
         table.center();
