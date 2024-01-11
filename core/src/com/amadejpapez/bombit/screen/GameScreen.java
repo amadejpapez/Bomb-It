@@ -55,13 +55,18 @@ public class GameScreen extends ScreenAdapter {
 
     private float lastAiMove;
 
+    private static Table tableBackground = null;
+    private static Table tableBombs = null;
+    private static Table tableMain = null;
+
     public GameScreen(BombIt game) {
         this.game = game;
     }
 
     @Override
     public void show() {
-        resetAfterGameEnd();
+        if (!GameManager.INSTANCE.getIfPaused())
+            resetAll();
 
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
         hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
@@ -116,9 +121,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(new InputMultiplexer(gameplayStage, hudStage));
 
         GameManager.INSTANCE.playGameMusic();
-        GameManager.gameEnded = false;
 
-        if (GameManager.INSTANCE.getGameMode().equals("ARCADE"))
+        if (GameManager.INSTANCE.getGameMode().equals("ARCADE") && !GameManager.INSTANCE.getIfPaused())
             GameManager.gameStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
     }
 
@@ -156,6 +160,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Actor createGridBackground() {
+        if (tableBackground != null)
+            return tableBackground;
+
         Table table = new Table();
         bgCellGrid.defaults().size(GameConfig.CELL_SIZE);
 
@@ -174,10 +181,14 @@ public class GameScreen extends ScreenAdapter {
         table.setFillParent(true);
         table.pack();
 
-        return table;
+        tableBackground = table;
+        return tableBackground;
     }
 
     private Actor createGridBombs() {
+        if (tableBombs != null)
+            return tableBombs;
+
         Table table = new Table();
         Bomb.grid.defaults().size(GameConfig.CELL_SIZE);
 
@@ -196,10 +207,14 @@ public class GameScreen extends ScreenAdapter {
         table.setFillParent(true);
         table.pack();
 
-        return table;
+        tableBombs = table;
+        return tableBombs;
     }
 
     private Actor createGridPlayer(Player player) {
+        if (player.outerTable != null)
+            return player.outerTable;
+
         Table table = new Table();
         player.grid.defaults().size(GameConfig.CELL_SIZE);
 
@@ -218,7 +233,8 @@ public class GameScreen extends ScreenAdapter {
         table.setFillParent(true);
         table.pack();
 
-        return table;
+        player.outerTable = table;
+        return player.outerTable;
     }
 
     private Actor createMiddle() {
@@ -265,14 +281,13 @@ public class GameScreen extends ScreenAdapter {
             table.add(timeLabel).padTop(30).left().row();
         }
 
-        TextButton quitButton = new TextButton("Exit Game", Assets.skin);
+        TextButton quitButton = new TextButton("Pause", Assets.skin);
         quitButton.setColor(Color.ORANGE);
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
-                GameManager.activeBombs.clear();
-                GameManager.players.clear();
+                GameManager.INSTANCE.pauseStart();
+                game.setScreen(new PauseScreen(game));
             }
         });
 
@@ -285,6 +300,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private Actor createGridMain() {
+        if (tableMain != null)
+            return tableMain;
+
         final Table table = new Table();
 
         cellGrid.defaults().size(GameConfig.CELL_SIZE);   // all cells will be the same size
@@ -337,11 +355,12 @@ public class GameScreen extends ScreenAdapter {
         table.setFillParent(true);
         table.pack();
 
-        return table;
+        tableMain = table;
+        return tableMain;
     }
 
     private void updateStatus() {
-        if (GameManager.gameEnded)
+        if (GameManager.gameEnded || GameManager.INSTANCE.getIfPaused())
             return;
 
         for (Player player : GameManager.players) {
@@ -424,7 +443,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void moveAllAi() {
-        if (GameManager.gameEnded)
+        if (GameManager.gameEnded || GameManager.INSTANCE.getIfPaused())
             return;
 
         float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
@@ -464,7 +483,7 @@ public class GameScreen extends ScreenAdapter {
         player.tiles++;
     }
 
-    public void resetAfterGameEnd() {
+    public void resetAll() {
         bgCells.clear();
         bgCellGrid.clear();
 
@@ -477,5 +496,12 @@ public class GameScreen extends ScreenAdapter {
         Bomb.cells.clear();
 
         GameManager.activeBombs.clear();
+
+        tableMain = null;
+        tableBackground = null;
+        tableBombs = null;
+
+        GameManager.gameEnded = false;
+        GameManager.INSTANCE.pauseStop();
     }
 }

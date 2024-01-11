@@ -26,6 +26,7 @@ public class Player {
 
     public List<List<CellActor>> cells;
     public Table grid;
+    public Table outerTable;
 
     // used only for computer players
     public List<Integer> previousMoves;
@@ -51,6 +52,7 @@ public class Player {
         this.grid = new Table();
         this.hasBonusHand = false;
         this.previousMoves = new ArrayList<>();
+        this.outerTable = null;
     }
 
     public void updateImage(CellState newImage) {

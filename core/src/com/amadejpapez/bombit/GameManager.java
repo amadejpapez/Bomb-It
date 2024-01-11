@@ -4,6 +4,7 @@ import com.amadejpapez.bombit.assets.Assets;
 import com.amadejpapez.bombit.config.GameConfig;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class GameManager {
     public static List<Bomb> activeBombs;
 
     public static float gameStartedTime;
+    private static float pauseStartedTime;
 
     private static final String NUM_PHYSICAL_PLAYERS = "num_physical_players";
     private static final String ADD_COMPUTER_PLAYERS = "add_computer_players";
@@ -33,6 +35,7 @@ public class GameManager {
     private static final String GAME_MODE = "game_mode";
 
     public static Boolean gameEnded = false;
+    private static Boolean gamePaused = false;
 
     public static Float aiSpeed;
 
@@ -97,8 +100,23 @@ public class GameManager {
         return soundsEnabled;
     }
 
+    public boolean getIfPaused() {
+        return gamePaused;
+    }
+
     public String getGameMode() {
         return gameMode;
+    }
+
+    public void pauseStart() {
+        gamePaused = true;
+        pauseStartedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+    }
+
+    public void pauseStop() {
+        gamePaused = false;
+        float currentTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
+        gameStartedTime += (currentTime - pauseStartedTime);
     }
 
     public void setNumPhysicalPlayers(Integer num) {

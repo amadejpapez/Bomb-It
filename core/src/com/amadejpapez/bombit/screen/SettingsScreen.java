@@ -55,6 +55,10 @@ public class SettingsScreen extends ScreenAdapter {
 
         stage.addActor(createUi());
         Gdx.input.setInputProcessor(stage);
+
+        GameManager.players.clear();
+        GameManager.INSTANCE.pauseStop();
+        GameManager.gameEnded = false;
     }
 
     @Override
