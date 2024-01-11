@@ -59,6 +59,9 @@ public class GameScreen extends ScreenAdapter {
     private static Table tableBombs = null;
     private static Table tableMain = null;
 
+    private static TextButton button;
+    private static TextButton quitButton;
+
     public GameScreen(BombIt game) {
         this.game = game;
     }
@@ -281,9 +284,18 @@ public class GameScreen extends ScreenAdapter {
             table.add(timeLabel).padTop(30).left().row();
         }
 
-        TextButton quitButton = new TextButton("Pause", Assets.skin);
-        quitButton.setColor(Color.ORANGE);
+        quitButton = new TextButton("Exit game", Assets.skin);
+        quitButton.setColor(Color.BLACK);
         quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MenuScreen(game));
+            }
+        });
+
+        button = new TextButton("Pause", Assets.skin);
+        button.setColor(Color.ORANGE);
+        button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 GameManager.INSTANCE.pauseStart();
@@ -291,7 +303,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
-        table.add(quitButton).left().row();
+        table.add(button).left().row();
 
         table.left();
         table.pack();
@@ -360,6 +372,11 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void updateStatus() {
+        if (GameManager.gameEnded) {
+            button.setText(quitButton.getText().toString());
+            button.setColor(quitButton.getColor());
+        }
+
         if (GameManager.gameEnded || GameManager.INSTANCE.getIfPaused())
             return;
 

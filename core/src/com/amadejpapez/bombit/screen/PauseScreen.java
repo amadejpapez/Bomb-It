@@ -35,8 +35,11 @@ public class PauseScreen extends ScreenAdapter {
         stage = new Stage(viewport, game.getBatch());
 
         stage.addActor(createUi());
-        stage.addActor(createTitle());
         Gdx.input.setInputProcessor(stage);
+        stage.addActor(createTitle());
+
+        if (GameManager.gameEnded)
+            game.setScreen(new MenuScreen(game));
     }
 
     @Override

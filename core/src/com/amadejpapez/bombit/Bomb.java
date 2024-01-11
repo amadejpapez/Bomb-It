@@ -48,7 +48,7 @@ public class Bomb {
     }
 
     public static void updateBombs() {
-        if (GameManager.gameEnded)
+        if (GameManager.gameEnded || GameManager.INSTANCE.getIfPaused())
             return;
 
         float elapsedTime = TimeUtils.nanosToMillis(TimeUtils.nanoTime()) / 1000f;
