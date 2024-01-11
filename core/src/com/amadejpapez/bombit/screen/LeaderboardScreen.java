@@ -134,7 +134,7 @@ public class LeaderboardScreen extends ScreenAdapter {
         Table cell = contentTable.getCell(resultsTable).getActor();
         cell.clear();
 
-        Label tmpLabel = new Label("Username:", Assets.skin);
+        Label tmpLabel = new Label("User:", Assets.skin);
         tmpLabel.setColor(Color.DARK_GRAY);
         cell.add(tmpLabel).padRight(50).padBottom(10).left();
 
