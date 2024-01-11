@@ -4,6 +4,7 @@ import com.amadejpapez.bombit.BombIt;
 import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -20,6 +21,7 @@ import com.amadejpapez.bombit.config.GameConfig;
 public class IntroScreen extends ScreenAdapter {
     private final BombIt game;
 
+    private OrthographicCamera camera;
     private Viewport viewport;
     private Stage stage;
 
@@ -32,7 +34,10 @@ public class IntroScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
+
+        viewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, camera);
         stage = new Stage(viewport, game.getBatch());
 
         Assets.load();

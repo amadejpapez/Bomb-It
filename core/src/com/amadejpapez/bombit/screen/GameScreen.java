@@ -10,6 +10,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -39,6 +40,7 @@ import com.amadejpapez.bombit.config.GameConfig;
 public class GameScreen extends ScreenAdapter {
     private final BombIt game;
 
+    private OrthographicCamera camera;
     private Viewport viewport;
     private Viewport hudViewport;
 
@@ -72,8 +74,11 @@ public class GameScreen extends ScreenAdapter {
         if (!GameManager.INSTANCE.getIfPaused())
             resetAll();
 
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
+
         viewport = new FitViewport(GameConfig.WORLD_WIDTH, GameConfig.WORLD_HEIGHT);
-        hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT);
+        hudViewport = new FitViewport(GameConfig.HUD_WIDTH, GameConfig.HUD_HEIGHT, camera);
 
         gameplayStage = new Stage(viewport, game.getBatch());
         hudStage = new Stage(hudViewport, game.getBatch());
