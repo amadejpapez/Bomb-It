@@ -20,9 +20,6 @@ public class AssetDescriptors {
     public static final AssetDescriptor<Sound> BOMB_SOUND =
             new AssetDescriptor<>(AssetPaths.BOMB_SOUND, Sound.class);
 
-    public static final AssetDescriptor<Sound> POWER_UP_SOUND =
-            new AssetDescriptor<>(AssetPaths.POWER_UP_SOUND, Sound.class);
-
     public static final AssetDescriptor<Music> GAME_MUSIC =
             new AssetDescriptor<>(AssetPaths.GAME_MUSIC, Music.class);
 

@@ -8,7 +8,6 @@ public class AssetPaths {
     public static final String SKIN = "skin/neon-ui.json";
 
     public static final String BOMB_SOUND = "sounds/bomb.wav";
-    public static final String POWER_UP_SOUND = "sounds/bomb.wav";
 
     public static final String GAME_MUSIC = "music/game.mp3";
     public static final String START_MUSIC = "music/start.mp3";
