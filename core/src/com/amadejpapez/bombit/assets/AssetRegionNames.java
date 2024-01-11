@@ -29,6 +29,8 @@ public class AssetRegionNames {
 
     public static final String MIDDLE = "middle";
 
+    public static final String PAUSE = "pause";
+
     public static final String BONUS_BOMB = "bonus_bomb";
     public static final String BONUS_HAND = "bonus_hand";
 

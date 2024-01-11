@@ -50,6 +50,7 @@ public class Assets {
     public static TextureRegion whistle;
     public static TextureRegion youLose;
     public static TextureRegion youWin;
+    public static TextureRegion pause;
 
     public static void load() {
         assetManager = new AssetManager();
@@ -83,6 +84,7 @@ public class Assets {
         empty = gameplayAtlas.findRegion(AssetRegionNames.EMPTY);
         floor = gameplayAtlas.findRegion(AssetRegionNames.FLOOR);
         middle = gameplayAtlas.findRegion(AssetRegionNames.MIDDLE);
+        pause = gameplayAtlas.findRegion(AssetRegionNames.PAUSE);
         playerBlack = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLACK);
         playerBlue = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_BLUE);
         playerGreen = gameplayAtlas.findRegion(AssetRegionNames.PLAYER_GREEN);
