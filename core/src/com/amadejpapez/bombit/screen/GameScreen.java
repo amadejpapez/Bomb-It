@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -58,9 +59,9 @@ public class GameScreen extends ScreenAdapter {
     private static Table tableBackground = null;
     private static Table tableBombs = null;
     private static Table tableMain = null;
+    private static Table tableHud = null;
 
     private static TextButton button;
-    private static TextButton quitButton;
 
     public GameScreen(BombIt game) {
         this.game = game;
@@ -284,15 +285,6 @@ public class GameScreen extends ScreenAdapter {
             table.add(timeLabel).padTop(30).left().row();
         }
 
-        quitButton = new TextButton("Exit game", Assets.skin);
-        quitButton.setColor(Color.BLACK);
-        quitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new MenuScreen(game));
-            }
-        });
-
         button = new TextButton("Pause", Assets.skin);
         button.setColor(Color.ORANGE);
         button.addListener(new ClickListener() {
@@ -308,7 +300,9 @@ public class GameScreen extends ScreenAdapter {
         table.left();
         table.pack();
         table.setPosition(0, GameConfig.HUD_HEIGHT / 2f - (table.getHeight() / 2f));
-        return table;
+
+        tableHud = table;
+        return tableHud;
     }
 
     private Actor createGridMain() {
@@ -372,9 +366,19 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void updateStatus() {
-        if (GameManager.gameEnded) {
-            button.setText(quitButton.getText().toString());
-            button.setColor(quitButton.getColor());
+        if (GameManager.gameEnded && button.getText().toString().equals("Pause")) {
+            Cell<TextButton> cell = tableHud.getCell(button);
+
+            button = new TextButton("Exit game", Assets.skin);
+            button.setColor(Color.BLACK);
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new MenuScreen(game));
+                }
+            });
+
+            cell.setActor(button);
         }
 
         if (GameManager.gameEnded || GameManager.INSTANCE.getIfPaused())
@@ -517,6 +521,7 @@ public class GameScreen extends ScreenAdapter {
         tableMain = null;
         tableBackground = null;
         tableBombs = null;
+        tableHud = null;
 
         GameManager.gameEnded = false;
         GameManager.INSTANCE.pauseStop();
