@@ -395,9 +395,9 @@ public class GameScreen extends ScreenAdapter {
                 killLabels.get(player.num).setText("Tiles: " + player.tiles + "/" + GameConfig.TAG_TILES_GOAL);
 
                 if (player.tiles >= GameConfig.TAG_TILES_GOAL - 10)
-                    killLabels.get(player.num).setColor(Color.RED);
-                else if (player.tiles >= GameConfig.TAG_TILES_GOAL / 2)
                     killLabels.get(player.num).setColor(Color.BLUE);
+                else if (player.tiles >= GameConfig.TAG_TILES_GOAL / 2)
+                    killLabels.get(player.num).setColor(Color.ORANGE);
                 else
                     killLabels.get(player.num).setColor(Color.BROWN);
             }
