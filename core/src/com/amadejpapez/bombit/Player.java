@@ -56,6 +56,7 @@ public class Player {
     }
 
     public void updateImage(CellState newImage) {
+        this.imageTile = CellActor.COLORED_TILES_MAPPED.get(newImage);
         this.image = newImage;
     }
 
