@@ -1,7 +1,6 @@
 package com.amadejpapez.bombit.screen;
 
 import com.amadejpapez.bombit.BombIt;
-import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -65,10 +64,8 @@ public class IntroScreen extends ScreenAdapter {
         duration += delta;
 
         // go to the MenuScreen after INTRO_DURATION_IN_SEC seconds
-        if (duration > INTRO_DURATION_IN_SEC) {
+        if (duration > INTRO_DURATION_IN_SEC)
             game.setScreen(new MenuScreen(game));
-            GameManager.INSTANCE.playStartMusic();
-        }
 
         stage.act(delta);
         stage.draw();

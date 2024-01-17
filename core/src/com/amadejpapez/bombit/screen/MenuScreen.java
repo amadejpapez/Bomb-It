@@ -1,5 +1,6 @@
 package com.amadejpapez.bombit.screen;
 
+import com.amadejpapez.bombit.GameManager;
 import com.amadejpapez.bombit.assets.Assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -37,6 +38,8 @@ public class MenuScreen extends ScreenAdapter {
         stage.addActor(createUi());
         Gdx.input.setInputProcessor(stage);
         stage.addActor(createTitle());
+
+        GameManager.INSTANCE.playStartMusic();
     }
 
     @Override
