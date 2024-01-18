@@ -117,7 +117,7 @@ public class SettingsScreen extends ScreenAdapter {
         SelectBox<String> playersNumDropdown = new SelectBox<>(Assets.skin);
         playersNumDropdown.setColor(Color.BROWN);
         playersNumDropdown.setItems(" 1", " 2");
-        playersNumDropdown.setSelected(" " + Integer.toString(GameManager.INSTANCE.getNumPhysicalPlayers()));
+        playersNumDropdown.setSelected(" " + GameManager.INSTANCE.getNumPhysicalPlayers());
 
         grid.add(playersNumDropdown).padBottom(5).row();
 
@@ -188,8 +188,7 @@ public class SettingsScreen extends ScreenAdapter {
 
                 GameManager.INSTANCE.setNumPhysicalPlayers(Integer.parseInt(playersNumDropdown.getSelected().trim()));
 
-                GameManager.generatePhysicalPlayers();
-                game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(0)));
+                game.setScreen(new SelectCharacterScreen(game, 0));
             }
         });
         grid.add(playButton).padTop(50).width(250).expandX().fill().colspan(2).row();

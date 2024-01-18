@@ -40,9 +40,12 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
     private final Player player;
 
-    public SelectCharacterScreen(BombIt game, Player player) {
+    public SelectCharacterScreen(BombIt game, Integer playerNum) {
+        if (playerNum >= GameManager.players.size())
+            GameManager.generatePhysicalPlayer();
+
         this.game = game;
-        this.player = player;
+        this.player = GameManager.players.get(playerNum);
     }
 
     @Override
@@ -52,9 +55,9 @@ public class SelectCharacterScreen extends ScreenAdapter {
 
         // remove image that was selected for the first player
         availablePlayers = new ArrayList<>(CellActor.PLAYERS);
-        if (player.num == 0 && GameManager.INSTANCE.getNumPhysicalPlayers() == 2)
+        if (player.num == 0 && GameManager.INSTANCE.getNumPhysicalPlayers() == 2 && GameManager.players.size() == 2)
             availablePlayers.remove(GameManager.players.get(1).image);
-        else
+        else if (player.num == 1)
             availablePlayers.remove(GameManager.players.get(0).image);
 
         selectedImage = new Image(CellActor.getImageFromState(player.image));
@@ -172,7 +175,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     player.username = usernameInput.getText();
-                    game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(0)));
+                    game.setScreen(new SelectCharacterScreen(game, 0));
                 }
             });
         }
@@ -199,7 +202,7 @@ public class SelectCharacterScreen extends ScreenAdapter {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     player.username = usernameInput.getText();
-                    game.setScreen(new SelectCharacterScreen(game, GameManager.players.get(1)));
+                    game.setScreen(new SelectCharacterScreen(game, 1));
                 }
             });
         }

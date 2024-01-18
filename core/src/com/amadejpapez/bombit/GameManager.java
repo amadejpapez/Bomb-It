@@ -53,17 +53,14 @@ public class GameManager {
         activeBombs = new ArrayList<>();
     }
 
-    public static void generatePhysicalPlayers() {
-        // called after first startup screen is complete and before users selects his characters
+    public static void generatePhysicalPlayer() {
         // this acts like a default character if user does not select any
         CellState tmp;
-        for (int i = 0; i < GameManager.numPhysicalPlayers; i++) {
-            do {
-                tmp = CellActor.PLAYERS.get(ThreadLocalRandom.current().nextInt(CellActor.PLAYERS.size()));
-            } while (characterAlreadyInUse(tmp));
+        do {
+            tmp = CellActor.PLAYERS.get(ThreadLocalRandom.current().nextInt(CellActor.PLAYERS.size()));
+        } while (characterAlreadyInUse(tmp));
 
-            players.add(new Player(i, tmp));
-        }
+        players.add(new Player(players.size(), tmp));
     }
 
     public static void generateOtherPlayers() {
