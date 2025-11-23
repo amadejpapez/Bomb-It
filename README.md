@@ -16,7 +16,7 @@ Based on a widely popular Flash game series named Bomb It.
 
 You can play the game solo or with a friend from the same machine. The remaining ones can be filled with computer bots.
 
----
+<br>
 
 ## 🎮 Features
 
@@ -33,7 +33,7 @@ You can play the game solo or with a friend from the same machine. The remaining
 
 <p align="center"><img width="700" alt="Game settings screenshot. Allowing you to select game mode, number of physical players, if bots are added, enable and disable music/sound" src="media-showcase/demo-game-menu.png"></p>
 
----
+<br>
 
 ## 🕹️ Game modes
 
@@ -63,8 +63,6 @@ You can play the game solo or with a friend from the same machine. The remaining
 
 <br>
 
----
-
 ## ⚙️ Gameplay mechanics
 
 Each player has a starting spawn point in his respective corner. Each player also has a unique look that can be selected at the start of the game. The look also auto sets a color for the Tile Tag game mode.
@@ -73,7 +71,7 @@ With each player starting in its own corner, the map is filled with many obstacl
 
 Players can drop bombs and kill players in range, even the dropper. In all modes players re-spawn in their starting point. Note that in the Tile Tag this resets your progress.
 
----
+<br>
 
 ## 🎁 Bonuses
 
@@ -85,7 +83,7 @@ Players can drop bombs and kill players in range, even the dropper. In all modes
 - 🧤 **Glove**
   - ability to push an active bomb to the end of the path by bumping into it
 
----
+<br>
 
 ## 📝 About the Bomb It series
 
@@ -95,7 +93,7 @@ The game worked over Flash at the time. Today all of the games have been ported 
 
 There are 8 versions. With the Bomb It 8 being published as recent as 2023.
 
----
+<br>
 
 ## 💻 Get started
 
@@ -113,7 +111,7 @@ The game can be run via Gradle with the desktop build file.
 ./gradlew desktop:run
 ```
 
----
+<br>
 
 ## ❤️ Development background
 
