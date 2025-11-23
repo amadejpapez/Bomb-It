@@ -1,62 +1,71 @@
-<img width="1000" alt="Screenshot 2023-12-06 at 1 32 53 AM" src="media-showcase/title.png">
+<br>
+
+<p align="center"><img width="500" alt="Bomb It 4 official logo" src="media-showcase/title.png"></p>
+
+<h1 align="center"><b>Bomb It</b></h1>
+
+<p align="center"><b>Local multiplayer bomber-style game 💻 🕹️</b></p>
+
+<p align="center"><b>Built with cross-platform Java library <a href="https://github.com/libgdx/libgdx">libGDX</a></b></p>
 
 <br>
 
-<h2 align="center"><b>Bomb It</b></h2>
+## ✍️ Overview
 
-<p align="center">🎮 🎲</p>
+Based on a widely popular Flash game series named Bomb It.
 
-<p align="center">Built using cross-platform Java game development library <a href="https://github.com/libgdx/libgdx">libGDX</a></p>
-
-<p align="center">Student project 2023/24</p>
-
-<br>
+You can play the game solo or with a friend from the same machine. The remaining ones can be filled with computer bots.
 
 ---
 
 ## 🎮 Features
 
-This game is an implementation of mostly Bomb It 4.
+- 💻 local multiplayer for up to 2 players
+- 🤖 up to 4 players in total, rest can be filled with bots
+- 🏆 2 different game modes
+- 💣 bombs
+- ⭐️ collectable bonuses
+- 🧱 fixed and temporary obstacles
+- 📊 local leaderboard
+- 🌈 character look selection
 
-Game works fully locally where one or two players can play from the same computer. Other players are bots.
+<p align="center"><img width="700" alt="Game first screen screenshot. Showing from top to bottom: logo, Start button, Leaderboard button, Quit button" src="media-showcase/demo-start-menu.png"></p>
 
-<img width="1000" alt="Screenshot 2023-12-06 at 1 32 53 AM" src="media-showcase/demo-start-menu.png">
+<p align="center"><img width="700" alt="Game settings screenshot. Allowing you to select game mode, number of physical players, if bots are added, enable and disable music/sound" src="media-showcase/demo-game-menu.png"></p>
 
-<img width="1000" alt="Screenshot 2023-12-06 at 1 32 53 AM" src="media-showcase/demo-game-menu.png">
+---
 
-<br>
-<br>
+## 🕹️ Game modes
 
-### Game mode: Arcade
+### Arcade
 
-- each player can drop bombs 💣
-- bombs kill any player in range (even the dropper, so move fast! 🏃)
-- when killed, the player re-spawns at its starting point
-- the goal is to **do as many kills as possible** 🤺
-- when time runs out, the player with the most kills wins the game 🏆
+- 💣 drop bombs to eliminate players
+- 🏃 detonations kill any player in range!
+- 🪦 eliminated players re-spawn at their starting points
+- 📊 score points by eliminating opponents
+- 🏆 **when time runs out, the player with the most kills wins**
 
-<img width="1000" alt="Screenshot 2023-12-06 at 1 32 53 AM" src="media-showcase/demo-arcade-mode.gif">
-
-<br>
-<br>
-
-### Game mode: Tile Tag
-
-- each player has its own color 🎨
-- when a player moves across a tile on the floor, the tile switches to the player's color
-- similar to arcade, there are bombs as well and players can be killed
-- players re-spawn at the the starting point, all of their active tiles lose color and they start at 0 again
-- the goal is to **have 50 active tiles with your color**
-- beware of bombs and move fast before others steal your tiles! 🏃
-
-<img width="1000" alt="Screenshot 2023-12-06 at 1 32 53 AM" src="media-showcase/demo-tile-tag-mode.gif">
+<p align="center"><img width="700" alt="GIF showcasing arcade game mode" src="media-showcase/demo-arcade-mode.gif"></p>
 
 <br>
+
+### Tile Tag
+
+- 🎨 each player has a unique color based on the character
+- 🫟 moving across a floor tile paints it
+- 🏆 **the first to have 50 active tiles wins**
+- 💣 bombs still matter!
+- 🪦 re-spawning resets player's already colored tiles
+- ⏰ no timer
+- 🏃 move fast before others steal your tiles!
+
+<p align="center"><img width="700" alt="GIF showcasing tile tag game mode" src="media-showcase/demo-tile-tag-mode.gif"></p>
+
 <br>
 
-### Game dynamics
+---
 
-There is one or two physical players. Both play from the same computer. Others (4 in total) can be filled by bots - optional in game settings.
+## ⚙️ Gameplay mechanics
 
 Each player has a starting spawn point in his respective corner. Each player also has a unique look that can be selected at the start of the game. The look also auto sets a color for the Tile Tag game mode.
 
@@ -64,23 +73,23 @@ With each player starting in its own corner, the map is filled with many obstacl
 
 Players can drop bombs and kill players in range, even the dropper. In all modes players re-spawn in their starting point. Note that in the Tile Tag this resets your progress.
 
-<br>
+---
 
-<p align="center"><img width="300" alt="Screenshot 2023-12-06 at 1 32 53 AM" src="media-showcase/demo-bonuses.png"></p>
+## 🎁 Bonuses
 
-The map offers bonuses as well:
+<p align="center"><img width="300" alt="Screenshot showing part of map with both bonuses visible" src="media-showcase/demo-bonuses.png"></p>
 
-- 💣 **Bomb**
+- 💣 **Bomb Capacity**
   - at the start the player can drop only one bomb and before you can drop another, the first one has to detonate
   - each collected bomb bonus increases how many active bombs a player can have
 - 🧤 **Glove**
-  - allows a player to be able to push an active bomb to the end of the path by bumping into it
+  - ability to push an active bomb to the end of the path by bumping into it
 
 ---
 
-## 🕹️ Bomb It game series
+## 📝 About the Bomb It series
 
-A widely popular bomber-like game Bomb It. Originally developed by Zlong Games in November of 2006 and published by Spil Games.
+First version developed by Zlong Games and published by Spil Games in November of 2006.
 
 The game worked over Flash at the time. Today all of the games have been ported over and can be played via HTML5.
 
@@ -90,9 +99,13 @@ There are 8 versions. With the Bomb It 8 being published as recent as 2023.
 
 ## 💻 Get started
 
-The game is built using Java, so a Java IDE like IntelliJ IDEA or Android Studio or similar is recommended.
+### Requirements
 
-The game has been tested on macOS with IntelliJ IDEA with **Java SDK 21**.
+- **Java SDK** (tested with 21)
+- **A Java IDE** (tested with IntelliJ IDEA, Android Studio should also be good)
+- tested on macOS, should work elsewhere as well
+
+### Running the game
 
 The game can be run via Gradle with the desktop build file.
 
@@ -102,6 +115,6 @@ The game can be run via Gradle with the desktop build file.
 
 ---
 
-## ❤️ Background
+## ❤️ Development background
 
-The game was created as a student project during my time at computer science university FERI in Maribor, Slovenia during my 2023/24 year.
+The game was developed as a student project at computer science university FERI in Maribor, Slovenia during my 2023/2024 year.
